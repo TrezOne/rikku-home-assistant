@@ -1,0 +1,8 @@
+disable_clock: true
+am_pm_clock: true
+disable_welcome_message: false
+v2_mode: false
+weather_entity: weather.home_rikku
+alarm_entity: ''
+disable_sensor_graph: false
+invert_cover: false

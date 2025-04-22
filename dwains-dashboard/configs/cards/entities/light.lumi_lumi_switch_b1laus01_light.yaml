@@ -1,0 +1,7 @@
+entity: light.lumi_lumi_switch_b1laus01_light
+icon: mdi:light-switch
+show_icon: true
+show_name: true
+tap_action:
+  action: toggle
+type: button

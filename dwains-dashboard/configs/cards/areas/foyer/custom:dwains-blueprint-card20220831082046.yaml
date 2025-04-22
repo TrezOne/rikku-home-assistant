@@ -1,0 +1,71 @@
+blueprint: clockweathercalendar.yaml
+card:
+  cards:
+  - cards:
+    - dateFormat:
+        day: 2-digit
+        month: long
+        weekday: long
+      timeFormat:
+        hour: 2-digit
+        minute: 2-digit
+      type: custom:digital-clock
+    - animation: true
+      language: en
+      type: custom:ha-card-weather-conditions
+      weather:
+        current:
+          current_conditions: $18_condition_entity$
+          feels_like: $19_feels_like$
+          forecast: false
+          humidity: $20_humidity$
+          moon_phase: sensor.moon
+          pressure: $21_pressure$
+          sun: sun.sun
+          temperature: $17_temperature_entity$
+          visibility: $22_visibility$
+          wind_bearing: $23_wind_bearing$
+          wind_speed: $24_wind_speed$
+        icons_model: defaulthass
+    - dayWrapperLineColor: Green
+      entities:
+      - entity: $10_calendar_entity$
+      eventBarColor: Green
+      fullDayEventText: $13_calendar_fullDayEventText$
+      maxDaysToShow: $15_calendar_maxDaysToShow$
+      noEventText: $11_calendar_noEventText$
+      noEventsForNextDaysText: $12_calendar_noEventsForNextDaysText$
+      showMonth: true
+      showNoEventsForToday: true
+      showProgressBar: true
+      showWeekDay: false
+      timeColor: Green
+      type: custom:atomic-calendar-revive
+      untilText: $14_calendar_untilText$
+    type: vertical-stack
+  items_classes: col-xs-12
+  type: custom:dwains-flexbox-card
+col_span: '2'
+col_span_lg: '3'
+col_span_xl: '4'
+data:
+  10_calendar_entity: calendar.charish2k1_gmail_com
+  11_calendar_noEventText: No events
+  12_calendar_noEventsForNextDaysText: No events for next 7 days
+  13_calendar_fullDayEventText: Full day event
+  14_calendar_untilText: until
+  15_calendar_maxDaysToShow: '14'
+  16_language: en
+  17_temperature_entity: sensor.openweathermap_temperature
+  18_condition_entity: sensor.openweathermap_condition
+  19_feels_like: sensor.openweathermap_feels_like_temperature
+  20_humidity: sensor.openweathermap_humidity
+  21_pressure: sensor.openweathermap_pressure
+  22_visibility: sensor.openweathermap_visibility
+  23_wind_bearing: sensor.openweathermap_wind_bearing
+  24_wind_speed: sensor.openweathermap_wind_speed
+position: top
+row_span: '1'
+row_span_lg: '1'
+row_span_xl: '1'
+type: custom:dwains-blueprint-card

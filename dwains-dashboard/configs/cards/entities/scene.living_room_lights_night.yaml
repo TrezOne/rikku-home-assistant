@@ -1,0 +1,7 @@
+entity: scene.living_room_lights_night
+icon: mdi:lightbulb-night
+show_icon: true
+show_name: true
+tap_action:
+  action: toggle
+type: button

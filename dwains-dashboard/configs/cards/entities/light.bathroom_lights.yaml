@@ -1,0 +1,4 @@
+entity: light.bathroom_lights
+icon: mdi:lightbulb-group-outline
+name: Bathroom Lights
+type: light

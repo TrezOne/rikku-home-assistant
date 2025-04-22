@@ -1,0 +1,14 @@
+col_span: '2'
+col_span_lg: '3'
+col_span_xl: '4'
+entity: light.kitchen_light
+icon: mdi:wall-sconce-flat-outline
+position: top
+row_span: '1'
+row_span_lg: '1'
+row_span_xl: '1'
+show_brightness_control: true
+show_color_control: true
+show_color_temp_control: true
+type: custom:mushroom-light-card
+use_light_color: true

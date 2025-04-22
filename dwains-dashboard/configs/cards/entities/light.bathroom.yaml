@@ -1,0 +1,4 @@
+entity: light.bathroom
+icon: mdi:lightbulb-group-outline
+name: Bathroom Dimmer
+type: light

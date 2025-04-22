@@ -1,0 +1,17 @@
+entities:
+- entity: switch.living_room_mdf_plug_2
+  icon: mdi:server-network
+  name: MDF Plug
+  secondary_info: none
+- entity: sensor.mdf_consumption
+  secondary_info: last-changed
+- entity: switch.humidifier_plug
+  icon: mdi:power-socket-us
+  name: Dehumidifier Plug
+- entity: sensor.consumption_5
+  name: Dehumidifier Consumption
+  secondary_info: last-updated
+show_header_toggle: true
+state_color: true
+title: Power Control & Usage
+type: entities

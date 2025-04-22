@@ -1,0 +1,26 @@
+action_button:
+  icon: mdi:power
+  mode: toggle
+  show: true
+  show_spinner: true
+  tap_action:
+    action: toggle
+compact: false
+entity: light.dresden_elektronik_raspbee_ii_bathroom_lights_zha_group_0x0002
+icon:
+  icon: ''
+  show: true
+  tap_action:
+    action: more-info
+  use_state_color: true
+show_name: true
+show_state: true
+slider:
+  background: gradient
+  direction: left-right
+  force_square: false
+  show_track: false
+  toggle_on_click: false
+  use_percentage_bg_opacity: true
+  use_state_color: true
+type: custom:slider-button-card

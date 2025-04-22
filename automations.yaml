@@ -1,0 +1,51 @@
+- id: '1654749081487'
+  alias: Vacuum schedule
+  description: ''
+  trigger:
+  - platform: time
+    at: '11:00:00'
+  condition: []
+  action:
+  - parallel:
+    - device_id: 4f4ac1838a8d32748da9d2e5aa54c748
+      domain: vacuum
+      entity_id: vacuum.johnny_5
+      type: clean
+    - service: vacuum.set_fan_speed
+      data:
+        fan_speed: Eco
+      target:
+        device_id: 4f4ac1838a8d32748da9d2e5aa54c748
+        entity_id: vacuum.johnny_5
+  mode: single
+- id: '1687209973222'
+  alias: After Pool
+  description: Night lights
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.front_door_sensor_opening
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: and
+    conditions:
+    - condition: device
+      device_id: 8381d589cc257ba882fb80036224e53d
+      domain: device_tracker
+      entity_id: device_tracker.pixel_7_3
+      type: is_home
+    - condition: sun
+      before: sunrise
+      after: sunset
+    - condition: time
+      weekday:
+      - mon
+      - tue
+      - thu
+  action:
+  - service: scene.turn_on
+    target:
+      entity_id: scene.night_time
+    metadata: {}
+  mode: single

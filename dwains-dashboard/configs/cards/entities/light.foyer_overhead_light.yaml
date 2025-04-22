@@ -1,0 +1,9 @@
+entity: light.foyer_overhead_light
+fill_container: false
+icon: bha:ceiling-downlight
+name: Foyer Light
+show_brightness_control: true
+show_color_control: true
+show_color_temp_control: true
+type: custom:mushroom-light-card
+use_light_color: true
