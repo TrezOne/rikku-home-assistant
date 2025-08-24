@@ -1,3 +1,14 @@
+homeassistant:
+  # Name of the location where Home Assistant is running
+  name: "Rikku"
+  # Location required to calculate the time the sun rises and sets
+  latitude: 40
+  longitude: -73
+  # 'metric' for Metric, 'us_customary' for US Customary
+  unit_system: us_customary
+  # Pick yours from here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: "America/New_York"
+
 # Configure a default setup of Home Assistant (frontend, api, etc)
 default_config:
 
