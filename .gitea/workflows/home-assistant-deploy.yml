@@ -67,6 +67,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            app-configs/homeassistant/configuration.yaml
+          sparse-checkout-cone-mode: false
       - name: Gotify Notification
         uses: eikendev/gotify-action@master
         with:
@@ -75,9 +79,7 @@ jobs:
           notification_title: 'GITEA: Home Assistant Config Check'
           notification_message: 'Beginning HA config check...'
       - name: Run Home Assistant Configuration Check
-        uses: frenck/action-home-assistant@v1
-        with:
-          path: "app-configs/homeassistant"
+        uses: frenck/action-home-assistant@v1.4.1
       - name: Gotify Notification
         uses: eikendev/gotify-action@master
         with:
