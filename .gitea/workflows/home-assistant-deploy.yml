@@ -76,7 +76,7 @@ jobs:
           notification_message: 'Beginning HA config check...'
       - run: |
           echo "Get file listing..."
-          ls -al
+          ls -al app-configs/homeassistant
       - name: Run Home Assistant Configuration Check
         uses: frenck/action-home-assistant@v1.4.1
         with:
