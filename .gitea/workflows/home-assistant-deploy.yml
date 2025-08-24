@@ -79,7 +79,7 @@ jobs:
       - name: Run Home Assistant Configuration Check
         uses: frenck/action-home-assistant@v1.4.1
         with:
-          path: "${GITHUB_WORKSPACE}/ansible/configs/homeassistant"
+          path: "${GITHUB_WORKSPACE}/ansible/configs/homeassistant/configuration.yaml"
       - name: Gotify Notification
         uses: eikendev/gotify-action@master
         with:
