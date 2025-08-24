@@ -1,0 +1,141 @@
+name: rikku
+networks:
+  default:
+    name: rikku_default
+services:
+  adguard:
+    cap_add:
+      - NET_BIND_SERVICE
+      - NET_RAW
+    container_name: adguard
+    environment:
+      TZ: ${TZ}
+    image: adguard/adguardhome:latest
+    network_mode: host
+    privileged: true
+    # ports:
+    #   - "192.168.1.254:53:53/udp"
+    #   - "192.168.1.254:53:53/tcp"
+    #   - 3001:3000
+    #   - "192.168.1.254:446:443/tcp"
+    #   - 8008:80
+    #   - "192.168.1.254:853:853/tcp"
+    #   - 67:67
+    #   - 688:68
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${RIKKU_DOCKER_DIR}/adguard/work:/opt/adguardhome/work
+      - ${RIKKU_DOCKER_DIR}/adguard/conf:/opt/adguardhome/conf
+  beszel-agent:
+    container_name: beszel-agent
+    depends_on:
+      - beszel
+    environment:
+      PORT: 45876
+      # Do not remove quotes around the key
+      KEY: '${BESZEL_RINOA_AGENT_KEY}'
+    expose:
+      - 45876
+    image: henrygd/beszel-agent:latest
+    network_mode: host
+    restart: unless-stopped
+    volumes:
+      - /dev//dev/mmcblk0:/extra-filesystems//dev/mmcblk0:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+  castsponsorskip:
+    image: ghcr.io/gabe565/castsponsorskip
+    environment:
+      # Set the container timezone
+      # See identifier list at https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+      TZ: ${TZ}
+      # CSS_PAUSED_INTERVAL:
+      # CSS_PLAYING_INTERVAL:
+      # CSS_CATEGORIES:
+      # CSS_YOUTUBE_API_KEY:
+      # CSS_MUTE_ADS:
+    network_mode: host
+    restart: always
+  ha-fusion:
+    container_name: ha-fusion
+    depends_on:
+      homeassistant:
+        condition: service_started
+        required: true
+    environment:
+      TZ: ${TZ}
+      HASS_URL: http://192.168.1.252:8123
+    image: ghcr.io/matt8707/ha-fusion
+    labels:
+      com.centurylinklabs.watchtower.monitor-only: true
+    ports:
+      - 5050:5050
+    restart: unless-stopped
+    volumes:
+      - ${RIKKU_DOCKER_DIR}/ha-fusion:/app/data
+  homeassistant:
+    container_name: homeassistant
+    devices:
+      - /dev/ttyAMA0:/dev/ttyAMA0
+      - /dev/ttyS0:/dev/ttyS0
+    environment:
+      DISABLE_JEMALLOC: true
+    image: ghcr.io/home-assistant/home-assistant:stable
+    labels:
+      com.centurylinklabs.watchtower.monitor-only: true
+    network_mode: host
+    privileged: true
+    restart: unless-stopped
+    volumes:
+      - ${RIKKU_DOCKER_DIR}/homeassistant:/config
+      - /etc/localtime:/etc/localtime:ro
+      - /run/dbus:/run/dbus:ro
+  ollama:
+    container_name: ollama
+    image: ollama/ollama:latest
+    ports:
+      - 11434:11434
+    restart: unless-stopped
+    volumes:
+      - ollama:/root/.ollama
+  protonmail-bridge:
+    container_name: protonmail-bridge
+    image: shenxn/protonmail-bridge
+    ports:
+      - 1025:25/tcp
+      - 1143:143/tcp
+    restart: unless-stopped
+    volumes:
+      - protonmail:/root
+  watchtower:
+    container_name: watchtower
+    environment:
+      REPO_PASS:
+      REPO_USER:
+      TZ: ${TZ}
+      WATCHTOWER_CLEANUP: true
+      WATCHTOWER_INCLUDE_STOPPED: false
+      WATCHTOWER_MONITOR_ONLY: false
+      WATCHTOWER_NOTIFICATIONS: gotify
+      WATCHTOWER_NOTIFICATIONS_LEVEL: info
+      WATCHTOWER_NOTIFICATION_TEMPLATE: '{{range .}}{{.Message}}{{println}}{{end}}'
+      WATCHTOWER_NOTIFICATION_URL:
+      WATCHTOWER_SCHEDULE: 0 0 4 * * *
+      WATCHTOWER_TIMEOUT: 30s
+      WATCHTOWER_HTTP_API_METRICS: true
+      WATCHTOWER_HTTP_API_TOKEN: ${WATCHTOWER_HTTP_API_TOKEN}
+      WATCHTOWER_NOTIFICATION_GOTIFY_URL: ${WATCHTOWER_NOTIFICATION_GOTIFY_URL}
+      WATCHTOWER_NOTIFICATION_GOTIFY_TOKEN: ${WATCHTOWER_NOTIFICATION_GOTIFY_TOKEN}
+      WATCHTOWER_NOTIFICATION_GOTIFY_TLS_SKIP_VERIFY: true
+    expose:
+      - 8080
+    image: ghcr.io/containrrr/watchtower:latest
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+volumes:
+  ollama:
+    name: ollama
+  protonmail:
+    name: protonmail
