@@ -77,7 +77,7 @@ jobs:
       - name: Run Home Assistant Configuration Check
         uses: frenck/action-home-assistant@v1
         with:
-          path: "app-configs/homeassistant/"
+          path: "app-configs/homeassistant/configuration.yaml"
       - name: Gotify Notification
         uses: eikendev/gotify-action@master
         with:
