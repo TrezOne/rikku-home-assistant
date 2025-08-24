@@ -81,7 +81,7 @@ jobs:
       - name: Run Home Assistant Configuration Check
         uses: frenck/action-home-assistant@v1.4.1
         with:
-          path: "/workspace/Trez.One/rikku-home-assistant/app-configs/homeassistant"
+          path: "/workspace/Trez.One/rikku-home-assistant/app-configs/homeassistant/configuration.yaml"
       - name: Gotify Notification
         uses: eikendev/gotify-action@master
         with:
