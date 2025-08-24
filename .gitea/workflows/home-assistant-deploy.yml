@@ -77,7 +77,7 @@ jobs:
       - run: |
           echo "Get file listing..."
           pwd
-          ls -al app-configs/homeassistant
+          ls -al app-configs/homeassistant/configuration.yaml
       - name: Run Home Assistant Configuration Check
         uses: frenck/action-home-assistant@v1.4.1
         with:
