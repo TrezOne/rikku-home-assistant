@@ -77,10 +77,11 @@ jobs:
       - run: |
           echo "Get file listing..."
           ls -al /workspace/Trez.One/rikku-home-assistant/app-configs/homeassistant/configuration.yaml
+          echo ${GITHUB_WORKSPACE}
       - name: Run Home Assistant Configuration Check
         uses: frenck/action-home-assistant@v1.4.1
         with:
-          path: "/workspace/Trez.One/rikku-home-assistant/app-configs/homeassistant/configuration.yaml"
+          path: /workspace/Trez.One/rikku-home-assistant/app-configs/homeassistant/
       - name: Gotify Notification
         uses: eikendev/gotify-action@master
         with:
