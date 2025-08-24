@@ -6,6 +6,7 @@ on:
       - 'main'
     paths:
       - '**/docker-compose.yml'
+      - '**/home-assistant-deploy.yml'
 env:
   HC_VAULT_VERSION: '1.20.0'
   TEA_VERSION: '0.10.1'
