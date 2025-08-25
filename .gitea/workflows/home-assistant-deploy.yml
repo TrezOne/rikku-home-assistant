@@ -81,7 +81,7 @@ jobs:
         run: |
           pwd
           ls -al
-          docker run --rm --entrypoint "" -v ./ansible/configs/homeassistant:/github/workspace/ --workdir /github/workspace "ghcr.io/home-assistant/home-assistant:stable" python -m homeassistant --config "/github/workspace" --script check_config
+          docker run --rm --entrypoint "" -v ./ansible/configs/homeassistant:/github/workspace/ --workdir /github/workspace "ghcr.io/home-assistant/home-assistant:stable" python -m homeassistant --config "/github/workspace/configuration.yaml" --script check_config
         # uses: frenck/action-home-assistant@v1.4.1
         # with:
         #   path: "ansible/configs/homeassistant"
