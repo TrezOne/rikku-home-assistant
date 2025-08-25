@@ -75,11 +75,12 @@ jobs:
           notification_title: 'GITEA: Home Assistant Config Check'
           notification_message: 'Beginning HA config check...'
       - run: |
-          echo ${GITHUB_WORKSPACE}
+          pwd
+          ls -al
       - name: Run Home Assistant Configuration Check
         uses: frenck/action-home-assistant@v1.4.1
         with:
-          path: ${GITHUB_WORKSPACE}/ansible/configs/homeassistant
+          path: "./ansible/configs/homeassistant"
       - name: Gotify Notification
         uses: eikendev/gotify-action@master
         with:
