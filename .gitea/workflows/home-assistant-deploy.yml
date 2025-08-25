@@ -67,35 +67,17 @@ jobs:
     steps:
       - name: Checkout only configuration.yaml
         uses: actions/checkout@v4
-      - name: Set up Python (>=3.13.2)
+      - name: Set up Python 3.13.2
         uses: actions/setup-python@v5
         with:
-          python-version: '>=3.13.2'
-      - name: Install pipx
+          python-version: '3.13.2'
+      - name: Install Home Assistant
         run: |
-          python3.13 -m pip install --upgrade pip
-          python3.13 -m pip install --user pipx
-          python3.13 -m pipx ensurepath
-      - name: Install Home Assistant via pipx
-        run: |
-          pipx install "homeassistant==2025.8.3"
-      - name: Gotify Notification
-        uses: eikendev/gotify-action@master
-        with:
-          gotify_api_base: '${{ secrets.RIKKU_GOTIFY_URL }}'
-          gotify_app_token: '${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}'
-          notification_title: 'GITEA: Home Assistant Config Check'
-          notification_message: 'Beginning HA config check...'
+          python -m pip install --upgrade pip
+          pip install homeassistant==2025.8.3
       - name: Run Home Assistant config check
         run: |
           hass --config ansible/configs/homeassistant --script check_config
-      - name: Gotify Notification
-        uses: eikendev/gotify-action@master
-        with:
-          gotify_api_base: '${{ secrets.RIKKU_GOTIFY_URL }}'
-          gotify_app_token: '${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}'
-          notification_title: 'GITEA: Home Assistant Config Check'
-          notification_message: 'Config check completed'
   # generate-service-list:
   #   name: Generate list of added/modified/deleted services
   #   runs-on: ubuntu-latest
