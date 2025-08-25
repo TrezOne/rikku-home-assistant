@@ -78,6 +78,9 @@ jobs:
           gotify_app_token: '${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}'
           notification_title: 'GITEA: Home Assistant Config Check'
           notification_message: 'Beginning HA config check...'
+      - run: |
+          pwd
+          ls -al
       - name: Run Home Assistant Configuration Check
         uses: frenck/action-home-assistant@v1.4.1
       - name: Gotify Notification
