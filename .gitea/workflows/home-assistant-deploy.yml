@@ -67,6 +67,18 @@ jobs:
     steps:
       - name: Checkout only configuration.yaml
         uses: actions/checkout@v4
+      - name: Set up Python (>=3.13.2)
+        uses: actions/setup-python@v5
+        with:
+          python-version: '>=3.13.2'
+      - name: Install pipx
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --user pipx
+          python -m pipx ensurepath
+      - name: Install Home Assistant via pipx
+        run: |
+          pipx install "homeassistant==2025.8.3"
       - name: Gotify Notification
         uses: eikendev/gotify-action@master
         with:
@@ -74,9 +86,9 @@ jobs:
           gotify_app_token: '${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}'
           notification_title: 'GITEA: Home Assistant Config Check'
           notification_message: 'Beginning HA config check...'
-      - name: Run Home Assistant Configuration Check
+      - name: Run Home Assistant config check
         run: |
-          python3 -V
+          hass --config ansible/configs/homeassistant --script check_config
       - name: Gotify Notification
         uses: eikendev/gotify-action@master
         with:
