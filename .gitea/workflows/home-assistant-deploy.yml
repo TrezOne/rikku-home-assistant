@@ -75,11 +75,11 @@ jobs:
           notification_title: 'GITEA: Home Assistant Config Check'
           notification_message: 'Beginning HA config check...'
       - name: Run Home Assistant Configuration Check
-        # run: |
-        #   docker run --rm --entrypoint "" -v ${GITHUB_WORKSPACE}:/github/workspace --workdir /github/workspace "ghcr.io/home-assistant/home-assistant:stable" python -m homeassistant --config "ansible/configs/homeassistant" --script check_config
-        uses: frenck/action-home-assistant@v1.4.1
-        with:
-          path: "./ansible/configs/homeassistant"
+        run: |
+          docker run --rm --entrypoint "" -v ${GITHUB_WORKSPACE}/ansible/configs/homeassistant:/config --workdir /config "ghcr.io/home-assistant/home-assistant:stable" python -m homeassistant --config "/config" --script check_config
+        # uses: frenck/action-home-assistant@v1.4.1
+        # with:
+        #   path: "./ansible/configs/homeassistant"
       - name: Gotify Notification
         uses: eikendev/gotify-action@master
         with:
