@@ -74,9 +74,8 @@ jobs:
       - name: Move YAML configs to root folder
         run: |
           pwd
-          ls -al ansible/configs/homeassistant/
           mv ansible/configs/homeassistant/*.yaml .
-          ls -al
+          ls -al ${GITHUB_WORKSPACE}
       - name: Gotify Notification
         uses: eikendev/gotify-action@master
         with:
@@ -86,6 +85,8 @@ jobs:
           notification_message: 'Beginning HA config check...'
       - name: Run Home Assistant Configuration Check
         uses: frenck/action-home-assistant@v1.4.1
+        with:
+          path: ${GITHUB_WORKSPACE}
       - name: Gotify Notification
         uses: eikendev/gotify-action@master
         with:
