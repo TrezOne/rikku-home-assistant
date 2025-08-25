@@ -74,13 +74,9 @@ jobs:
           gotify_app_token: '${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}'
           notification_title: 'GITEA: Home Assistant Config Check'
           notification_message: 'Beginning HA config check...'
-      - run: |
-          pwd
-          ls -al
       - name: Run Home Assistant Configuration Check
         run: |
-          pwd
-          ls -al
+          docker run --rm --entrypoint "" -v ./ansible/configs/homeassistant:/github/workspace/ --workdir /github/workspace "ghcr.io/home-assistant/home-assistant:stable" ls -al /github/workspace
           docker run --rm --entrypoint "" -v ./ansible/configs/homeassistant:/github/workspace/ --workdir /github/workspace "ghcr.io/home-assistant/home-assistant:stable" python -m homeassistant --config "/github/workspace/configuration.yaml" --script check_config
         # uses: frenck/action-home-assistant@v1.4.1
         # with:
