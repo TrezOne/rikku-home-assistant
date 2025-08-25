@@ -28,10 +28,12 @@ jobs:
         with:
           python-version: ${{ inputs.python-version }}
 
-      - name: Install Home Assistant
+      - name: Install Home Assistant + requirements
         run: |
           python -m pip install --upgrade pip
           pip install homeassistant==${{ inputs.ha-version }}
+          curl -sSL https://raw.githubusercontent.com/home-assistant/core/${{ inputs.ha-version }}/requirements_all.txt -o requirements_all.txt
+          pip install -r requirements_all.txt
 
       - name: Run Home Assistant config check
         run: |
