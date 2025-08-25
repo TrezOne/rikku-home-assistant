@@ -160,14 +160,14 @@ jobs:
   #         echo -e "${{ steps.detect_services.outputs.docker_svc_list }}"
   docker-compose-dry-run:
     name: Docker Compose Dry Run
-    needs: [generate-service-list]
+    needs: [home-assistant-config-check]
     runs-on: ubuntu-latest
     env:
       VAULT_ADDR: ${{ secrets.RIKKU_VAULT_ADDR }}
       VAULT_TOKEN: ${{ secrets.VAULT_GITEA_TOKEN }}
       VAULT_NAMESPACE: ""
       RIKKU_REGISTRY_PASSWORD: ${{ secrets.BOT_GITEA_PASSWORD }}
-      DOCKER_SVC_LIST: ${{ needs.generate-service-list.outputs.svc_deploy_list }}
+      # DOCKER_SVC_LIST: ${{ needs.generate-service-list.outputs.svc_deploy_list }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -195,7 +195,6 @@ jobs:
       - name: Generate .env file for Docker Compose
         run: |
           vault kv get -format=json rikku-docker/env | jq -r '.data.data' | jq -r 'keys[] as $k | "\($k)='\''\(.[$k])'\''"' > .env
-          echo ${DOCKER_SVC_LIST}
       - name: Docker Compose Dry Run
         uses: astappiev/docker-compose-remote-action@master
         with:
@@ -203,7 +202,7 @@ jobs:
           ssh_host: 192.168.1.252
           ssh_private_key: ${RIKKU_SSH_PRIVATE_KEY}
           ssh_host_public_key: ${RIKKU_SSH_PUBLIC_KEY}
-          docker_args: -d --remove-orphans --build ${DOCKER_SVC_LIST}
+          docker_args: -d --remove-orphans --build
       - name: Gotify Notification
         uses: eikendev/gotify-action@master
         with:
