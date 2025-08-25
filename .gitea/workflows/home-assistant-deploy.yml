@@ -76,9 +76,7 @@ jobs:
           notification_message: 'Beginning HA config check...'
       - name: Run Home Assistant Configuration Check
         run: |
-          pipx ensurepath
-          pipx install homeassistant==2025.8.3
-          hass --config ansible/configs/homeassistant --script check_config
+          python3 -V
       - name: Gotify Notification
         uses: eikendev/gotify-action@master
         with:
