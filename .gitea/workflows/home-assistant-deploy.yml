@@ -80,10 +80,7 @@ jobs:
           notification_message: 'Beginning HA config check...'
       - name: Run Home Assistant Configuration Check
         run: |
-          pwd
-          mv ansible/configs/homeassistant/*.yaml .
-          ls -al ${GITHUB_WORKSPACE}
-          docker run --rm --entrypoint "" -v ${GITHUB_WORKSPACE}:/config --workdir /config "ghcr.io/home-assistant/home-assistant:stable" python -m homeassistant --config "/config" --script check_config
+          docker run --rm --entrypoint "" -v ${GITHUB_WORKSPACE}:/github/workspace --workdir /github/workspace "ghcr.io/home-assistant/home-assistant:stable" python -m homeassistant --config "ansible/configs/homeassistant" --script check_config
         # uses: frenck/action-home-assistant@v1.4.1
         # with:
         #   path: ${GITHUB_WORKSPACE}
