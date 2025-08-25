@@ -77,9 +77,7 @@ jobs:
       - name: Run Home Assistant Configuration Check
         run: |
           which pipx
-          which pip3
-          which python3
-          pip3 install homeassistant
+          pipx install homeassistant
           python3 -m homeassistant --config "ansible/configs/homeassistant" --script check_config
       - name: Gotify Notification
         uses: eikendev/gotify-action@master
