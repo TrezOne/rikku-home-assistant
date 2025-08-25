@@ -71,11 +71,6 @@ jobs:
           fetch-depth: 0
           sparse-checkout: ansible/configs/homeassistant/*.yaml
           sparse-checkout-cone-mode: false
-      - name: Move YAML configs to root folder
-        run: |
-          pwd
-          mv ansible/configs/homeassistant/*.yaml .
-          ls -al ${GITHUB_WORKSPACE}
       - name: Gotify Notification
         uses: eikendev/gotify-action@master
         with:
@@ -84,9 +79,14 @@ jobs:
           notification_title: 'GITEA: Home Assistant Config Check'
           notification_message: 'Beginning HA config check...'
       - name: Run Home Assistant Configuration Check
-        uses: frenck/action-home-assistant@v1.4.1
-        with:
-          path: ${GITHUB_WORKSPACE}
+        run: |
+          pwd
+          mv ansible/configs/homeassistant/*.yaml .
+          ls -al ${GITHUB_WORKSPACE}
+          docker run --rm --entrypoint "" -v ${GITHUB_WORKSPACE}:/config --workdir /config "ghcr.io/home-assistant/home-assistant:stable" python -m homeassistant --config "/config" --script check_config
+        # uses: frenck/action-home-assistant@v1.4.1
+        # with:
+        #   path: ${GITHUB_WORKSPACE}
       - name: Gotify Notification
         uses: eikendev/gotify-action@master
         with:
