@@ -63,6 +63,7 @@ jobs:
           notification_message: 'PR Created 🎟️'
   home-assistant-config-check:
     name: Home Assistant Configuration Check
+    needs: [check-and-create-pr]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
