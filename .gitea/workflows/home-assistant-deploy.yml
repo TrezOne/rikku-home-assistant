@@ -64,16 +64,11 @@ jobs:
   home-assistant-config-check:
     name: Home Assistant Configuration Check
     needs: [check-and-create-pr]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout only configuration.yaml
-        uses: actions/checkout@v4
-      - name: Home Assistant Config Check
-        uses: ./.gitea/workflows/homeassistant-check.yml
-        with:
-          python-version: '3.13.2'
-          ha-version: '2025.8.3'
-          config-path: 'ansible/configs/homeassistant'
+    uses: ./.gitea/workflows/homeassistant-check.yml
+    with:
+      python-version: '3.13.2'
+      ha-version: '2025.8.3'
+      config-path: 'ansible/configs/homeassistant'
   # generate-service-list:
   #   name: Generate list of added/modified/deleted services
   #   runs-on: ubuntu-latest
@@ -86,13 +81,13 @@ jobs:
   #     - name: Fetch base branch
   #       run: |
   #         git fetch origin ${{ github.event.pull_request.base.ref }}
-  #     - name: Gotify Notification
-  #       uses: eikendev/gotify-action@master
-  #       with:
-  #         gotify_api_base: '${{ secrets.RIKKU_GOTIFY_URL }}'
-  #         gotify_app_token: '${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}'
-  #         notification_title: 'GITEA: Services TBD'
-  #         notification_message: 'Generating list of services to deploy...'
+      # - name: Gotify Notification
+      #   uses: eikendev/gotify-action@master
+      #   with:
+      #     gotify_api_base: '${{ secrets.RIKKU_GOTIFY_URL }}'
+      #     gotify_app_token: '${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}'
+      #     notification_title: 'GITEA: Services TBD'
+      #     notification_message: 'Generating list of services to deploy...'
   #     - name: Save both versions of docker-compose.yml
   #       run: |
   #         git show origin/main:docker-compose.yml > docker-compose-main.yml || touch docker-compose-main.yml
