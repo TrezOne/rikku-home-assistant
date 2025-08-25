@@ -78,9 +78,13 @@ jobs:
           pwd
           ls -al
       - name: Run Home Assistant Configuration Check
-        uses: frenck/action-home-assistant@v1.4.1
-        with:
-          path: "ansible/configs/homeassistant"
+        run: |
+          pwd
+          ls -al
+          docker run --rm --entrypoint "" -v ./ansible/configs/homeassistant:/github/workspace/ --workdir /github/workspace "ghcr.io/home-assistant/home-assistant:stable" python -m homeassistant --config "." --script check_config
+        # uses: frenck/action-home-assistant@v1.4.1
+        # with:
+        #   path: "ansible/configs/homeassistant"
       - name: Gotify Notification
         uses: eikendev/gotify-action@master
         with:
