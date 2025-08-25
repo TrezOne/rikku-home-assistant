@@ -72,22 +72,37 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.13.2'
+      - name: Gotify Notification
+        uses: eikendev/gotify-action@master
+        with:
+          gotify_api_base: '${{ secrets.RIKKU_GOTIFY_URL }}'
+          gotify_app_token: '${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}'
+          notification_title: 'GITEA: Home Assistant Config Check'
+          notification_message: 'Setting up Python >=3.13 and venv...'
       - name: Create virtual environment and install Home Assistant
         run: |
           python -m venv venv
           source venv/bin/activate
           python -m pip install --upgrade pip
           pip install homeassistant==2025.8.3
+      - name: Gotify Notification
+        uses: eikendev/gotify-action@master
+        with:
+          gotify_api_base: '${{ secrets.RIKKU_GOTIFY_URL }}'
+          gotify_app_token: '${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}'
+          notification_title: 'GITEA: Home Assistant Config Check'
+          notification_message: 'Starting config check...'
       - name: Run Home Assistant config check
         run: |
           source venv/bin/activate
           hass --config ansible/configs/homeassistant --script check_config | tee ha-check.log
-      - name: Upload config check log
-        if: always()
-        uses: actions/upload-artifact@v4
+      - name: Gotify Notification
+        uses: eikendev/gotify-action@master
         with:
-          name: homeassistant-check-log
-          path: ha-check.log
+          gotify_api_base: '${{ secrets.RIKKU_GOTIFY_URL }}'
+          gotify_app_token: '${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}'
+          notification_title: 'GITEA: Home Assistant Config Check'
+          notification_message: '🚀 Config check done!'
   # generate-service-list:
   #   name: Generate list of added/modified/deleted services
   #   runs-on: ubuntu-latest
@@ -100,13 +115,13 @@ jobs:
   #     - name: Fetch base branch
   #       run: |
   #         git fetch origin ${{ github.event.pull_request.base.ref }}
-      # - name: Gotify Notification
-      #   uses: eikendev/gotify-action@master
-      #   with:
-      #     gotify_api_base: '${{ secrets.RIKKU_GOTIFY_URL }}'
-      #     gotify_app_token: '${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}'
-      #     notification_title: 'GITEA: Services TBD'
-      #     notification_message: 'Generating list of services to deploy...'
+  #     - name: Gotify Notification
+  #       uses: eikendev/gotify-action@master
+  #       with:
+  #         gotify_api_base: '${{ secrets.RIKKU_GOTIFY_URL }}'
+  #         gotify_app_token: '${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}'
+  #         notification_title: 'GITEA: Services TBD'
+  #         notification_message: 'Generating list of services to deploy...'
   #     - name: Save both versions of docker-compose.yml
   #       run: |
   #         git show origin/main:docker-compose.yml > docker-compose-main.yml || touch docker-compose-main.yml
@@ -143,59 +158,59 @@ jobs:
   #     - name: List of Services for (Re)Deployment
   #       run: |
   #         echo -e "${{ steps.detect_services.outputs.docker_svc_list }}"
-  # docker-compose-dry-run:
-  #   name: Docker Compose Dry Run
-  #   needs: [generate-service-list]
-  #   runs-on: ubuntu-latest
-  #   env:
-  #     VAULT_ADDR: ${{ secrets.RIKKU_VAULT_ADDR }}
-  #     VAULT_TOKEN: ${{ secrets.VAULT_GITEA_TOKEN }}
-  #     VAULT_NAMESPACE: ""
-  #     RIKKU_REGISTRY_PASSWORD: ${{ secrets.BOT_GITEA_PASSWORD }}
-  #     DOCKER_SVC_LIST: ${{ needs.generate-service-list.outputs.svc_deploy_list }}
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v4
-  #     - name: Login to Gitea Container Registry
-  #       run: |
-  #         docker login -u gitea-sonarqube-bot -p ${RIKKU_REGISTRY_PASSWORD} git.trez.wtf
-  #     - name: Cache Vault install
-  #       id: cache-vault
-  #       uses: actions/cache@v4
-  #       with:
-  #         path: /opt/hostedtoolcache/vault/${{ env.HC_VAULT_VERSION }}/x64
-  #         key: vault-${{ runner.os }}-${{ env.HC_VAULT_VERSION }}
-  #     - name: Install Vault (only if not cached)
-  #       if: steps.cache-vault.outputs.cache-hit != 'true'
-  #       uses: cpanato/vault-installer@main
-  #       with:
-  #         version: ${{ env.HC_VAULT_VERSION }}
-  #     - name: Gotify Notification
-  #       uses: eikendev/gotify-action@master
-  #       with:
-  #         gotify_api_base: '${{ secrets.RIKKU_GOTIFY_URL }}'
-  #         gotify_app_token: '${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}'
-  #         notification_title: 'GITEA: Docker Compose Dry Run @ Rinoa'
-  #         notification_message: 'Starting Docker Compose dry run...'
-  #     - name: Generate .env file for Docker Compose
-  #       run: |
-  #         vault kv get -format=json rikku-docker/env | jq -r '.data.data' | jq -r 'keys[] as $k | "\($k)='\''\(.[$k])'\''"' > .env
-  #         echo ${DOCKER_SVC_LIST}
-  #     - name: Docker Compose Dry Run
-  #       uses: astappiev/docker-compose-remote-action@master
-  #       with:
-  #         ssh_user: pi
-  #         ssh_host: 192.168.1.252
-  #         ssh_private_key: ${RIKKU_SSH_PRIVATE_KEY}
-  #         ssh_host_public_key: ${RIKKU_SSH_PUBLIC_KEY}
-  #         docker_args: -d --remove-orphans --build ${DOCKER_SVC_LIST}
-  #     - name: Gotify Notification
-  #       uses: eikendev/gotify-action@master
-  #       with:
-  #         gotify_api_base: '${{ secrets.RIKKU_GOTIFY_URL }}'
-  #         gotify_app_token: '${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}'
-  #         notification_title: 'GITEA: Docker Compose Dry Run @ Rinoa'
-  #         notification_message: 'Docker Compose dry run completed successfully.'
+  docker-compose-dry-run:
+    name: Docker Compose Dry Run
+    needs: [generate-service-list]
+    runs-on: ubuntu-latest
+    env:
+      VAULT_ADDR: ${{ secrets.RIKKU_VAULT_ADDR }}
+      VAULT_TOKEN: ${{ secrets.VAULT_GITEA_TOKEN }}
+      VAULT_NAMESPACE: ""
+      RIKKU_REGISTRY_PASSWORD: ${{ secrets.BOT_GITEA_PASSWORD }}
+      DOCKER_SVC_LIST: ${{ needs.generate-service-list.outputs.svc_deploy_list }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Login to Gitea Container Registry
+        run: |
+          docker login -u gitea-sonarqube-bot -p ${RIKKU_REGISTRY_PASSWORD} git.trez.wtf
+      - name: Cache Vault install
+        id: cache-vault
+        uses: actions/cache@v4
+        with:
+          path: /opt/hostedtoolcache/vault/${{ env.HC_VAULT_VERSION }}/x64
+          key: vault-${{ runner.os }}-${{ env.HC_VAULT_VERSION }}
+      - name: Install Vault (only if not cached)
+        if: steps.cache-vault.outputs.cache-hit != 'true'
+        uses: cpanato/vault-installer@main
+        with:
+          version: ${{ env.HC_VAULT_VERSION }}
+      - name: Gotify Notification
+        uses: eikendev/gotify-action@master
+        with:
+          gotify_api_base: '${{ secrets.RIKKU_GOTIFY_URL }}'
+          gotify_app_token: '${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}'
+          notification_title: 'GITEA: Docker Compose Dry Run @ Rinoa'
+          notification_message: 'Starting Docker Compose dry run...'
+      - name: Generate .env file for Docker Compose
+        run: |
+          vault kv get -format=json rikku-docker/env | jq -r '.data.data' | jq -r 'keys[] as $k | "\($k)='\''\(.[$k])'\''"' > .env
+          echo ${DOCKER_SVC_LIST}
+      - name: Docker Compose Dry Run
+        uses: astappiev/docker-compose-remote-action@master
+        with:
+          ssh_user: pi
+          ssh_host: 192.168.1.252
+          ssh_private_key: ${RIKKU_SSH_PRIVATE_KEY}
+          ssh_host_public_key: ${RIKKU_SSH_PUBLIC_KEY}
+          docker_args: -d --remove-orphans --build ${DOCKER_SVC_LIST}
+      - name: Gotify Notification
+        uses: eikendev/gotify-action@master
+        with:
+          gotify_api_base: '${{ secrets.RIKKU_GOTIFY_URL }}'
+          gotify_app_token: '${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}'
+          notification_title: 'GITEA: Docker Compose Dry Run @ Rinoa'
+          notification_message: 'Docker Compose dry run completed successfully.'
   # pr-merge:
   #   name: PR Merge
   #   needs: [regenerate-readme-modified-services]
