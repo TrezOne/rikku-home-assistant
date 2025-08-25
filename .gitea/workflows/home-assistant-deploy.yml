@@ -196,7 +196,7 @@ jobs:
         run: |
           vault kv get -format=json rikku-docker/env | jq -r '.data.data' | jq -r 'keys[] as $k | "\($k)='\''\(.[$k])'\''"' > .env
       - name: Docker Compose Dry Run
-        uses: astappiev/docker-compose-remote-action@master
+        uses: astappiev/docker-compose-remote-action@v1
         with:
           ssh_user: pi
           ssh_host: 192.168.1.252
