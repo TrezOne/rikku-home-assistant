@@ -29,8 +29,6 @@ services:
       - ${RIKKU_DOCKER_DIR}/adguard/conf:/opt/adguardhome/conf
   beszel-agent:
     container_name: beszel-agent
-    depends_on:
-      - beszel
     environment:
       PORT: 45876
       # Do not remove quotes around the key
