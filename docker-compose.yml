@@ -143,6 +143,8 @@ services:
       PORT: 4999
     image: mostafawahied/portracker:latest
     pid: "host"
+    ports:
+      - 4999:4999
     restart: unless-stopped
     security_opt:
       - apparmor:unconfined
