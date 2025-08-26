@@ -211,39 +211,31 @@ jobs:
         with:
           gotify_api_base: '${{ secrets.RIKKU_GOTIFY_URL }}'
           gotify_app_token: '${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}'
-          notification_title: 'GITEA: Docker Compose Dry Run @ Rinoa'
+          notification_title: 'GITEA: Docker Compose Dry Run @ Rikku'
           notification_message: 'Starting Docker Compose dry run...'
       - name: Generate .env file for Docker Compose
         run: |
           vault kv get -format=json rikku-docker/env | jq -r '.data.data' | jq -r 'keys[] as $k | "\($k)='\''\(.[$k])'\''"' > .env
       - name: Docker Compose Dry Run
-        uses: alcharra/docker-deploy-action-go@v2.1.0
+        uses: cssnr/stack-deploy-action@v1.3.2
         with:
-          ssh_host: ${{ secrets.SSH_HOST }}
-          ssh_user: ${{ secrets.SSH_USER }}
-          ssh_key: ${{ secrets.RIKKU_SSH_PRIVATE_KEY }}
-          project_path: /home/pi/.config/docker
-          deploy_file: docker-compose.yml
           mode: compose
-          extra_files: |
-            .env
-          compose_pull: true
-          compose_build: true
-          compose_no_deps: true
-          # compose_target_services: |
-          #   web
-          #   db
-          enable_rollback: true
-          registry_host: ghcr.io
+          name: 'rikku'
+          host: 192.168.1.252
+          user: pi
+          ssh_key: ${{ secrets.RIKKU_SSH_PRIVATE_KEY }}
+          args: --remove-orphans -d --dry-run
+          env_file: '.env'
+          registry_host: 'ghcr.io'
           registry_user: TrezOne
           registry_pass: ${{ secrets.GHCR_LOGIN_TOKEN }}
-          verbose: true
+          summary: true
       - name: Gotify Notification
         uses: eikendev/gotify-action@master
         with:
           gotify_api_base: '${{ secrets.RIKKU_GOTIFY_URL }}'
           gotify_app_token: '${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}'
-          notification_title: 'GITEA: Docker Compose Dry Run @ Rinoa'
+          notification_title: 'GITEA: Docker Compose Dry Run @ Rikku'
           notification_message: 'Docker Compose dry run completed successfully.'
   # pr-merge:
   #   name: PR Merge
@@ -314,7 +306,7 @@ jobs:
   #       with:
   #         gotify_api_base: '${{ secrets.RIKKU_GOTIFY_URL }}'
   #         gotify_app_token: '${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}'
-  #         notification_title: 'GITEA: Docker Compose Deployment @ Rinoa'
+  #         notification_title: 'GITEA: Docker Compose Deployment @ Rikku'
   #         notification_message: 'Starting Docker Compose run...'
   #     - name: Generate .env file for deployment
   #       run: |
@@ -342,5 +334,5 @@ jobs:
   #       with:
   #         gotify_api_base: '${{ secrets.RIKKU_GOTIFY_URL }}'
   #         gotify_app_token: '${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}'
-  #         notification_title: 'GITEA: Docker Compose Deployment @ Rinoa'
+  #         notification_title: 'GITEA: Docker Compose Deployment @ Rikku'
   #         notification_message: 'Deployment completed successfully.'
