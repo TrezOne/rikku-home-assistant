@@ -58,6 +58,37 @@ services:
       # CSS_MUTE_ADS:
     network_mode: host
     restart: unless-stopped
+  docker-socket-proxy:
+    container_name: dockerproxy
+    environment:
+      AUTH: 0
+      BUILD: 0
+      COMMIT: 0
+      CONFIGS: 0
+      CONTAINERS: 1
+      DISTRIBUTION: 0
+      EVENTS: 0
+      EXEC: 0
+      GPRC: 0
+      IMAGES: 1
+      INFO: 1
+      NETWORKS: 1
+      NODES: 0
+      POST: 0
+      PLUGINS: 0
+      SERVICES: 0
+      SESSION: 0
+      SYSTEM: 0
+      TASKS: 0
+      VOLUMES: 0
+      LOG_LEVEL: debug
+    image: ghcr.io/tecnativa/docker-socket-proxy:latest
+    ports:
+      - 2375:2375
+    privileged: true
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
   ha-fusion:
     container_name: ha-fusion
     depends_on:
@@ -100,6 +131,23 @@ services:
     restart: unless-stopped
     volumes:
       - ollama:/root/.ollama
+  portracker:
+    cap_add:
+      - SYS_PTRACE
+      - SYS_ADMIN
+    container_name: portracker
+    environment:
+      DATABASE_PATH: /data/portracker.db
+      DEBUG: false
+      DOCKER_HOST: tcp:dockerproxy:2375
+      PORT: 4999
+    image: mostafawahied/portracker:latest
+    pid: "host"
+    restart: unless-stopped
+    security_opt:
+      - apparmor:unconfined
+    volumes:
+      - ${RIKKU_DOCKER_DIR}/portracker:/data
   watchtower:
     container_name: watchtower
     environment:
