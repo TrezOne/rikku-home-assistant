@@ -1,0 +1,371 @@
+name: Docker Compose Deployment
+
+on:
+  workflow_dispatch:
+  push:
+    branches-ignore:
+      - 'main'
+    paths:
+      - '**/docker-compose.yml'
+      - '**/pr-docker-deploy.yml'
+
+env:
+  HC_VAULT_VERSION: '1.20.0'
+  TEA_VERSION: '0.10.1'
+
+jobs:
+  check-and-create-pr:
+    if: github.ref != 'refs/heads/main'
+    name: Check and Create PR
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Cache tea CLI
+        id: cache-tea
+        uses: actions/cache@v4
+        with:
+          path: /opt/hostedtoolcache/tea/${{ env.TEA_VERSION }}/x64
+          key: tea-${{ runner.os }}-${{ env.TEA_VERSION }}
+
+      - name: Install tea
+        uses: supplypike/setup-bin@v4
+        with:
+          uri: https://gitea.com/gitea/tea/releases/download/v${{ env.TEA_VERSION }}/tea-${{ env.TEA_VERSION }}-linux-amd64
+          name: tea
+          version: ${{ env.TEA_VERSION }}
+
+      - name: Gotify Notification
+        uses: eikendev/gotify-action@master
+        with:
+          gotify_api_base: '${{ secrets.RIKKU_GOTIFY_URL }}'
+          gotify_app_token: '${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}'
+          notification_title: 'GITEA: PR Check'
+          notification_message: 'Checking for existing PR... 🔍'
+
+      - name: Check if open PR exists
+        id: check-opened-pr-step
+        continue-on-error: true
+        run: |
+          tea login add --name gitea-rinoa --url "${{ secrets.RIKKU_GITEA_URL }}" --user gitea-sonarqube-bot --password "${{ secrets.BOT_GITEA_PASSWORD }}" --token ${{ secrets.BOT_GITEA_TOKEN }}
+          pr_exists=$(tea pr list --repo ${{ github.repository }} --state open --fields index,title,head | egrep '\[HA\].*${{ github.ref_name }}' | tail -1 | wc -l)
+          echo "exists=$pr_exists" >> $GITHUB_OUTPUT
+
+      - name: Create PR
+        if: ${{ steps.check-opened-pr-step.outputs.exists == '0' }}
+        run: |
+          tea login default gitea-rinoa
+          pr_index_old=$(tea pr ls --repo ${{ github.repository }} --state all --fields index,title,head --output csv | sed -e 's|"||g' | egrep '^[0-9]' | head -1 | awk -F"," '{print $1}')
+          pr_index_new=$(expr ${pr_index_old} + 1)
+          tea pr c -r ${{ github.repository }} -t "[HA] Automated PR for ${{ github.ref_name }} - #${pr_index_new}" -d "Automatically created PR for branch: ${{ github.ref_name }}" -a ${{ github.actor }} -L "Docker Compose"
+
+      - name: Gotify Notification
+        uses: eikendev/gotify-action@master
+        with:
+          gotify_api_base: '${{ secrets.RIKKU_GOTIFY_URL }}'
+          gotify_app_token: '${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}'
+          notification_title: 'GITEA: PR Check'
+          notification_message: 'PR Created 🎟️'
+
+  # home-assistant-config-check:
+  #   name: Home Assistant Configuration Check
+  #   needs: [check-and-create-pr]
+  #   env:
+  #     HA_VERSION: "2025.8.3"
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v4
+
+  #     - name: Set up Python 3.13.2
+  #       uses: actions/setup-python@v5
+  #       with:
+  #         python-version: '3.13.2'
+  #         cache: 'pip'
+
+  #     - name: Gotify Notification (setup)
+  #       uses: eikendev/gotify-action@master
+  #       with:
+  #         gotify_api_base: ${{ secrets.RIKKU_GOTIFY_URL }}
+  #         gotify_app_token: ${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}
+  #         notification_title: 'GITEA: Home Assistant Config Check'
+  #         notification_message: 'Setting up Python and dependencies...'
+
+  #     - name: Cache virtualenv
+  #       id: cache-venv
+  #       uses: actions/cache@v4
+  #       with:
+  #         path: .venv
+  #         key: venv-${{ runner.os }}-py3.13-ha2025.8.3
+  #         restore-keys: |
+  #           venv-${{ runner.os }}-py3.13-
+
+  #     - name: Install Home Assistant
+  #       if: steps.cache-venv.outputs.cache-hit != 'true'
+  #       run: |
+  #         python -m venv .venv
+  #         source .venv/bin/activate
+  #         pip install --upgrade pip wheel
+  #         pip install homeassistant==${{ env.HA_VERSION }}
+
+  #     - name: Gotify Notification (start check)
+  #       uses: eikendev/gotify-action@master
+  #       with:
+  #         gotify_api_base: ${{ secrets.RIKKU_GOTIFY_URL }}
+  #         gotify_app_token: ${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}
+  #         notification_title: 'GITEA: Home Assistant Config Check'
+  #         notification_message: 'Starting config check...'
+
+  #     - name: Run Home Assistant config check
+  #       run: |
+  #         source .venv/bin/activate
+  #         hass --config ansible/configs/homeassistant --script check_config | tee ha-check.log
+
+  #     - name: Gotify Notification (done)
+  #       uses: eikendev/gotify-action@master
+  #       with:
+  #         gotify_api_base: ${{ secrets.RIKKU_GOTIFY_URL }}
+  #         gotify_app_token: ${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}
+  #         notification_title: 'GITEA: Home Assistant Config Check'
+  #         notification_message: '🚀 Config check done!'
+
+  generate-service-list:
+    name: Generate list of added/modified/deleted services
+    runs-on: ubuntu-latest
+    needs: [home-assistant-config-check]
+    outputs:
+      svc_deploy_list: ${{ steps.detect_services.outputs.docker_svc_list }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Fetch base branch
+        run: |
+          git fetch origin ${{ github.event.pull_request.base.ref }}
+
+      - name: Gotify Notification
+        uses: eikendev/gotify-action@master
+        with:
+          gotify_api_base: '${{ secrets.RIKKU_GOTIFY_URL }}'
+          gotify_app_token: '${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}'
+          notification_title: 'GITEA: Services TBD'
+          notification_message: 'Generating list of services to deploy...'
+
+      - name: Save both versions of docker-compose.yml
+        run: |
+          git show origin/main:docker-compose.yml > docker-compose-main.yml || touch docker-compose-main.yml
+          cp docker-compose.yml docker-compose-head.yml
+
+      - name: Detect added, deleted, and modified services
+        id: detect_services
+        run: |
+          echo "Getting services from main and ${{ github.ref_name }}"
+          yq '.services | keys | .[]' docker-compose-main.yml | sort > services_main.txt
+          yq '.services | keys | .[]' docker-compose-head.yml | sort > services_head.txt
+
+          echo "Creating list of modified services..."
+          touch service_changes.txt
+
+          comm -13 services_main.txt services_head.txt | while read service; do
+            echo "$service: added" >> service_changes.txt
+          done
+
+          comm -12 services_main.txt services_head.txt | while read service; do
+            yq ".services[\"$service\"]" docker-compose-main.yml > tmp_main.yml
+            yq ".services[\"$service\"]" docker-compose-head.yml > tmp_head.yml
+            if ! diff -q tmp_main.yml tmp_head.yml > /dev/null; then
+              echo "$service: modified" >> service_changes.txt
+            fi
+          done
+
+          echo "Detected service changes:"
+          cat service_changes.txt
+
+          mod_svcs=$(cut -d':' -f1 service_changes.txt | sort | uniq)
+          echo "docker_svc_list<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$mod_svcs" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
+      - name: List of Services for (Re)Deployment
+        run: |
+          echo -e "${{ steps.detect_services.outputs.docker_svc_list }}"
+
+  docker-compose-dry-run:
+    name: Docker Compose Dry Run
+    needs: [home-assistant-config-check, generate-service-list]
+    runs-on: ubuntu-latest
+    env:
+      VAULT_ADDR: ${{ secrets.RIKKU_VAULT_ADDR }}
+      VAULT_TOKEN: ${{ secrets.VAULT_GITEA_TOKEN }}
+      VAULT_NAMESPACE: ""
+      RIKKU_REGISTRY_PASSWORD: ${{ secrets.BOT_GITEA_PASSWORD }}
+      DOCKER_SVC_LIST: ${{ needs.generate-service-list.outputs.svc_deploy_list }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Login to Gitea Container Registry
+        run: |
+          docker login -u gitea-sonarqube-bot -p ${RIKKU_REGISTRY_PASSWORD} git.trez.wtf
+
+      - name: Cache Vault install
+        id: cache-vault
+        uses: actions/cache@v4
+        with:
+          path: /opt/hostedtoolcache/vault/${{ env.HC_VAULT_VERSION }}/x64
+          key: vault-${{ runner.os }}-${{ env.HC_VAULT_VERSION }}
+
+      - name: Install Vault (only if not cached)
+        if: steps.cache-vault.outputs.cache-hit != 'true'
+        uses: cpanato/vault-installer@main
+        with:
+          version: ${{ env.HC_VAULT_VERSION }}
+
+      - name: Gotify Notification
+        uses: eikendev/gotify-action@master
+        with:
+          gotify_api_base: '${{ secrets.RIKKU_GOTIFY_URL }}'
+          gotify_app_token: '${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}'
+          notification_title: 'GITEA: Docker Compose Dry Run @ Rikku'
+          notification_message: 'Starting Docker Compose dry run...'
+
+      - name: Generate .env file for Docker Compose
+        run: |
+          vault kv get -format=json rikku-docker/env | jq -r '.data.data' | jq -r 'keys[] as $k | "\($k)='\''\(.[$k])'\''"' > .env
+
+      - name: Docker Compose Dry Run
+        uses: cssnr/stack-deploy-action@v1.3.2
+        with:
+          mode: compose
+          file: docker-compose.yml
+          name: 'rikku'
+          host: 192.168.1.252
+          user: pi
+          ssh_key: ${{ secrets.RIKKU_SSH_PRIVATE_KEY }}
+          args: --remove-orphans -d --dry-run
+          env_file: '.env'
+          registry_host: 'ghcr.io'
+          registry_user: TrezOne
+          registry_pass: ${{ secrets.GHCR_LOGIN_TOKEN }}
+          summary: true
+
+      - name: Gotify Notification
+        uses: eikendev/gotify-action@master
+        with:
+          gotify_api_base: '${{ secrets.RIKKU_GOTIFY_URL }}'
+          gotify_app_token: '${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}'
+          notification_title: 'GITEA: Docker Compose Dry Run @ Rikku'
+          notification_message: 'Docker Compose dry run completed successfully.'
+
+  pr-merge:
+    name: PR Merge
+    needs: [generate-service-list, docker-compose-dry-run, home-assistant-config-check]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cache tea CLI
+        id: cache-tea
+        uses: actions/cache@v4
+        with:
+          path: /opt/hostedtoolcache/tea/${{ env.TEA_VERSION }}/x64
+          key: tea-${{ runner.os }}-${{ env.TEA_VERSION }}
+
+      - name: Install tea
+        uses: supplypike/setup-bin@v4
+        with:
+          uri: https://gitea.com/gitea/tea/releases/download/v${{ env.TEA_VERSION }}/tea-${{ env.TEA_VERSION }}-linux-amd64
+          name: tea
+          version: ${{ env.TEA_VERSION }}
+
+      - name: PR Merge
+        id: pr_merge
+        run: |
+          tea login add --name gitea-rinoa --url ${{ secrets.RIKKU_GITEA_URL }} --user gitea-sonarqube-bot --password "${{ secrets.BOT_GITEA_PASSWORD }}" --token ${{ secrets.BOT_GITEA_TOKEN }}
+          tea login default gitea-rinoa
+          echo "Merging PR..."
+          pr_index=$(tea pr ls --repo ${{ github.repository }} --state open --fields index,title,head,state --output csv | egrep ${{ github.ref_name }} | awk -F"," '{print $1}' | sed -e 's|"||g')
+          tea pr m --repo ${{ github.repository }} --title "Auto Merge of PR ${pr_index} - ${{ github.ref_name }}" --message "Merged by ${{ github.actor }}" ${pr_index}
+          echo "pr_index=${pr_index}" >> $GITHUB_OUTPUT
+
+      - name: Gotify Notification
+        uses: eikendev/gotify-action@master
+        with:
+          gotify_api_base: '${{ secrets.RIKKU_GOTIFY_URL }}'
+          gotify_app_token: '${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}'
+          notification_title: 'GITEA: PR Merge Successful'
+          notification_message: 'PR #${{ steps.pr_merge.outputs.pr_index }} merged.'
+
+  docker-compose-deploy:
+    name: Docker Compose Deployment
+    runs-on: ubuntu-latest
+    needs: [pr-merge]
+    env:
+      VAULT_ADDR: ${{ secrets.RIKKU_VAULT_ADDR }}
+      VAULT_TOKEN: ${{ secrets.VAULT_GITEA_TOKEN }}
+      RIKKU_REGISTRY_PASSWORD: ${{ secrets.BOT_GITEA_PASSWORD }}
+      DOCKER_SVC_LIST: ${{ needs.generate-service-list.outputs.svc_deploy_list }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Cache Vault install
+        id: cache-vault
+        uses: actions/cache@v4
+        with:
+          path: /opt/hostedtoolcache/vault/${{ env.HC_VAULT_VERSION }}/x64
+          key: vault-${{ runner.os }}-${{ env.HC_VAULT_VERSION }}
+
+      - name: Install Vault (only if not cached)
+        if: steps.cache-vault.outputs.cache-hit != 'true'
+        uses: cpanato/vault-installer@main
+        with:
+          version: ${{ env.HC_VAULT_VERSION }}
+
+      - name: Login to Gitea Container Registry
+        run: |
+          docker login -u gitea-sonarqube-bot -p ${RIKKU_REGISTRY_PASSWORD} git.trez.wtf
+
+      - name: Gotify Notification
+        uses: eikendev/gotify-action@master
+        with:
+          gotify_api_base: '${{ secrets.RIKKU_GOTIFY_URL }}'
+          gotify_app_token: '${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}'
+          notification_title: 'GITEA: Docker Compose Deployment @ Rikku'
+          notification_message: 'Starting Docker Compose run...'
+
+      - name: Generate .env file for deployment
+        run: |
+           vault kv get -format=json rikku-docker/env | jq -r '.data.data' | jq -r 'keys[] as $k | "\($k)='\''\(.[$k])'\''"' > .env
+           echo ${DOCKER_SVC_LIST}
+
+      - name: Docker Compose Deployment
+        uses: cssnr/stack-deploy-action@v1.3.2
+        with:
+          mode: compose
+          file: docker-compose.yml
+          name: 'rikku'
+          host: 192.168.1.252
+          user: pi
+          ssh_key: ${{ secrets.RIKKU_SSH_PRIVATE_KEY }}
+          args: --remove-orphans -d
+          env_file: '.env'
+          registry_host: 'ghcr.io'
+          registry_user: TrezOne
+          registry_pass: ${{ secrets.GHCR_LOGIN_TOKEN }}
+          summary: true
+
+      - name: Gotify Notification
+        uses: eikendev/gotify-action@master
+        with:
+          gotify_api_base: '${{ secrets.RIKKU_GOTIFY_URL }}'
+          gotify_app_token: '${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}'
+          notification_title: 'GITEA: Docker Compose Deployment @ Rikku'
+          notification_message: 'Deployment completed successfully.'
