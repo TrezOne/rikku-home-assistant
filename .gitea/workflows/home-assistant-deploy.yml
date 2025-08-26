@@ -103,9 +103,7 @@ jobs:
       - name: Build wheels & install Home Assistant + test deps
         run: |
           python -m pip install --upgrade pip wheel
-          # Build wheels for HA, its test requirements, and colorlog explicitly
           pip wheel --wheel-dir ~/.cache/pip -r requirements_test_all.txt "homeassistant==${HA_VERSION}" colorlog
-          # Install everything from cached wheels
           pip install --no-index --find-links ~/.cache/pip -r requirements_test_all.txt "homeassistant==${HA_VERSION}" colorlog
 
       - name: Gotify Notification (start check)
