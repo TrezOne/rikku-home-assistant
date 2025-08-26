@@ -246,7 +246,7 @@ jobs:
           host: 192.168.1.252
           user: pi
           ssh_key: ${{ secrets.RIKKU_SSH_PRIVATE_KEY }}
-          args: --remove-orphans -d --dry-run
+          args: --remove-orphans -d --dry-run ${{ needs.generate-service-list.outputs.svc_deploy_list }}
           env_file: '.env'
           registry_host: 'ghcr.io'
           registry_user: TrezOne
@@ -355,7 +355,7 @@ jobs:
           host: 192.168.1.252
           user: pi
           ssh_key: ${{ secrets.RIKKU_SSH_PRIVATE_KEY }}
-          args: --remove-orphans -d
+          args: --remove-orphans -d ${{ needs.generate-service-list.outputs.svc_deploy_list }}
           env_file: '.env'
           registry_host: 'ghcr.io'
           registry_user: TrezOne
