@@ -89,11 +89,13 @@ jobs:
           gotify_app_token: ${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}
           notification_title: 'GITEA: Home Assistant Config Check'
           notification_message: 'Setting up Python and dependencies...'
-      - name: Build wheels & install Home Assistant
+      - name: Build wheels & install Home Assistant (with deps)
         run: |
           python -m pip install --upgrade pip wheel
-          pip wheel --wheel-dir ~/.cache/pip homeassistant==${HA_VERSION}
-          pip install --no-index --find-links ~/.cache/pip homeassistant==${HA_VERSION}
+          # Build wheels for HA *and* its dependencies
+          pip wheel --wheel-dir ~/.cache/pip "homeassistant==${HA_VERSION}"
+          # Install everything from the wheel cache
+          pip install --no-index --find-links ~/.cache/pip "homeassistant==${HA_VERSION}"
       - name: Gotify Notification (start check)
         uses: eikendev/gotify-action@master
         with:
