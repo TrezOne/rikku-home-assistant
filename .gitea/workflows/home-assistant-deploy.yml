@@ -95,18 +95,18 @@ jobs:
           notification_title: 'GITEA: Home Assistant Config Check'
           notification_message: 'Setting up Python and dependencies...'
 
-      - name: Download HA requirements_all.txt
+      - name: Download HA requirements_test_all.txt
         run: |
-          curl -sSL -o requirements_all.txt \
-            "https://raw.githubusercontent.com/home-assistant/core/${HA_VERSION}/requirements_all.txt"
+          curl -sSL -o requirements_test_all.txt \
+            "https://raw.githubusercontent.com/home-assistant/core/${HA_VERSION}/requirements_test_all.txt"
 
-      - name: Build wheels & install Home Assistant + full deps
+      - name: Build wheels & install Home Assistant + test deps
         run: |
           python -m pip install --upgrade pip wheel
-          # Build wheels for HA, full requirements, and colorlog explicitly
-          pip wheel --wheel-dir ~/.cache/pip -r requirements_all.txt "homeassistant==${HA_VERSION}" colorlog
+          # Build wheels for HA, its test requirements, and colorlog explicitly
+          pip wheel --wheel-dir ~/.cache/pip -r requirements_test_all.txt "homeassistant==${HA_VERSION}" colorlog
           # Install everything from cached wheels
-          pip install --no-index --find-links ~/.cache/pip -r requirements_all.txt "homeassistant==${HA_VERSION}" colorlog
+          pip install --no-index --find-links ~/.cache/pip -r requirements_test_all.txt "homeassistant==${HA_VERSION}" colorlog
 
       - name: Gotify Notification (start check)
         uses: eikendev/gotify-action@master
