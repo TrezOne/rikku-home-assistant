@@ -33,13 +33,16 @@ services:
       PORT: 45876
       # Do not remove quotes around the key
       KEY: '${BESZEL_RINOA_AGENT_KEY}'
+      TOKEN: ${BESZEL_RIKKU_TOKEN}
+      HUB_URL: http://192.168.1.254:22220
     expose:
       - 45876
     image: henrygd/beszel-agent:latest
     network_mode: host
     restart: unless-stopped
     volumes:
-      - /dev//dev/mmcblk0:/extra-filesystems//dev/mmcblk0:ro
+      - ${RIKKU_DOCKER_DIR}/beszel-agent:/var/lib/beszel-agent
+      - /dev/mmcblk0:/extra-filesystems/dev/mmcblk0:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
   castsponsorskip:
     image: ghcr.io/gabe565/castsponsorskip
@@ -53,7 +56,7 @@ services:
       # CSS_YOUTUBE_API_KEY:
       # CSS_MUTE_ADS:
     network_mode: host
-    restart: always
+    restart: unless-stopped
   ha-fusion:
     container_name: ha-fusion
     depends_on:
