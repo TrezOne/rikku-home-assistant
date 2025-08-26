@@ -99,15 +99,6 @@ services:
     restart: unless-stopped
     volumes:
       - ollama:/root/.ollama
-  protonmail-bridge:
-    container_name: protonmail-bridge
-    image: shenxn/protonmail-bridge
-    ports:
-      - 1025:25/tcp
-      - 1143:143/tcp
-    restart: unless-stopped
-    volumes:
-      - protonmail:/root
   watchtower:
     container_name: watchtower
     environment:
