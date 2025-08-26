@@ -1,4 +1,5 @@
 name: Home Assistant & Miscellaneous Deployment
+
 on:
   workflow_dispatch:
   push:
