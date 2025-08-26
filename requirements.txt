@@ -1,0 +1,1 @@
+homeassistant==${HA_VERSION}
