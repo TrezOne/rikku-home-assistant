@@ -45,6 +45,7 @@ services:
       - /dev/mmcblk0:/extra-filesystems/dev/mmcblk0:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
   castsponsorskip:
+    container_name: castsponsorskip
     image: ghcr.io/gabe565/castsponsorskip
     environment:
       # Set the container timezone
