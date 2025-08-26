@@ -64,6 +64,8 @@ jobs:
   home-assistant-config-check:
     name: Home Assistant Configuration Check
     needs: [check-and-create-pr]
+    env:
+      HA_VERSION: "2025.8.3"
     runs-on: ubuntu-latest
 
     steps:
@@ -99,7 +101,7 @@ jobs:
           python -m venv .venv
           source .venv/bin/activate
           pip install --upgrade pip wheel
-          pip install homeassistant==2025.8.3
+          pip install homeassistant==${{ env.HA_VERSION }}
 
       - name: Gotify Notification (start check)
         uses: eikendev/gotify-action@master
