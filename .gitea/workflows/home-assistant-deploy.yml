@@ -66,26 +66,15 @@ jobs:
     needs: [check-and-create-pr]
     runs-on: ubuntu-latest
 
-    env:
-      HA_VERSION: "2025.8.3"
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: Set up Python 3.13.2
         uses: actions/setup-python@v5
         with:
           python-version: '3.13.2'
-
-      - name: Cache pip wheels
-        id: cache-wheels
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: pip-wheels-${{ runner.os }}-py3.13-ha-${{ env.HA_VERSION }}
-          restore-keys: |
-            pip-wheels-${{ runner.os }}-py3.13-
+          cache: 'pip'
 
       - name: Gotify Notification (setup)
         uses: eikendev/gotify-action@master
@@ -95,16 +84,22 @@ jobs:
           notification_title: 'GITEA: Home Assistant Config Check'
           notification_message: 'Setting up Python and dependencies...'
 
-      - name: Download HA requirements_test_all.txt
-        run: |
-          curl -sSL -o requirements_test_all.txt \
-            "https://raw.githubusercontent.com/home-assistant/core/${HA_VERSION}/requirements_test_all.txt"
+      - name: Cache virtualenv
+        id: cache-venv
+        uses: actions/cache@v4
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-py3.13-ha2025.8.3
+          restore-keys: |
+            venv-${{ runner.os }}-py3.13-
 
-      - name: Build wheels & install Home Assistant + test deps
+      - name: Install Home Assistant
+        if: steps.cache-venv.outputs.cache-hit != 'true'
         run: |
-          python -m pip install --upgrade pip wheel
-          pip wheel --wheel-dir ~/.cache/pip -r requirements_test_all.txt "homeassistant==${HA_VERSION}" colorlog
-          pip install --no-index --find-links ~/.cache/pip -r requirements_test_all.txt "homeassistant==${HA_VERSION}" colorlog
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install --upgrade pip wheel
+          pip install homeassistant==2025.8.3
 
       - name: Gotify Notification (start check)
         uses: eikendev/gotify-action@master
@@ -116,6 +111,7 @@ jobs:
 
       - name: Run Home Assistant config check
         run: |
+          source .venv/bin/activate
           hass --config ansible/configs/homeassistant --script check_config | tee ha-check.log
 
       - name: Gotify Notification (done)
