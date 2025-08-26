@@ -1,43 +1,50 @@
-*.csr
-*.crt
-*.key
-*.pem
-secrets.yaml
-ip_bans.yaml
-known_devices.yaml
-google_calendars.yaml
-entity_registry.yaml
-*.json
-*.conf
+# Generic ignores
 *.log
-*.txt
-*.sh
-*.json
-*.xml
-*.sqlite
-ozw_config/
-tts/
-deps/
-n.jpg
-r.jpg
-p.jpg
-*.json
-cox_usage.json
-cox_usage.py
-*.pyc
 *.log.*
-blueprints/
-govee_learning.yaml
-zigbee.db*
-timelapse/*
-www/winlab/*
-www/timelapse/*
-www/community/lovelace-card-mod/card-mod.js
-www/community/lovelace-card-mod/card-mod.js.gz
-json
-**addons*/./image/58647060c161423a19fa911c0b16bf1f/original
-./image/58647060c161423a19fa911c0b16bf1f/512x512
-./image/04fe2e85a69341a59a718100477569b1/original
-./image/04fe2e85a69341a59a718100477569b1/512x512
-./www/mail_and_packages/ra_0_mailerProvidedImage0
-./www/mail_and_packages/mailerProvidedImage0
+*.db
+*.db-shm
+*.db-wal
+*.pyc
+._*
+__pycache__
+
+# Directory (contents) ignores
+.cloud
+.storage
+deps
+
+# Specific file ignores
+core
+image
+ip_bans.yaml
+secrets.yaml
+
+# Build-in blueprints ignores
+blueprints/*/homeassistant
+
+# ESPHome ignores
+esphome/.*/
+
+# Ignore add-on files
+aircast.xml
+airsonos.xml
+notebooks
+
+# Ignore files created by IDE's
+.vscode
+.theia
+.Trash*
+
+# Ignore vendored stuff
+custom_components
+themes
+www/community
+
+# Specific keeps
+!.gitkeep
+
+# Temporary ignores
+.old_config
+
+# envs
+**/.env
