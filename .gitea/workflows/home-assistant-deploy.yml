@@ -200,9 +200,9 @@ jobs:
         with:
           ssh_user: pi
           ssh_host: 192.168.1.252
-          ssh_private_key: ${RIKKU_SSH_PRIVATE_KEY}
-          ssh_host_public_key: ${RIKKU_SSH_PUBLIC_KEY}
-          docker_args: -d --remove-orphans --build
+          ssh_private_key: ${{ secrets.RIKKU_SSH_PRIVATE_KEY }}
+          ssh_host_public_key: ${{ secrets.RIKKU_SSH_PUBLIC_KEY }}
+          docker_args: -d --remove-orphans
       - name: Gotify Notification
         uses: eikendev/gotify-action@master
         with:
