@@ -65,42 +65,50 @@ jobs:
     name: Home Assistant Configuration Check
     needs: [check-and-create-pr]
     runs-on: ubuntu-latest
+    env:
+      HA_VERSION: "2025.8.3"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Set up Python 3.13.2
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.13.2'
-      - name: Gotify Notification
+      - name: Cache pip wheels
+        id: cache-wheels
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: pip-wheels-${{ runner.os }}-py3.13-ha-${{ env.HA_VERSION }}
+          restore-keys: |
+            pip-wheels-${{ runner.os }}-py3.13-
+      - name: Gotify Notification (setup)
         uses: eikendev/gotify-action@master
         with:
-          gotify_api_base: '${{ secrets.RIKKU_GOTIFY_URL }}'
-          gotify_app_token: '${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}'
+          gotify_api_base: ${{ secrets.RIKKU_GOTIFY_URL }}
+          gotify_app_token: ${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}
           notification_title: 'GITEA: Home Assistant Config Check'
-          notification_message: 'Setting up Python >=3.13 and venv...'
-      - name: Create virtual environment and install Home Assistant
+          notification_message: 'Setting up Python and dependencies...'
+      - name: Build wheels & install Home Assistant
         run: |
-          python -m venv venv
-          source venv/bin/activate
-          python -m pip install --upgrade pip
-          pip install homeassistant==2025.8.3
-      - name: Gotify Notification
+          python -m pip install --upgrade pip wheel
+          pip wheel --wheel-dir ~/.cache/pip homeassistant==${HA_VERSION}
+          pip install --no-index --find-links ~/.cache/pip homeassistant==${HA_VERSION}
+      - name: Gotify Notification (start check)
         uses: eikendev/gotify-action@master
         with:
-          gotify_api_base: '${{ secrets.RIKKU_GOTIFY_URL }}'
-          gotify_app_token: '${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}'
+          gotify_api_base: ${{ secrets.RIKKU_GOTIFY_URL }}
+          gotify_app_token: ${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}
           notification_title: 'GITEA: Home Assistant Config Check'
           notification_message: 'Starting config check...'
       - name: Run Home Assistant config check
         run: |
-          source venv/bin/activate
           hass --config ansible/configs/homeassistant --script check_config | tee ha-check.log
-      - name: Gotify Notification
+      - name: Gotify Notification (done)
         uses: eikendev/gotify-action@master
         with:
-          gotify_api_base: '${{ secrets.RIKKU_GOTIFY_URL }}'
-          gotify_app_token: '${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}'
+          gotify_api_base: ${{ secrets.RIKKU_GOTIFY_URL }}
+          gotify_app_token: ${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}
           notification_title: 'GITEA: Home Assistant Config Check'
           notification_message: '🚀 Config check done!'
   # generate-service-list:
@@ -196,13 +204,27 @@ jobs:
         run: |
           vault kv get -format=json rikku-docker/env | jq -r '.data.data' | jq -r 'keys[] as $k | "\($k)='\''\(.[$k])'\''"' > .env
       - name: Docker Compose Dry Run
-        uses: astappiev/docker-compose-remote-action@v1
+        uses: alcharra/docker-deploy-action-go@v2.1.0
         with:
-          ssh_user: pi
-          ssh_host: 192.168.1.252
-          ssh_private_key: ${{ secrets.RIKKU_SSH_PRIVATE_KEY }}
-          ssh_host_public_key: ${{ secrets.RIKKU_SSH_PUBLIC_KEY }}
-          docker_args: -d --remove-orphans
+          ssh_host: ${{ secrets.SSH_HOST }}
+          ssh_user: ${{ secrets.SSH_USER }}
+          ssh_key: ${{ secrets.RIKKU_SSH_PRIVATE_KEY }}
+          project_path: /home/pi/.config/docker
+          deploy_file: docker-compose.yml
+          mode: compose
+          extra_files: |
+            .env
+          compose_pull: true
+          compose_build: true
+          compose_no_deps: true
+          # compose_target_services: |
+          #   web
+          #   db
+          enable_rollback: true
+          registry_host: ghcr.io
+          registry_user: TrezOne
+          registry_pass: ${{ secrets.GHCR_LOGIN_TOKEN }}
+          verbose: true
       - name: Gotify Notification
         uses: eikendev/gotify-action@master
         with:
