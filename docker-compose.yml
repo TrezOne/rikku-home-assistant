@@ -139,7 +139,7 @@ services:
     environment:
       DATABASE_PATH: /data/portracker.db
       DEBUG: false
-      DOCKER_HOST: tcp:dockerproxy:2375
+      DOCKER_HOST: tcp://dockerproxy:2375
       PORT: 4999
     image: mostafawahied/portracker:latest
     pid: "host"
