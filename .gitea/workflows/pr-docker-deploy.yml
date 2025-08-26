@@ -185,7 +185,7 @@ jobs:
           echo "Detected service changes:"
           cat service_changes.txt
 
-          mod_svcs=$(cut -d':' -f1 service_changes.txt | sort | uniq)
+          mod_svcs=$(cut -d':' -f1 service_changes.txt | sort | uniq | tr '\n' ' ' | sed 's/ *$//')
           echo "docker_svc_list<<EOF" >> "$GITHUB_OUTPUT"
           echo "$mod_svcs" >> "$GITHUB_OUTPUT"
           echo "EOF" >> "$GITHUB_OUTPUT"
