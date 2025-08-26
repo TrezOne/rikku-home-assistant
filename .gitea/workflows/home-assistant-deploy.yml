@@ -262,7 +262,7 @@ jobs:
 
   pr-merge:
     name: PR Merge
-    needs: [regenerate-readme-modified-services]
+    needs: [generate-service-list, docker-compose-dry-run, home-assistant-config-check]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -303,7 +303,7 @@ jobs:
   docker-compose-deploy:
     name: Docker Compose Deployment
     runs-on: ubuntu-latest
-    needs: [generate-service-list, docker-compose-dry-run, pr-merge]
+    needs: [pr-merge]
     env:
       VAULT_ADDR: ${{ secrets.RIKKU_VAULT_ADDR }}
       VAULT_TOKEN: ${{ secrets.VAULT_GITEA_TOKEN }}
