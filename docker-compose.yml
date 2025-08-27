@@ -172,6 +172,7 @@ services:
       WATCHTOWER_NOTIFICATION_GOTIFY_TLS_SKIP_VERIFY: true
     expose:
       - 8080
+    hostname: Rikku
     image: ghcr.io/containrrr/watchtower:latest
     restart: unless-stopped
     volumes:
