@@ -150,6 +150,16 @@ services:
       - apparmor:unconfined
     volumes:
       - ${RIKKU_DOCKER_DIR}/portracker:/data
+  signoz-logspout:
+    command: signoz://192.168.1.254:8082
+    container_name: signoz-logspout
+    environment:
+      ENV: prod
+      SIGNOZ_LOG_ENDPOINT: http://192.168.1.254:8082
+    image: pavanputhra/logspout-signoz
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
   watchtower:
     container_name: watchtower
     environment:
