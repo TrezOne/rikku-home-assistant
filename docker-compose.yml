@@ -190,7 +190,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
   webhook:
     command: '-verbose -hooks=/etc/webhook/hooks.json -hotreload'
-    image: git.trez.wtf/trez.one/webhook:latest
+    image: trezone/webhook:main
     container_name: webhook
     ports:
       - 9000:9000
