@@ -188,6 +188,15 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
+  webhook:
+    command: '-verbose -hooks=/etc/webhook/hooks.json -hotreload'
+    image: almir/webhook
+    container_name: webhook
+    ports:
+        - 9000:9000
+    restart: unless-stopped
+    volumes:
+        - ${RIKKU_DOCKER_DIR}/webhook:/etc/webhook
 volumes:
   ollama:
     name: ollama
