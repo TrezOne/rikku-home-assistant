@@ -201,5 +201,3 @@ services:
 volumes:
   ollama:
     name: ollama
-  protonmail:
-    name: protonmail
