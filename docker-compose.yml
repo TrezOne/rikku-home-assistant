@@ -196,7 +196,8 @@ services:
       - 9000:9000
     restart: unless-stopped
     volumes:
-      - ${RIKKU_DOCKER_DIR}/webhook:/etc/webhook
+      - ${RIKKU_DOCKER_DIR}/webhook/conf:/etc/webhook
+      - ${RIKKU_DOCKER_DIR}/webhook/scripts:/opt/webhook_scripts
 volumes:
   ollama:
     name: ollama
