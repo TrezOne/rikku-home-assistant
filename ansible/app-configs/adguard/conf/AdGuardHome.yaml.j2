@@ -2,9 +2,11 @@ http:
   pprof:
     port: 6060
     enabled: false
-  address: 127.0.0.1:45158
+  address: 0.0.0.0:80
   session_ttl: 720h
-users: []
+users:
+  - name: admin
+    password: {{ lookup('community.hashi_vault.vault_kv2_get', 'env', engine_mount_point='rikku-docker', url=vault_addr, token=vault_token_cleaned)['secret']['ADGUARD_BCRYPT'] }}
 auth_attempts: 5
 block_auth_min: 15
 http_proxy: ""
@@ -12,11 +14,7 @@ language: ""
 theme: auto
 dns:
   bind_hosts:
-    - 192.168.1.252
-    - fe80::b978:acda:fbab:ca7a%wlan0
-    - 172.30.32.1
-    - 127.0.0.1
-    - ::1
+    - 0.0.0.0
   port: 53
   anonymize_client_ip: false
   ratelimit: 20
@@ -28,7 +26,7 @@ dns:
     - 192.168.1.254
   upstream_dns_file: ""
   bootstrap_dns:
-    - 1.1.1.1:53
+    - 1.1.1.1
   fallback_dns: []
   upstream_mode: load_balance
   fastest_timeout: 1s
@@ -41,6 +39,7 @@ dns:
   trusted_proxies:
     - 127.0.0.0/8
     - ::1/128
+  cache_enabled: true
   cache_size: 4194304
   cache_ttl_min: 0
   cache_ttl_max: 0
@@ -59,7 +58,7 @@ dns:
   bootstrap_prefer_ipv6: false
   upstream_timeout: 10s
   private_networks: []
-  use_private_ptr_resolvers: false
+  use_private_ptr_resolvers: true
   local_ptr_upstreams: []
   use_dns64: false
   dns64_prefixes: []
@@ -145,14 +144,15 @@ filtering:
   parental_block_host: family-block.dns.adguard.com
   safebrowsing_block_host: standard-block.dns.adguard.com
   rewrites: []
-  safe_fs_patterns: []
+  safe_fs_patterns:
+    - /opt/adguardhome/work/userfilters/*
   safebrowsing_cache_size: 1048576
   safesearch_cache_size: 1048576
   parental_cache_size: 1048576
   cache_time: 30
   filters_update_interval: 24
   blocked_response_ttl: 10
-  filtering_enabled: false
+  filtering_enabled: true
   parental_enabled: false
   safebrowsing_enabled: false
   protection_enabled: true
@@ -160,7 +160,7 @@ clients:
   runtime_sources:
     whois: true
     arp: true
-    rdns: false
+    rdns: true
     dhcp: true
     hosts: true
   persistent: []
@@ -177,4 +177,4 @@ os:
   group: ""
   user: ""
   rlimit_nofile: 0
-schema_version: 29
+schema_version: 30

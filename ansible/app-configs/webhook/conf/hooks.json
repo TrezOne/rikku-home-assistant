@@ -1,0 +1,18 @@
+[
+  {
+    "id": "signoz-alert",
+    "execute-command": "/opt/webhook_scripts/signoz-alert.sh",
+    "command-working-directory": "/tmp",
+    "pass-arguments-to-command": [
+      {
+        "source": "entire-payload"
+      },
+      {
+        "source": "value",
+        "name": "debug",
+        "default": "false"
+      }
+    ],
+    "response-message": "Apprise notification triggered"
+  }
+]
