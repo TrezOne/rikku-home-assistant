@@ -70,69 +70,6 @@ jobs:
           notification_title: 'GITEA: PR Check'
           notification_message: 'PR Created 🎟️'
 
-  # home-assistant-config-check:
-  #   name: Home Assistant Configuration Check
-  #   needs: [check-and-create-pr]
-  #   env:
-  #     HA_VERSION: "2025.8.3"
-  #   runs-on: ubuntu-latest
-
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v4
-
-  #     - name: Set up Python 3.13.2
-  #       uses: actions/setup-python@v5
-  #       with:
-  #         python-version: '3.13.2'
-  #         cache: 'pip'
-
-  #     - name: Gotify Notification (setup)
-  #       uses: eikendev/gotify-action@master
-  #       with:
-  #         gotify_api_base: ${{ secrets.RIKKU_GOTIFY_URL }}
-  #         gotify_app_token: ${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}
-  #         notification_title: 'GITEA: Home Assistant Config Check'
-  #         notification_message: 'Setting up Python and dependencies...'
-
-  #     - name: Cache virtualenv
-  #       id: cache-venv
-  #       uses: actions/cache@v4
-  #       with:
-  #         path: .venv
-  #         key: venv-${{ runner.os }}-py3.13-ha2025.8.3
-  #         restore-keys: |
-  #           venv-${{ runner.os }}-py3.13-
-
-  #     - name: Install Home Assistant
-  #       if: steps.cache-venv.outputs.cache-hit != 'true'
-  #       run: |
-  #         python -m venv .venv
-  #         source .venv/bin/activate
-  #         pip install --upgrade pip wheel
-  #         pip install homeassistant==${{ env.HA_VERSION }}
-
-  #     - name: Gotify Notification (start check)
-  #       uses: eikendev/gotify-action@master
-  #       with:
-  #         gotify_api_base: ${{ secrets.RIKKU_GOTIFY_URL }}
-  #         gotify_app_token: ${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}
-  #         notification_title: 'GITEA: Home Assistant Config Check'
-  #         notification_message: 'Starting config check...'
-
-  #     - name: Run Home Assistant config check
-  #       run: |
-  #         source .venv/bin/activate
-  #         hass --config ansible/configs/homeassistant --script check_config | tee ha-check.log
-
-  #     - name: Gotify Notification (done)
-  #       uses: eikendev/gotify-action@master
-  #       with:
-  #         gotify_api_base: ${{ secrets.RIKKU_GOTIFY_URL }}
-  #         gotify_app_token: ${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}
-  #         notification_title: 'GITEA: Home Assistant Config Check'
-  #         notification_message: '🚀 Config check done!'
-
   generate-service-list:
     name: Generate list of added/modified/deleted services
     runs-on: ubuntu-latest
