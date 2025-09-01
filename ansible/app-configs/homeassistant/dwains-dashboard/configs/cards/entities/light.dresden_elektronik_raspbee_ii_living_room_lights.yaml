@@ -1,7 +1,0 @@
-collapsible_controls: true
-entity: light.dresden_elektronik_raspbee_ii_living_room_lights
-icon: mdi:lamps
-show_brightness_control: true
-show_color_temp_control: true
-type: custom:mushroom-light-card
-use_light_color: true

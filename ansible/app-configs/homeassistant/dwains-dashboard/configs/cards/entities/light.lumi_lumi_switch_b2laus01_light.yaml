@@ -1,9 +1,0 @@
-entity: light.lumi_lumi_switch_b2laus01_light
-icon: bha:dome-light
-name: Foyer Light
-show_icon: true
-show_name: true
-show_state: false
-tap_action:
-  action: toggle
-type: button

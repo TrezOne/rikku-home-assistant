@@ -1,8 +1,0 @@
-entity: light.dresden_elektronik_raspbee_ii_living_room_lights_zha_group_0x0003
-fill_container: true
-icon: mdi:lamps
-show_brightness_control: true
-show_color_control: false
-show_color_temp_control: true
-type: custom:mushroom-light-card
-use_light_color: true

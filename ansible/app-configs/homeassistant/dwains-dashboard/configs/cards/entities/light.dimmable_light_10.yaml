@@ -1,4 +1,0 @@
-entity: light.dimmable_light_10
-show_brightness_control: true
-type: custom:mushroom-light-card
-use_light_color: true
