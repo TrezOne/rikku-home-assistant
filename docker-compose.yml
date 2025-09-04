@@ -131,25 +131,6 @@ services:
     restart: unless-stopped
     volumes:
       - ollama:/root/.ollama
-  portracker:
-    cap_add:
-      - SYS_PTRACE
-      - SYS_ADMIN
-    container_name: portracker
-    environment:
-      DATABASE_PATH: /data/portracker.db
-      DEBUG: false
-      DOCKER_HOST: tcp://dockerproxy:2375
-      PORT: 4999
-    image: mostafawahied/portracker:latest
-    pid: "host"
-    ports:
-      - 4999:4999
-    restart: unless-stopped
-    security_opt:
-      - apparmor:unconfined
-    volumes:
-      - ${RIKKU_DOCKER_DIR}/portracker:/data
   signoz-logspout:
     command: signoz://192.168.1.254:8082
     container_name: signoz-logspout
