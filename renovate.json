@@ -1,0 +1,22 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "prHourlyLimit": 2,
+  "prConcurrentLimit": 5,
+  "dependencyDashboard": true,
+  "labels": [
+    "dependencies",
+    "renovate"
+  ],
+  "schedule": [
+    "before 6am on monday"
+  ],
+  "customManagers": [],
+  "branchNameStrict": true,
+  "branchPrefix": "renovate/",
+  "branchTopic": "{{service}}/{{depName}}",
+  "commitMessageAction": "Update",
+  "commitMessageTopic": "{{service}}/{{depName}}"
+}
