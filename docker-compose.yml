@@ -46,7 +46,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
   castsponsorskip:
     container_name: castsponsorskip
-    image: ghcr.io/gabe565/castsponsorskip
+    image: ghcr.io/gabe565/castsponsorskip:0.8.2
     environment:
       # Set the container timezone
       # See identifier list at https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
@@ -137,7 +137,7 @@ services:
     environment:
       ENV: prod
       SIGNOZ_LOG_ENDPOINT: http://192.168.1.254:8082
-    image: pavanputhra/logspout-signoz
+    image: pavanputhra/logspout-signoz:2025.07.19-887dfeb
     restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
