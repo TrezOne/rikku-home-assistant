@@ -10,7 +10,7 @@ services:
     container_name: adguard
     environment:
       TZ: ${TZ}
-    image: adguard/adguardhome:latest
+    image: adguard/adguardhome:v0.107.65
     network_mode: host
     privileged: true
     # ports:
@@ -98,7 +98,7 @@ services:
     environment:
       TZ: ${TZ}
       HASS_URL: http://192.168.1.252:8123
-    image: ghcr.io/matt8707/ha-fusion
+    image: ghcr.io/matt8707/ha-fusion:2024.10.1
     labels:
       com.centurylinklabs.watchtower.monitor-only: true
     ports:
@@ -125,7 +125,7 @@ services:
       - /run/dbus:/run/dbus:ro
   ollama:
     container_name: ollama
-    image: ollama/ollama:latest
+    image: ollama/ollama:0.11.10
     ports:
       - 11434:11434
     restart: unless-stopped
@@ -171,7 +171,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
   webhook:
     command: '-verbose -hooks=/etc/webhook/hooks.json -hotreload'
-    image: thecatlady/webhook:latest
+    image: thecatlady/webhook:2.8.1
     container_name: webhook
     ports:
       - 9000:9000
