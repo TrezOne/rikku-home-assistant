@@ -81,9 +81,10 @@
       "groupName": "github-actions (pinned to v4)"
     }
   ],
-  "regexManagers": [
+  "customManagers": [
     {
-      "fileMatch": ["docker-compose\\.yml$", "docker-compose\\.yaml$"],
+      "customType": "regex",
+      "fileMatch": ["^docker-compose\\.ya?ml$"],
       "matchStrings": [
         "\"(?<depName>[^:]+):(?<currentValue>[^${}\\s]+)\"",
         "'(?<depName>[^:]+):(?<currentValue>[^${}\\s]+)'"
