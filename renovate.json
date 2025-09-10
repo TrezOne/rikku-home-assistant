@@ -80,17 +80,5 @@
       "allowedVersions": "^4.0.0",
       "groupName": "github-actions (pinned to v4)"
     }
-  ],
-  "customManagers": [
-    {
-      "customType": "regex",
-      "fileMatch": ["^docker-compose\\.ya?ml$"],
-      "matchStrings": [
-        "\"(?<depName>[^:]+):(?<currentValue>[^${}\\s]+)\"",
-        "'(?<depName>[^:]+):(?<currentValue>[^${}\\s]+)'"
-      ],
-      "datasourceTemplate": "docker",
-      "versioningTemplate": "docker"
-    }
   ]
 }
