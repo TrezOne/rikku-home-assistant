@@ -72,13 +72,17 @@
       "allowedVersions": "^2\\.8\\."
     },
     {
-      "matchDatasources": ["github-actions"],
-      "matchPackageNames": ["actions/checkout", "supplypike/setup-bin"],
-      "allowedVersions": "^v4$"
-    },
-    {
       "matchUpdateTypes": ["patch"],
       "schedule": ["every weekday"]
+    },
+    {
+      "matchManagers": ["github-actions"],
+      "matchPackageNames": [
+        "actions/checkout",
+        "supplypike/setup-bin"
+      ],
+      "allowedVersions": "^4.0.0",
+      "groupName": "github-actions (pinned to v4)"
     }
   ],
   "regexManagers": [
