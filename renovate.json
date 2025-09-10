@@ -68,10 +68,6 @@
       "allowedVersions": "^2025\\."
     },
     {
-      "matchPackageNames": ["ghcr.io/containrrr/watchtower"],
-      "allowedVersions": "^latest$"
-    },
-    {
       "matchPackageNames": ["thecatlady/webhook"],
       "allowedVersions": "^2\\.8\\."
     },
