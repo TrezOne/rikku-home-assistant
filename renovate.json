@@ -1,22 +1,94 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended"
-  ],
+  "extends": ["config:recommended"],
   "prHourlyLimit": 2,
   "prConcurrentLimit": 5,
   "dependencyDashboard": true,
-  "labels": [
-    "dependencies",
-    "renovate"
-  ],
-  "schedule": [
-    "before 6am on monday"
-  ],
-  "customManagers": [],
+  "labels": ["dependencies", "renovate"],
+  "schedule": ["before 6am on monday"],
+  "semanticCommits": "enabled",
+  "commitMessagePrefix": "🔧 Renovate:",
   "branchNameStrict": true,
   "branchPrefix": "renovate/",
-  "branchTopic": "{{service}}/{{depName}}",
+  "branchTopic": "{{manager}}/{{depName}}",
   "commitMessageAction": "Update",
-  "commitMessageTopic": "{{service}}/{{depName}}"
+  "commitMessageTopic": "{{manager}}/{{depName}}",
+  "docker-compose": {
+    "enabled": true,
+    "fileMatch": ["docker-compose\\.yml$", "docker-compose\\.yaml$"]
+  },
+  "packageRules": [
+    {
+      "matchPackageNames": [
+        "adguard/adguardhome",
+        "henrygd/beszel-agent",
+        "ghcr.io/gabe565/castsponsorskip",
+        "ghcr.io/tecnativa/docker-socket-proxy",
+        "ghcr.io/matt8707/ha-fusion",
+        "ghcr.io/home-assistant/home-assistant",
+        "ollama/ollama",
+        "pavanputhra/logspout-signoz",
+        "ghcr.io/containrrr/watchtower",
+        "thecatlady/webhook"
+      ],
+      "groupName": "rikku-stack",
+      "separateMinorPatch": false,
+      "schedule": ["before 6am on monday"]
+    },
+    {
+      "matchPackageNames": ["adguard/adguardhome"],
+      "allowedVersions": "^v0\\.107\\."
+    },
+    {
+      "matchPackageNames": ["henrygd/beszel-agent"],
+      "allowedVersions": "^0\\.12\\."
+    },
+    {
+      "matchPackageNames": ["ghcr.io/gabe565/castsponsorskip"],
+      "allowedVersions": "^0\\.8\\."
+    },
+    {
+      "matchPackageNames": ["ghcr.io/tecnativa/docker-socket-proxy"],
+      "allowedVersions": "^latest$"
+    },
+    {
+      "matchPackageNames": ["ghcr.io/matt8707/ha-fusion"],
+      "allowedVersions": "^2024\\."
+    },
+    {
+      "matchPackageNames": ["ghcr.io/home-assistant/home-assistant"],
+      "allowedVersions": "^stable$"
+    },
+    {
+      "matchPackageNames": ["ollama/ollama"],
+      "allowedVersions": "^0\\.11\\."
+    },
+    {
+      "matchPackageNames": ["pavanputhra/logspout-signoz"],
+      "allowedVersions": "^2025\\."
+    },
+    {
+      "matchPackageNames": ["ghcr.io/containrrr/watchtower"],
+      "allowedVersions": "^latest$"
+    },
+    {
+      "matchPackageNames": ["thecatlady/webhook"],
+      "allowedVersions": "^2\\.8\\."
+    },
+    {
+      "matchUpdateTypes": ["patch"],
+      "schedule": ["every weekday"]
+    }
+  ],
+  "regexManagers": [
+    {
+      "fileMatch": ["docker-compose\\.yml$", "docker-compose\\.yaml$"],
+      "matchStrings": [
+        "\"(?<depName>[^:]+):(?<currentValue>[^${}\\s]+)\"",
+        "'(?<depName>[^:]+):(?<currentValue>[^${}\\s]+)'"
+      ],
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "docker"
+    }
+  ]
 }
