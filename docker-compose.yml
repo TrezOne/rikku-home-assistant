@@ -89,6 +89,57 @@ services:
     restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+  dockflare:
+    container_name: dockflare
+    environment:
+      AGENT_STATUS_UPDATE_INTERVAL_SECONDS: 10
+      CF_ACCOUNT_ID: ${CLOUDFLARE_ACCOUNT_ID}
+      CF_API_TOKEN: ${CLOUDFLARE_API_TOKEN}
+      CF_ZONE_ID: ${CLOUDFLARE_ZONE_ID}
+      CLEANUP_INTERVAL_SECONDS: 300
+      CLOUDFLARED_METRICS_PORT: 20119
+      CLOUDFLARED_NETWORK_NAME: rikku_default
+      DEFAULT_NO_TLS_VERIFY: false
+      GRACE_PERIOD_SECONDS: 600
+      LABEL_PREFIX: cloudflare.tunnel
+      MAX_CONCURRENT_DNS_OPS: 3
+      RECONCILIATION_BATCH_SIZE: 3
+      SCAN_ALL_NETWORKS: false
+      STATE_FILE_PATH: /app/data/state.json
+      TRUSTED_PROXIES: 192.168.1.0/24,172.18.0.0/16
+      TUNNEL_DNS_SCAN_ZONE_NAMES:
+      TUNNEL_NAME: dockflared-tunnel
+      TZ: ${TZ}
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- --server-response http://localhost:5000/ping 2>&1 | awk '/^  HTTP/{code=$2} /^[^{]/{next} {print; fflush()} END{exit (code>=400 || code==0)}' >/dev/null"]
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+    image: alplat/dockflare:stable # Or :unstable for the latest features
+    # labels:
+    #   ## EXAMPLE CF TUNNEL LABELS ###
+    #   Enable DockFlare management for this container
+    #   - "cloudflare.tunnel.enable=true"
+    #   The public hostname to expose
+    #   - "cloudflare.tunnel.hostname=my-service.example.com"
+    #   The internal service address (protocol://container_name_or_ip:port)
+    #   Service type (http, https, tcp, ssh, rdp, http_status) is inferred from the prefix.
+    #   - "cloudflare.tunnel.service=http://my-service:80"
+    #   Optional: Specify a URL path. Only requests to hostname/path will match.
+    #   - "cloudflare.tunnel.path=/app"
+    #   Optional: Specify a different Cloudflare Zone for this hostname
+    #   - "cloudflare.tunnel.zonename=another.example.com"
+    #   Optional: Disable TLS verification if your internal service uses HTTP or a self-signed cert
+    #   - "cloudflare.tunnel.no_tls_verify=true"
+    #   Optional: Specify Origin Server Name (SNI) for TLS connection to origin
+    #   - "cloudflare.tunnel.originsrvname=internal.service.local"
+    ports:
+      - 5001:5000
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - dockflare_data:/app/data
   ha-fusion:
     container_name: ha-fusion
     depends_on:
@@ -141,6 +192,31 @@ services:
     restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+  upsnap:
+    container_name: upsnap
+    dns:
+      - 192.168.1.254
+    entrypoint: /bin/sh -c "./upsnap serve --http 0.0.0.0:5000"
+    environment:
+      TZ: ${TZ} # Set container timezone for cron schedules
+      UPSNAP_INTERVAL: '*/10 * * * * *' # Sets the interval in which the devices are pinged
+      UPSNAP_SCAN_RANGE: 192.168.1.0/24 # Scan range is used for device discovery on local network
+      UPSNAP_SCAN_TIMEOUT: 500ms # Scan timeout is nmap's --host-timeout value to wait for devices (https://nmap.org/book/man-performance.html)
+      UPSNAP_PING_PRIVILEGED: true # Set to false if you don't have root user permissions
+      UPSNAP_WEBSITE_TITLE: 'UpSnap @ Rikku' # Custom website title
+    # # To use a non-root user, create the mountpoint first (mkdir data) so that it has the right permission.
+    # # dns is used for name resolution during network scan
+    # # or install custom packages for shutdown
+    # entrypoint: /bin/sh -c "apk update && apk add --no-cache <YOUR_PACKAGE> && rm -rf /var/cache/apk/* && ./upsnap serve --http 0.0.0.0:8090"
+    healthcheck:
+      test: curl -fs "http://localhost:5000/api/health" || exit 1
+      interval: 10s
+    image: ghcr.io/seriousm4x/upsnap:5 # images are also available on docker hub: seriousm4x/upsnap:5
+    network_mode: host
+    privileged: true
+    restart: unless-stopped
+    volumes:
+      - ${RIKKU_DOCKER_DIR}/upsnap:/app/pb_data
   watchtower:
     container_name: watchtower
     environment:
@@ -180,5 +256,7 @@ services:
       - ${RIKKU_DOCKER_DIR}/webhook/conf:/etc/webhook
       - ${RIKKU_DOCKER_DIR}/webhook/scripts:/opt/webhook_scripts
 volumes:
+  dockflare_data:
+    name: dockflare_data
   ollama:
     name: ollama
