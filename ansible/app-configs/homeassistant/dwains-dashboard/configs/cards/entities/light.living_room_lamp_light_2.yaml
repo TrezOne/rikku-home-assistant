@@ -1,6 +1,0 @@
-entity: light.living_room_lamp_light_2
-name: Living Room Lamp
-show_brightness_control: true
-show_color_temp_control: true
-type: custom:mushroom-light-card
-use_light_color: true

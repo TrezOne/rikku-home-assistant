@@ -10,7 +10,7 @@ services:
     container_name: adguard
     environment:
       TZ: ${TZ}
-    image: adguard/adguardhome:latest
+    image: adguard/adguardhome:v0.107.65
     network_mode: host
     privileged: true
     # ports:
@@ -37,7 +37,7 @@ services:
       HUB_URL: http://192.168.1.254:22220
     expose:
       - 45876
-    image: henrygd/beszel-agent:latest
+    image: henrygd/beszel-agent:0.12.7
     network_mode: host
     restart: unless-stopped
     volumes:
@@ -46,7 +46,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
   castsponsorskip:
     container_name: castsponsorskip
-    image: ghcr.io/gabe565/castsponsorskip
+    image: ghcr.io/gabe565/castsponsorskip:0.8.2
     environment:
       # Set the container timezone
       # See identifier list at https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
@@ -98,7 +98,7 @@ services:
     environment:
       TZ: ${TZ}
       HASS_URL: http://192.168.1.252:8123
-    image: ghcr.io/matt8707/ha-fusion
+    image: ghcr.io/matt8707/ha-fusion:2024.10.1
     labels:
       com.centurylinklabs.watchtower.monitor-only: true
     ports:
@@ -125,38 +125,19 @@ services:
       - /run/dbus:/run/dbus:ro
   ollama:
     container_name: ollama
-    image: ollama/ollama:latest
+    image: ollama/ollama:0.11.10
     ports:
       - 11434:11434
     restart: unless-stopped
     volumes:
       - ollama:/root/.ollama
-  portracker:
-    cap_add:
-      - SYS_PTRACE
-      - SYS_ADMIN
-    container_name: portracker
-    environment:
-      DATABASE_PATH: /data/portracker.db
-      DEBUG: false
-      DOCKER_HOST: tcp://dockerproxy:2375
-      PORT: 4999
-    image: mostafawahied/portracker:latest
-    pid: "host"
-    ports:
-      - 4999:4999
-    restart: unless-stopped
-    security_opt:
-      - apparmor:unconfined
-    volumes:
-      - ${RIKKU_DOCKER_DIR}/portracker:/data
   signoz-logspout:
     command: signoz://192.168.1.254:8082
     container_name: signoz-logspout
     environment:
       ENV: prod
       SIGNOZ_LOG_ENDPOINT: http://192.168.1.254:8082
-    image: pavanputhra/logspout-signoz
+    image: pavanputhra/logspout-signoz:2025.07.19-887dfeb
     restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -190,7 +171,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
   webhook:
     command: '-verbose -hooks=/etc/webhook/hooks.json -hotreload'
-    image: thecatlady/webhook:latest
+    image: thecatlady/webhook:2.8.1
     container_name: webhook
     ports:
       - 9000:9000
@@ -201,5 +182,3 @@ services:
 volumes:
   ollama:
     name: ollama
-  protonmail:
-    name: protonmail

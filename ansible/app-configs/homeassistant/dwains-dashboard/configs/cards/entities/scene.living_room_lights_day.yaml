@@ -1,7 +1,0 @@
-entity: scene.living_room_lights_day
-icon: mdi:lightbulb-group
-show_icon: true
-show_name: true
-tap_action:
-  action: toggle
-type: button
