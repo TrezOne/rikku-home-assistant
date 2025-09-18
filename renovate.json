@@ -26,57 +26,19 @@
         "adguard/adguardhome",
         "henrygd/beszel-agent",
         "ghcr.io/gabe565/castsponsorskip",
+        "ollama/ollama",
+        "thecatlady/webhook"
+      ],
+      "versioning": "semver"
+    },
+    {
+      "matchPackageNames": [
         "ghcr.io/tecnativa/docker-socket-proxy",
         "ghcr.io/matt8707/ha-fusion",
         "ghcr.io/home-assistant/home-assistant",
-        "ollama/ollama",
-        "pavanputhra/logspout-signoz",
-        "ghcr.io/containrrr/watchtower",
-        "thecatlady/webhook"
+        "pavanputhra/logspout-signoz"
       ],
-      "groupName": "rikku-stack",
-      "separateMinorPatch": false,
-      "schedule": ["before 6am on monday"]
-    },
-    {
-      "matchPackageNames": ["adguard/adguardhome"],
-      "allowedVersions": "/^0.107.0"
-    },
-    {
-      "matchPackageNames": ["henrygd/beszel-agent"],
-      "allowedVersions": "//^0.12.0/"
-    },
-    {
-      "matchPackageNames": ["ghcr.io/gabe565/castsponsorskip"],
-      "allowedVersions": "//^0.8.0/"
-    },
-    {
-      "matchPackageNames": ["ghcr.io/tecnativa/docker-socket-proxy"],
-      "versioning": "regex",
-      "allowedVersions": "/^(latest)$/"
-    },
-    {
-      "matchPackageNames": ["ghcr.io/matt8707/ha-fusion"],
-      "versioning": "regex",
-      "allowedVersions": "/^2024\\..*/"
-    },
-    {
-      "matchPackageNames": ["ghcr.io/home-assistant/home-assistant"],
-      "versioning": "regex",
-      "allowedVersions": "/^(stable)$/"
-    },
-    {
-      "matchPackageNames": ["ollama/ollama"],
-      "allowedVersions": "/^0.11.0/"
-    },
-    {
-      "matchPackageNames": ["pavanputhra/logspout-signoz"],
-      "versioning": "regex",
-      "allowedVersions": "/^2025\\..*/"
-    },
-    {
-      "matchPackageNames": ["thecatlady/webhook"],
-      "allowedVersions": "/^2.8.0/"
+      "versioning": "docker"
     },
     {
       "matchUpdateTypes": ["patch"],
@@ -102,7 +64,7 @@
         "actions/checkout",
         "supplypike/setup-bin"
       ],
-      "allowedVersions": "//^4.0.0/",
+      "allowedVersions": "^4.0.0",
       "groupName": "github-actions (pinned to v4)"
     }
   ]
