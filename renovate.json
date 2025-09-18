@@ -40,42 +40,43 @@
     },
     {
       "matchPackageNames": ["adguard/adguardhome"],
-      "allowedVersions": "^0.107.0"
+      "allowedVersions": "/^0.107.0"
     },
     {
       "matchPackageNames": ["henrygd/beszel-agent"],
-      "allowedVersions": "^0.12.0"
+      "allowedVersions": "//^0.12.0/"
     },
     {
       "matchPackageNames": ["ghcr.io/gabe565/castsponsorskip"],
-      "allowedVersions": "^0.8.0"
+      "allowedVersions": "//^0.8.0/"
     },
     {
       "matchPackageNames": ["ghcr.io/tecnativa/docker-socket-proxy"],
       "versioning": "regex",
-      "allowedVersions": "^(latest)$"
+      "allowedVersions": "/^(latest)$"
     },
     {
       "matchPackageNames": ["ghcr.io/matt8707/ha-fusion"],
-      "allowedVersions": "^2024.0.0"
+      "versioning": "regex",
+      "allowedVersions": "/^2024\\..*/"
     },
     {
       "matchPackageNames": ["ghcr.io/home-assistant/home-assistant"],
       "versioning": "regex",
-      "allowedVersions": "^(stable)$"
+      "allowedVersions": "/^(stable)$/"
     },
     {
       "matchPackageNames": ["ollama/ollama"],
-      "allowedVersions": "^0.11.0"
+      "allowedVersions": "/^0.11.0"
     },
     {
       "matchPackageNames": ["pavanputhra/logspout-signoz"],
       "versioning": "regex",
-      "allowedVersions": "^2025\\..*"
+      "allowedVersions": "/^2025\\..*/"
     },
     {
       "matchPackageNames": ["thecatlady/webhook"],
-      "allowedVersions": "^2.8.0"
+      "allowedVersions": "/^2.8.0/"
     },
     {
       "matchUpdateTypes": ["patch"],
@@ -101,7 +102,7 @@
         "actions/checkout",
         "supplypike/setup-bin"
       ],
-      "allowedVersions": "^4.0.0",
+      "allowedVersions": "//^4.0.0/",
       "groupName": "github-actions (pinned to v4)"
     }
   ]
