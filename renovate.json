@@ -53,7 +53,7 @@
     {
       "matchPackageNames": ["ghcr.io/tecnativa/docker-socket-proxy"],
       "versioning": "regex",
-      "allowedVersions": "/^(latest)$"
+      "allowedVersions": "/^(latest)$/"
     },
     {
       "matchPackageNames": ["ghcr.io/matt8707/ha-fusion"],
@@ -67,7 +67,7 @@
     },
     {
       "matchPackageNames": ["ollama/ollama"],
-      "allowedVersions": "/^0.11.0"
+      "allowedVersions": "/^0.11.0/"
     },
     {
       "matchPackageNames": ["pavanputhra/logspout-signoz"],
