@@ -4,6 +4,8 @@
   "prHourlyLimit": 2,
   "prConcurrentLimit": 5,
   "dependencyDashboard": true,
+  "dependencyDashboardApproval": true,
+  "dependencyDashboardHeader": "### 🔧 Renovate Dashboard\n\n- ✅ Patch updates will be created and auto-merged automatically.\n- 📝 Minor and Major updates will appear here first. Approve them to generate PRs.\n- 🏷️ Labels `update:patch`, `update:minor`, and `update:major` mark update types.\n",
   "labels": ["dependencies", "renovate"],
   "schedule": ["before 6am on monday"],
   "semanticCommits": "enabled",
@@ -11,8 +13,13 @@
   "branchNameStrict": true,
   "branchPrefix": "renovate/",
   "branchTopic": "{{manager}}/{{depName}}",
-  "commitMessageAction": "Update",
-  "commitMessageTopic": "{{manager}}/{{depName}}",
+  "commitMessageAction": "Update ({{updateType}})",
+  "commitMessageTopic": "{{manager}}/{{depName}} to {{newVersion}}",
+  "prBodyNotes": [
+    "### ⚡ Renovate Update Info",
+    "- **Update Type:** {{updateType}}",
+    "- **Automerge:** {{#if isAutomerge}}✅ This update will be auto-merged once all checks pass{{else}}🛑 This update requires manual approval{{/if}}"
+  ],
   "packageRules": [
     {
       "matchPackageNames": [
@@ -33,43 +40,60 @@
     },
     {
       "matchPackageNames": ["adguard/adguardhome"],
-      "allowedVersions": "^v0\\.107\\."
+      "allowedVersions": "^0.107.0"
     },
     {
       "matchPackageNames": ["henrygd/beszel-agent"],
-      "allowedVersions": "^0\\.12\\."
+      "allowedVersions": "^0.12.0"
     },
     {
       "matchPackageNames": ["ghcr.io/gabe565/castsponsorskip"],
-      "allowedVersions": "^0\\.8\\."
+      "allowedVersions": "^0.8.0"
     },
     {
       "matchPackageNames": ["ghcr.io/tecnativa/docker-socket-proxy"],
-      "allowedVersions": "^latest$"
+      "versioning": "regex",
+      "allowedVersions": "^(latest)$"
     },
     {
       "matchPackageNames": ["ghcr.io/matt8707/ha-fusion"],
-      "allowedVersions": "^2024\\."
+      "allowedVersions": "^2024.0.0"
     },
     {
       "matchPackageNames": ["ghcr.io/home-assistant/home-assistant"],
-      "allowedVersions": "^stable$"
+      "versioning": "regex",
+      "allowedVersions": "^(stable)$"
     },
     {
       "matchPackageNames": ["ollama/ollama"],
-      "allowedVersions": "^0\\.11\\."
+      "allowedVersions": "^0.11.0"
     },
     {
       "matchPackageNames": ["pavanputhra/logspout-signoz"],
-      "allowedVersions": "^2025\\."
+      "versioning": "regex",
+      "allowedVersions": "^2025\\..*"
     },
     {
       "matchPackageNames": ["thecatlady/webhook"],
-      "allowedVersions": "^2\\.8\\."
+      "allowedVersions": "^2.8.0"
     },
     {
       "matchUpdateTypes": ["patch"],
-      "schedule": ["every weekday"]
+      "schedule": ["every weekday"],
+      "automerge": true,
+      "labels": ["dependencies", "renovate", "update:patch"]
+    },
+    {
+      "matchUpdateTypes": ["minor"],
+      "automerge": false,
+      "dependencyDashboardApproval": true,
+      "labels": ["dependencies", "renovate", "update:minor"]
+    },
+    {
+      "matchUpdateTypes": ["major"],
+      "automerge": false,
+      "dependencyDashboardApproval": true,
+      "labels": ["dependencies", "renovate", "update:major"]
     },
     {
       "matchManagers": ["github-actions"],
