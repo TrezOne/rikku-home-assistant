@@ -10,7 +10,7 @@ services:
     container_name: adguard
     environment:
       TZ: ${TZ}
-    image: adguard/adguardhome:v0.107.65
+    image: adguard/adguardhome:v0.107.66
     network_mode: host
     privileged: true
     # ports:
