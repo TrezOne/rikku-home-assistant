@@ -38,11 +38,14 @@ jobs:
       - name: Get changed services from docker-compose.yml
         id: services
         run: |
-          # Fetch previous commit to compare
-          git fetch origin ${{ github.event.before }} --depth=1
+          # Ensure we have main branch available
+          git fetch origin main --depth=1
 
-          # Get all image names added/changed in docker-compose.yml
-          images=$(git diff ${{ github.event.before }} ${{ github.sha }} -- docker-compose.yml \
+          # Find the common ancestor (merge-base) between PR branch and main
+          base=$(git merge-base origin/main ${{ github.sha }})
+
+          # Get all image names added/changed in docker-compose.yml since base
+          images=$(git diff $base ${{ github.sha }} -- docker-compose.yml \
             | grep -E '^\+.*image:' \
             | sed -E 's/.*image:[[:space:]]*//g' \
             | awk -F: '{print $1}' \
@@ -59,6 +62,14 @@ jobs:
           services=$(echo $services | tr ' ' '\n' | sort -u | xargs)
           echo "services=$services" >> $GITHUB_OUTPUT
 
+      - name: Gotify Notification
+        uses: eikendev/gotify-action@master
+        with:
+          gotify_api_base: '${{ secrets.RIKKU_GOTIFY_URL }}'
+          gotify_app_token: '${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}'
+          notification_title: 'GITEA: [RENOVATE] Docker Compose Deployment @ Rinoa'
+          notification_message: 'Starting Docker Compose run...'
+
       - name: Pull images for modified services
         if: steps.services.outputs.services != ''
         run: |
@@ -69,33 +80,33 @@ jobs:
           done
 
       - name: Docker Compose Deployment
-        uses: cssnr/stack-deploy-action@v1.4.0
+        uses: hoverkraft-tech/compose-action@v2.2.0
+        env:
+          DOCKER_HOST: tcp://dockerproxy:2375
         with:
-          mode: compose
-          file: docker-compose.yml
-          name: 'rikku'
-          host: 192.168.1.252
-          user: pi
-          ssh_key: ${{ secrets.RIKKU_SSH_PRIVATE_KEY }}
-          args: --remove-orphans -d ${{ steps.services.outputs.services }}
-          env_file: '.env'
-          registry_host: 'ghcr.io'
-          registry_user: TrezOne
-          registry_pass: ${{ secrets.GHCR_LOGIN_TOKEN }}
-          summary: true
+          services: |
+            ${{ steps.services.outputs.services }}
+          up-flags: -d --remove-orphans
+          compose-flags: --profile rinoa-apps
 
       - name: Docker Compose Healthcheck
+        continue-on-error: true
+        id: health
         uses: jaracogmbh/docker-compose-health-check-action@v1.0.0
-        env:
-          DOCKER_HOST: tcp://192.168.1.252:2375
         with:
           max-retries: 30
           retry-interval: 10
           compose-file: "docker-compose.yml"
           skip-exited: "true"
           skip-no-healthcheck: "true"
-        continue-on-error: true
-        id: health
+
+      - name: Gotify Notification
+        uses: eikendev/gotify-action@master
+        with:
+          gotify_api_base: '${{ secrets.RIKKU_GOTIFY_URL }}'
+          gotify_app_token: '${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}'
+          notification_title: 'GITEA: [RENOVATE] Docker Compose Deployment @ Rinoa'
+          notification_message: 'Deployment completed successfully.'
 
       - name: Deployment Summary
         if: always()
