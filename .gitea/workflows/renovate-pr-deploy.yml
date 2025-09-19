@@ -40,13 +40,13 @@ jobs:
         id: services
         run: |
           # Ensure we have main branch available
-          git fetch origin main --depth=1
+          git fetch origin main
 
-          # Find the common ancestor (merge-base) between PR branch and main
-          base=$(git merge-base origin/main ${{ github.sha }})
+          # Find the common ancestor (merge-base) between PR HEAD and main
+          base=$(git merge-base HEAD origin/main)
 
           # Get all image names added/changed in docker-compose.yml since base
-          images=$(git diff $base ${{ github.sha }} -- docker-compose.yml \
+          images=$(git diff $base HEAD -- docker-compose.yml \
             | grep -E '^\+.*image:' \
             | sed -E 's/.*image:[[:space:]]*//g' \
             | awk -F: '{print $1}' \
