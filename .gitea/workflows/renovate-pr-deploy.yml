@@ -81,7 +81,7 @@ jobs:
           done
 
       - name: Docker Compose Deployment
-        uses: hoverkraft-tech/compose-action@v2.2.0
+        uses: hoverkraft-tech/compose-action@v2.3.0
         env:
           DOCKER_HOST: tcp://dockerproxy:2375
         with:
