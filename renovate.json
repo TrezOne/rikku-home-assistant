@@ -1,71 +1,7 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended"],
-  "prHourlyLimit": 2,
-  "prConcurrentLimit": 5,
-  "dependencyDashboard": true,
-  "dependencyDashboardApproval": true,
-  "dependencyDashboardHeader": "### 🔧 Renovate Dashboard\n\n- ✅ Patch updates will be created and auto-merged automatically.\n- 📝 Minor and Major updates will appear here first. Approve them to generate PRs.\n- 🏷️ Labels `update:patch`, `update:minor`, and `update:major` mark update types.\n",
-  "labels": ["dependencies", "renovate"],
-  "schedule": ["before 6am on monday"],
-  "semanticCommits": "enabled",
-  "commitMessagePrefix": "🔧 Renovate:",
-  "branchNameStrict": true,
-  "branchPrefix": "renovate/",
-  "branchTopic": "{{manager}}/{{depName}}",
-  "commitMessageAction": "Update ({{updateType}})",
-  "commitMessageTopic": "{{manager}}/{{depName}} to {{newVersion}}",
-  "prBodyNotes": [
-    "### ⚡ Renovate Update Info",
-    "- **Update Type:** {{updateType}}",
-    "- **Automerge:** {{#if isAutomerge}}✅ This update will be auto-merged once all checks pass{{else}}🛑 This update requires manual approval{{/if}}"
-  ],
-  "packageRules": [
-    {
-      "matchPackageNames": [
-        "adguard/adguardhome",
-        "henrygd/beszel-agent",
-        "ghcr.io/gabe565/castsponsorskip",
-        "ollama/ollama",
-        "thecatlady/webhook"
-      ],
-      "versioning": "semver"
-    },
-    {
-      "matchPackageNames": [
-        "ghcr.io/tecnativa/docker-socket-proxy",
-        "ghcr.io/matt8707/ha-fusion",
-        "ghcr.io/home-assistant/home-assistant",
-        "pavanputhra/logspout-signoz"
-      ],
-      "versioning": "docker"
-    },
-    {
-      "matchUpdateTypes": ["patch"],
-      "schedule": ["every weekday"],
-      "automerge": true,
-      "labels": ["dependencies", "renovate", "update:patch"]
-    },
-    {
-      "matchUpdateTypes": ["minor"],
-      "automerge": false,
-      "dependencyDashboardApproval": true,
-      "labels": ["dependencies", "renovate", "update:minor"]
-    },
-    {
-      "matchUpdateTypes": ["major"],
-      "automerge": false,
-      "dependencyDashboardApproval": true,
-      "labels": ["dependencies", "renovate", "update:major"]
-    },
-    {
-      "matchManagers": ["github-actions"],
-      "matchPackageNames": [
-        "actions/checkout",
-        "supplypike/setup-bin"
-      ],
-      "allowedVersions": "^4.0.0",
-      "groupName": "github-actions (pinned to v4)"
-    }
+  "extends": [
+    "config:recommended",
+    "local>trez/renovate-config"
   ]
 }
