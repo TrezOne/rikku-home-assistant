@@ -6,6 +6,8 @@ on:
     types: [closed]
     branches:
       - main
+    paths:
+      - "**/docker-compose.yml"
 
 env:
   HC_VAULT_VERSION: "1.18.0"
@@ -15,7 +17,8 @@ jobs:
     if: |
       github.event.pull_request.merged == true &&
       github.event.pull_request.user.login == 'renovate-bot' &&
-      startsWith(github.event.pull_request.head.ref, 'renovate/docker-compose')
+      startsWith(github.event.pull_request.head.ref, 'renovate/docker-compose') ||
+      startsWith(github.event.pull_request.head.ref, 'renovate/pin-dependencies')
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
