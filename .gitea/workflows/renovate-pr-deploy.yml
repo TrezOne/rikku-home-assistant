@@ -112,8 +112,9 @@ jobs:
           summary: true
 
       - name: Docker Compose Healthcheck
-        id: health
         uses: jaracogmbh/docker-compose-health-check-action@v1.0.0
+        env:
+          DOCKER_HOST: tcp://192.168.1.252:2375
         with:
           max-retries: 30
           retry-interval: 10
