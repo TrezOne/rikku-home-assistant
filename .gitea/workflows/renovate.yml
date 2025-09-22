@@ -1,0 +1,29 @@
+name: Renovate
+
+on:
+  schedule:
+    - cron: "0/30 * * * *"
+  workflow_dispatch:
+
+jobs:
+  renovate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Renovate Run
+        env:
+          DOCKER_HOST: tcp://dockerproxy:2375
+        run: |
+          docker run --rm \
+            -e RENOVATE_PLATFORM=gitea \
+            -e RENOVATE_ENDPOINT=https://git.trez.wtf/api/v1 \
+            -e RENOVATE_TOKEN=${{ secrets.RENOVATE_BOT_TOKEN }} \
+            -e LOG_LEVEL=debug \
+            -e RENOVATE_GITHUB_COM_TOKEN=${{ secrets.RENOVATE_GITHUB_TOKEN }} \
+            -e RENOVATE_CONFIG_FILE=renovate.json \
+            --volumes-from ${{ env.JOB_CONTAINER_NAME }} \
+            -w ${GITHUB_WORKSPACE} \
+            renovate/renovate:41.97.7-full
