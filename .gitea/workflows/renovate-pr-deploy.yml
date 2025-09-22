@@ -10,6 +10,8 @@ on:
       - "**/docker-compose.yml"
 
 env:
+  VAULT_ADDR: ${{ secrets.RIKKU_VAULT_ADDR }}
+  VAULT_TOKEN: ${{ secrets.VAULT_GITEA_TOKEN }}
   HC_VAULT_VERSION: "1.18.0"
 
 jobs:
