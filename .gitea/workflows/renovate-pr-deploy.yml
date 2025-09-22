@@ -96,13 +96,20 @@ jobs:
           notification_message: "Starting Docker Compose run..."
 
       - name: Docker Compose Deployment
-        uses: hoverkraft-tech/compose-action@v2.2.0
-        env:
-          DOCKER_HOST: tcp://192.168.1.252:2375
+        uses: cssnr/stack-deploy-action@v1.4.0
         with:
-          services: |
-            ${{ steps.services.outputs.docker_svc_list }}
-          up-flags: -d --remove-orphans
+          mode: compose
+          file: docker-compose.yml
+          name: "rikku"
+          host: 192.168.1.252
+          user: pi
+          ssh_key: ${{ secrets.RIKKU_SSH_PRIVATE_KEY }}
+          args: --remove-orphans -d ${{ needs.generate-service-list.outputs.svc_deploy_list }}
+          env_file: ".env"
+          registry_host: "ghcr.io"
+          registry_user: TrezOne
+          registry_pass: ${{ secrets.GHCR_LOGIN_TOKEN }}
+          summary: true
 
       - name: Docker Compose Healthcheck
         id: health
