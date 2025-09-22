@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
 
       - name: Install Vault
         uses: cpanato/vault-installer@main
@@ -96,7 +96,7 @@ jobs:
           notification_message: "Starting Docker Compose run..."
 
       - name: Docker Compose Deployment
-        uses: cssnr/stack-deploy-action@v1.4.0
+        uses: cssnr/stack-deploy-action@d58b92bcd776afc57ef12f55bafff71200fd218e # v1.4.0
         with:
           mode: compose
           file: docker-compose.yml
@@ -112,7 +112,7 @@ jobs:
           summary: true
 
       - name: Docker Compose Healthcheck
-        uses: jaracogmbh/docker-compose-health-check-action@v1.0.0
+        uses: jaracogmbh/docker-compose-health-check-action@973fbdccf7c8e396b652d3501984c8e530a9fa80 # v1.0.0
         env:
           DOCKER_HOST: tcp://192.168.1.252:2375
         with:

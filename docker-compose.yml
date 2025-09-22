@@ -10,7 +10,7 @@ services:
     container_name: adguard
     environment:
       TZ: ${TZ}
-    image: adguard/adguardhome:v0.107.66
+    image: adguard/adguardhome:v0.107.66@sha256:cc8757742e547c722bb0bd9a3b11fce22771a75a5b0e07ce9a789ad62a2bfd37
     network_mode: host
     privileged: true
     # ports:
@@ -37,7 +37,7 @@ services:
       HUB_URL: http://192.168.1.254:22220
     expose:
       - 45876
-    image: henrygd/beszel-agent:0.12.9
+    image: henrygd/beszel-agent:0.12.9@sha256:f26072f3c1b5a3dd40c0faddb7ba54f78869f78b8518227d67cb3354eaf5a242
     network_mode: host
     restart: unless-stopped
     volumes:
@@ -46,7 +46,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
   castsponsorskip:
     container_name: castsponsorskip
-    image: ghcr.io/gabe565/castsponsorskip:0.8.2
+    image: ghcr.io/gabe565/castsponsorskip:0.8.2@sha256:fe3a1b45987168b9cbccc394496e42bed5d396cd4869aa70ea402c686e679403
     environment:
       # Set the container timezone
       # See identifier list at https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
@@ -82,7 +82,7 @@ services:
       TASKS: 0
       VOLUMES: 0
       LOG_LEVEL: debug
-    image: ghcr.io/tecnativa/docker-socket-proxy:latest
+    image: ghcr.io/tecnativa/docker-socket-proxy:latest@sha256:3400c429c5f9e1b21d62130fb93b16e2e772d4fb7695bd52fc2b743800b9fe9e
     ports:
       - 2375:2375
     privileged: true
@@ -116,7 +116,7 @@ services:
       timeout: 30s
       retries: 5
       start_period: 30s
-    image: alplat/dockflare:stable # Or :unstable for the latest features
+    image: alplat/dockflare:stable@sha256:fa81f1f93c42843661c9cd3015b76120261e39e7df1d47612ae3be15f1d51831 # Or :unstable for the latest features
     # labels:
     #   ## EXAMPLE CF TUNNEL LABELS ###
     #   Enable DockFlare management for this container
@@ -149,7 +149,7 @@ services:
     environment:
       TZ: ${TZ}
       HASS_URL: http://192.168.1.252:8123
-    image: ghcr.io/matt8707/ha-fusion:2024.10.1
+    image: ghcr.io/matt8707/ha-fusion:2024.10.1@sha256:5eea4634ab2b1e7c7523943996d13318d109b293abe8e9e86c38daf5c41830cb
     labels:
       com.centurylinklabs.watchtower.monitor-only: true
     ports:
@@ -164,7 +164,7 @@ services:
       - /dev/ttyS0:/dev/ttyS0
     environment:
       DISABLE_JEMALLOC: true
-    image: ghcr.io/home-assistant/home-assistant:stable
+    image: ghcr.io/home-assistant/home-assistant:stable@sha256:89ec0583c7f47c8a150204f6b5ed48b5432026012bebe1226cf72775a795a5e1
     labels:
       com.centurylinklabs.watchtower.monitor-only: true
     network_mode: host
@@ -176,7 +176,7 @@ services:
       - /run/dbus:/run/dbus:ro
   ollama:
     container_name: ollama
-    image: ollama/ollama:0.12.0
+    image: ollama/ollama:0.12.0@sha256:14def4e0b9ac8c91b3ec6f7fa7684c924ffe244541d5fd827d9b89035cc33310
     ports:
       - 11434:11434
     restart: unless-stopped
@@ -188,7 +188,7 @@ services:
     environment:
       ENV: prod
       SIGNOZ_LOG_ENDPOINT: http://192.168.1.254:8082
-    image: pavanputhra/logspout-signoz:2025.07.19-887dfeb
+    image: pavanputhra/logspout-signoz:2025.07.19-887dfeb@sha256:6da8ce12279a5262de8b2d5c083ce82d4c878c4eab702b4d328afe147ed7553b
     restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -211,7 +211,7 @@ services:
     healthcheck:
       test: curl -fs "http://localhost:5000/api/health" || exit 1
       interval: 10s
-    image: ghcr.io/seriousm4x/upsnap:5 # images are also available on docker hub: seriousm4x/upsnap:5
+    image: ghcr.io/seriousm4x/upsnap:5@sha256:c96e9d3f1559736544f723d99b778498982ebb2819de8e509548f8c5468b5542 # images are also available on docker hub: seriousm4x/upsnap:5
     network_mode: host
     privileged: true
     restart: unless-stopped
@@ -240,14 +240,14 @@ services:
     expose:
       - 8080
     hostname: Rikku
-    image: ghcr.io/containrrr/watchtower:latest
+    image: ghcr.io/containrrr/watchtower:latest@sha256:6dd50763bbd632a83cb154d5451700530d1e44200b268a4e9488fefdfcf2b038
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
   webhook:
     command: '-verbose -hooks=/etc/webhook/hooks.json -hotreload'
-    image: thecatlady/webhook:2.8.1
+    image: thecatlady/webhook:2.8.1@sha256:2c20d15f8f1b87ea1fa242787af6f288175bbb3402a04f1744a7f7a6a529d711
     container_name: webhook
     ports:
       - 9000:9000
