@@ -16,9 +16,7 @@ jobs:
   deploy:
     if: |
       github.event.pull_request.merged == true &&
-      github.event.pull_request.user.login == 'renovate-bot' &&
-      startsWith(github.event.pull_request.head.ref, 'renovate/docker-compose') ||
-      startsWith(github.event.pull_request.head.ref, 'renovate/pin-dependencies')
+      github.event.pull_request.user.login == 'renovate-bot'
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
