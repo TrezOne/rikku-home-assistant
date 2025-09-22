@@ -7,15 +7,24 @@ on:
     branches:
       - main
 
+env:
+  HC_VAULT_VERSION: "1.18.0"
+
 jobs:
   deploy:
     if: |
       github.event.pull_request.merged == true &&
-      github.event.pull_request.user.login == 'renovate-bot'
+      github.event.pull_request.user.login == 'renovate-bot' &&
+      startsWith(github.event.pull_request.head.ref, 'renovate/docker-compose')
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v4
+
+      - name: Install Vault
+        uses: cpanato/vault-installer@main
+        with:
+          version: ${{ env.HC_VAULT_VERSION }}
 
       - name: Detect Renovate update type
         id: detect-update
@@ -24,7 +33,7 @@ jobs:
         run: |
           echo "PR body: $PR_BODY"
 
-          if echo "$PR_BODY" | grep -qE 'Update\s+(patch|minor|major|digest)'; then
+          if echo "$PR_BODY" | grep -qE 'Update Type: (patch|minor|major|digest)'; then
             echo "update=true" >> $GITHUB_OUTPUT
           else
             echo "update=false" >> $GITHUB_OUTPUT
@@ -39,59 +48,63 @@ jobs:
       - name: Get changed services from docker-compose.yml
         id: services
         run: |
-          # Ensure we have main branch available
-          git fetch origin main
+          git fetch origin ${{ github.event.pull_request.base.ref }}
+          git show origin/main:docker-compose.yml > docker-compose-main.yml || touch docker-compose-main.yml
+          cp docker-compose.yml docker-compose-head.yml
 
-          # Find the common ancestor (merge-base) between PR HEAD and main
-          base=$(git merge-base HEAD origin/main)
+          echo "Getting services from main and ${{ github.ref_name }}"
+          yq '.services | keys | .[]' docker-compose-main.yml | sort > services_main.txt
+          yq '.services | keys | .[]' docker-compose-head.yml | sort > services_head.txt
 
-          # Get all image names added/changed in docker-compose.yml since base
-          images=$(git diff $base HEAD -- docker-compose.yml \
-            | grep -E '^\+.*image:' \
-            | sed -E 's/.*image:[[:space:]]*//g' \
-            | awk -F: '{print $1}' \
-            | sort -u)
+          echo "Creating list of modified services..."
+          touch service_changes.txt
 
-          # Map images to service names using yq
-          services=""
-          for img in $images; do
-            svc=$(yq e ".services | with_entries(select(.value.image | startswith(\"$img\"))) | keys | .[]" docker-compose.yml)
-            services="$services $svc"
+          comm -13 services_main.txt services_head.txt | while read service; do
+            echo "$service: added" >> service_changes.txt
           done
 
-          # Deduplicate and trim
-          services=$(echo $services | tr ' ' '\n' | sort -u | xargs)
-          echo "services=$services" >> $GITHUB_OUTPUT
+          comm -12 services_main.txt services_head.txt | while read service; do
+            yq ".services[\"$service\"]" docker-compose-main.yml > tmp_main.yml
+            yq ".services[\"$service\"]" docker-compose-head.yml > tmp_head.yml
+            if ! diff -q tmp_main.yml tmp_head.yml > /dev/null; then
+              echo "$service: modified" >> service_changes.txt
+            fi
+          done
+
+          echo "Detected service changes:"
+          cat service_changes.txt
+
+          mod_svcs=$(cut -d':' -f1 service_changes.txt | sort | uniq)
+          echo "docker_svc_list<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$mod_svcs" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
+      - name: List of Services for (Re)Deployment
+        run: |
+          echo -e "${{ steps.services.outputs.docker_svc_list }}"
+
+      - name: Generate .env file for Docker Compose
+        run: |
+          vault kv get -format=json rikku-docker/env | jq -r '.data.data' | jq -r 'keys[] as $k | "\($k)='\''\(.[$k])'\''"' > .env
 
       - name: Gotify Notification
         uses: eikendev/gotify-action@master
         with:
-          gotify_api_base: '${{ secrets.RIKKU_GOTIFY_URL }}'
-          gotify_app_token: '${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}'
-          notification_title: 'GITEA: [RENOVATE] Docker Compose Deployment @ Rinoa'
-          notification_message: 'Starting Docker Compose run...'
-
-      - name: Pull images for modified services
-        if: steps.services.outputs.services != ''
-        run: |
-          services="${{ steps.services.outputs.services }}"
-          echo "Pulling images for services: $services"
-          for svc in $services; do
-            docker compose pull $svc || echo "Failed to pull $svc, continuing..."
-          done
+          gotify_api_base: "${{ secrets.RIKKU_GOTIFY_URL }}"
+          gotify_app_token: "${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}"
+          notification_title: "GITEA: [RENOVATE] Docker Compose Deployment @ Rikku"
+          notification_message: "Starting Docker Compose run..."
 
       - name: Docker Compose Deployment
         uses: hoverkraft-tech/compose-action@v2.2.0
         env:
-          DOCKER_HOST: tcp://dockerproxy:2375
+          DOCKER_HOST: tcp://192.168.1.252:2375
         with:
           services: |
-            ${{ steps.services.outputs.services }}
+            ${{ steps.services.outputs.docker_svc_list }}
           up-flags: -d --remove-orphans
-          compose-flags: --profile rinoa-apps
 
       - name: Docker Compose Healthcheck
-        continue-on-error: true
         id: health
         uses: jaracogmbh/docker-compose-health-check-action@v1.0.0
         with:
@@ -104,25 +117,7 @@ jobs:
       - name: Gotify Notification
         uses: eikendev/gotify-action@master
         with:
-          gotify_api_base: '${{ secrets.RIKKU_GOTIFY_URL }}'
-          gotify_app_token: '${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}'
-          notification_title: 'GITEA: [RENOVATE] Docker Compose Deployment @ Rinoa'
-          notification_message: 'Deployment completed successfully.'
-
-      - name: Deployment Summary
-        if: always()
-        run: |
-          echo "### 🚀 Renovate Patch Deployment Summary" >> $GITHUB_STEP_SUMMARY
-
-          if [[ -z "${{ steps.services.outputs.services }}" ]]; then
-            echo "- No services changed in this patch update." >> $GITHUB_STEP_SUMMARY
-            exit 0
-          fi
-
-          echo "- Updated services: \`${{ steps.services.outputs.services }}\`" >> $GITHUB_STEP_SUMMARY
-
-          if [[ "${{ steps.health.outcome }}" == "success" ]]; then
-            echo "- ✅ All services passed health checks." >> $GITHUB_STEP_SUMMARY
-          else
-            echo "- ⚠️ Some services failed health checks. Check logs above for details." >> $GITHUB_STEP_SUMMARY
-          fi
+          gotify_api_base: "${{ secrets.RIKKU_GOTIFY_URL }}"
+          gotify_app_token: "${{ secrets.RIKKU_RUNNER_GOTIFY_TOKEN }}"
+          notification_title: "GITEA: [RENOVATE] Docker Compose Deployment @ Rikku"
+          notification_message: "Deployment completed successfully."
