@@ -32,7 +32,7 @@ services:
     environment:
       PORT: 45876
       # Do not remove quotes around the key
-      KEY: '${BESZEL_RINOA_AGENT_KEY}'
+      KEY: "${BESZEL_RINOA_AGENT_KEY}"
       TOKEN: ${BESZEL_RIKKU_TOKEN}
       HUB_URL: http://192.168.1.254:22220
     expose:
@@ -111,7 +111,11 @@ services:
       TUNNEL_NAME: dockflared-tunnel
       TZ: ${TZ}
     healthcheck:
-      test: ["CMD-SHELL", "wget -qO- --server-response http://localhost:5000/ping 2>&1 | awk '/^  HTTP/{code=$2} /^[^{]/{next} {print; fflush()} END{exit (code>=400 || code==0)}' >/dev/null"]
+      test:
+        [
+          "CMD-SHELL",
+          "wget -qO- --server-response http://localhost:5000/ping 2>&1 | awk '/^  HTTP/{code=$2} /^[^{]/{next} {print; fflush()} END{exit (code>=400 || code==0)}' >/dev/null",
+        ]
       interval: 1m30s
       timeout: 30s
       retries: 5
@@ -199,11 +203,11 @@ services:
     entrypoint: /bin/sh -c "./upsnap serve --http 0.0.0.0:5000"
     environment:
       TZ: ${TZ} # Set container timezone for cron schedules
-      UPSNAP_INTERVAL: '*/10 * * * * *' # Sets the interval in which the devices are pinged
+      UPSNAP_INTERVAL: "*/10 * * * * *" # Sets the interval in which the devices are pinged
       UPSNAP_SCAN_RANGE: 192.168.1.0/24 # Scan range is used for device discovery on local network
       UPSNAP_SCAN_TIMEOUT: 500ms # Scan timeout is nmap's --host-timeout value to wait for devices (https://nmap.org/book/man-performance.html)
       UPSNAP_PING_PRIVILEGED: true # Set to false if you don't have root user permissions
-      UPSNAP_WEBSITE_TITLE: 'UpSnap @ Rikku' # Custom website title
+      UPSNAP_WEBSITE_TITLE: "UpSnap @ Rikku" # Custom website title
     # # To use a non-root user, create the mountpoint first (mkdir data) so that it has the right permission.
     # # dns is used for name resolution during network scan
     # # or install custom packages for shutdown
@@ -217,36 +221,8 @@ services:
     restart: unless-stopped
     volumes:
       - ${RIKKU_DOCKER_DIR}/upsnap:/app/pb_data
-  watchtower:
-    container_name: watchtower
-    environment:
-      REPO_PASS:
-      REPO_USER:
-      TZ: ${TZ}
-      WATCHTOWER_CLEANUP: true
-      WATCHTOWER_INCLUDE_STOPPED: false
-      WATCHTOWER_MONITOR_ONLY: false
-      WATCHTOWER_NOTIFICATIONS: gotify
-      WATCHTOWER_NOTIFICATIONS_LEVEL: info
-      WATCHTOWER_NOTIFICATION_TEMPLATE: '{{range .}}{{.Message}}{{println}}{{end}}'
-      WATCHTOWER_NOTIFICATION_URL:
-      WATCHTOWER_SCHEDULE: 0 0 4 * * *
-      WATCHTOWER_TIMEOUT: 30s
-      WATCHTOWER_HTTP_API_METRICS: true
-      WATCHTOWER_HTTP_API_TOKEN: ${WATCHTOWER_HTTP_API_TOKEN}
-      WATCHTOWER_NOTIFICATION_GOTIFY_URL: ${WATCHTOWER_NOTIFICATION_GOTIFY_URL}
-      WATCHTOWER_NOTIFICATION_GOTIFY_TOKEN: ${WATCHTOWER_NOTIFICATION_GOTIFY_TOKEN}
-      WATCHTOWER_NOTIFICATION_GOTIFY_TLS_SKIP_VERIFY: true
-    expose:
-      - 8080
-    hostname: Rikku
-    image: ghcr.io/containrrr/watchtower:latest@sha256:6dd50763bbd632a83cb154d5451700530d1e44200b268a4e9488fefdfcf2b038
-    restart: unless-stopped
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
   webhook:
-    command: '-verbose -hooks=/etc/webhook/hooks.json -hotreload'
+    command: "-verbose -hooks=/etc/webhook/hooks.json -hotreload"
     image: thecatlady/webhook:2.8.1@sha256:2c20d15f8f1b87ea1fa242787af6f288175bbb3402a04f1744a7f7a6a529d711
     container_name: webhook
     ports:
