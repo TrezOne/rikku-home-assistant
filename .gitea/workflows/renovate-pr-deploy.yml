@@ -98,6 +98,19 @@ jobs:
           notification_title: "GITEA: [RENOVATE] Docker Compose Deployment @ Rikku"
           notification_message: "Starting Docker Compose run..."
 
+      - name: Login to registries
+        uses: docker/login-action@v3
+        with:
+          registry-auth: |
+            - username: ${{ secrets.DOCKERHUB_USER }}
+              password: ${{ secrets.DOCKERHUB_PASSWORD }}
+            - registry: ghcr.io
+              username: ${{ secrets.GHCR_USER }}
+              password: ${{ secrets.GITHUB_LOGIN_TOKEN }}
+            - registry: git.trez.wtf
+              username: ${{ secrets.BOT_GITEA_USER }}
+              password: ${{ secrets.BOT_GITEA_PASSWORD }}
+
       - name: Docker Compose Deployment
         uses: cssnr/stack-deploy-action@d58b92bcd776afc57ef12f55bafff71200fd218e # v1.4.0
         with:
