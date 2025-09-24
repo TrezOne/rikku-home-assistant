@@ -27,7 +27,7 @@ jobs:
 
       - name: Cache tea CLI
         id: cache-tea
-        uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4.0.2
+        uses: actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
         with:
           path: /opt/hostedtoolcache/tea/${{ env.TEA_VERSION }}/x64
           key: tea-${{ runner.os }}-${{ env.TEA_VERSION }}
@@ -151,14 +151,14 @@ jobs:
           docker login -u gitea-sonarqube-bot -p ${RIKKU_REGISTRY_PASSWORD} git.trez.wtf
 
       - name: Login to Docker Hub
-        uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 # v3
+        uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 # v3.5.0
         with:
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
       - name: Cache Vault install
         id: cache-vault
-        uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4.0.2
+        uses: actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
         with:
           path: /opt/hostedtoolcache/vault/${{ env.HC_VAULT_VERSION }}/x64
           key: vault-${{ runner.os }}-${{ env.HC_VAULT_VERSION }}
@@ -270,7 +270,7 @@ jobs:
 
       - name: Cache tea CLI
         id: cache-tea
-        uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4.0.2
+        uses: actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
         with:
           path: /opt/hostedtoolcache/tea/${{ env.TEA_VERSION }}/x64
           key: tea-${{ runner.os }}-${{ env.TEA_VERSION }}
@@ -317,7 +317,7 @@ jobs:
 
       - name: Cache Vault install
         id: cache-vault
-        uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4.0.2
+        uses: actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
         with:
           path: /opt/hostedtoolcache/vault/${{ env.HC_VAULT_VERSION }}/x64
           key: vault-${{ runner.os }}-${{ env.HC_VAULT_VERSION }}
