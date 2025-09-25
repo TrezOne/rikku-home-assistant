@@ -5,10 +5,10 @@
 | Service | Image |
 | --- | --- |
 | adguard | adguard/adguardhome:v0.107.66@sha256:cc8757742e547c722bb0bd9a3b11fce22771a75a5b0e07ce9a789ad62a2bfd37 |
-| beszel-agent | henrygd/beszel-agent:0.12.10@sha256:6684cf709493b3728e329daaa669c8c386e9c2da324ce4ba3ef0c55c370fdbe5 |
+| beszel-agent | henrygd/beszel-agent:0.12.11@sha256:206822f20bd46ac2205249c356d5321139eddc5b155bba07e4aac9254e6c176c |
 | castsponsorskip | ghcr.io/gabe565/castsponsorskip:0.8.2@sha256:fe3a1b45987168b9cbccc394496e42bed5d396cd4869aa70ea402c686e679403 |
 | docker-socket-proxy | ghcr.io/tecnativa/docker-socket-proxy:latest@sha256:3400c429c5f9e1b21d62130fb93b16e2e772d4fb7695bd52fc2b743800b9fe9e |
-| dockflare | alplat/dockflare:stable@sha256:fa81f1f93c42843661c9cd3015b76120261e39e7df1d47612ae3be15f1d51831 |
+| dockflare | alplat/dockflare:stable@sha256:e1f6aa1179c1e0f5003b3986e6ae5c15ae5605cbb5c38819fa3520feada6d078 |
 | ha-fusion | ghcr.io/matt8707/ha-fusion:2024.10.1@sha256:5eea4634ab2b1e7c7523943996d13318d109b293abe8e9e86c38daf5c41830cb |
 | homeassistant | ghcr.io/home-assistant/home-assistant:stable@sha256:89ec0583c7f47c8a150204f6b5ed48b5432026012bebe1226cf72775a795a5e1 |
 | ollama | ollama/ollama:0.12.1@sha256:5aed793ab336d1aac9b132f4b46fddfcfa13b8911def3d275937c8acbd1763e8 |
