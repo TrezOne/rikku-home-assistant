@@ -223,7 +223,7 @@ services:
     container_name: renovate-valkey
     healthcheck:
       test: redis-cli ping || exit 1
-    image: docker.io/bitnami/valkey:latest
+    image: docker.io/bitnami/valkey:latest@sha256:0384ca2eec63789450b2e07a00f377c2c9d0b548c2e346e1003bc0dd629fa71a
     environment:
       ALLOW_EMPTY_PASSWORD: yes
       VALKEY_DATA_DIR: /data/valkey
