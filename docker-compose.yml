@@ -189,6 +189,7 @@ services:
   renovate:
     container_name: renovate
     environment:
+      RENOVATE_CONFIG_FILE: ${RIKKU_DOCKER_DIR}/renovate/config.js
       # --- Authentication & platform ---
       RENOVATE_TOKEN: "${RENOVATE_GITEA_TOKEN}" # Gitea personal access token for renovate-bot
       RENOVATE_PLATFORM: "gitea"
@@ -292,4 +293,4 @@ volumes:
   ollama:
     name: ollama
   renovate-valkey-data:
-   name: renovate-valkey-data
+    name: renovate-valkey-data
