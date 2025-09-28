@@ -1,7 +1,4 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended",
-    "local>trez/renovate-config"
-  ]
+  "extends": ["local>trez/renovate-config"]
 }
