@@ -16,6 +16,7 @@ env:
 
 jobs:
   deploy:
+    name: Renovate PR Deployment
     if: |
       github.event.pull_request.merged == true &&
       github.event.pull_request.user.login == 'renovate-bot'
