@@ -186,6 +186,16 @@ services:
     restart: unless-stopped
     volumes:
       - ollama:/root/.ollama
+  portainer-agent:
+    container_name: portainer_agent
+    image: portainer/agent:latest@sha256:ff968fbc40c78f8a822e1e6007e9f0e451b05263fed0639d7e37cbf6f4666b13
+    volumes:
+      - /:/host
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+    ports:
+      - 9001:9001
   renovate:
     container_name: renovate
     environment:
