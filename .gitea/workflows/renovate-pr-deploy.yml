@@ -25,30 +25,6 @@ jobs:
       - name: Check out code
         uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4.3.0
 
-      - name: Install Vault
-        uses: cpanato/vault-installer@main
-        with:
-          version: ${{ env.HC_VAULT_VERSION }}
-
-      - name: Detect Renovate update type
-        id: detect-update
-        env:
-          PR_BODY: ${{ github.event.pull_request.body }}
-        run: |
-          echo "PR body: $PR_BODY"
-
-          if echo "$PR_BODY" | grep -qE 'Update Type: (patch|minor|major|digest)'; then
-            echo "update=true" >> $GITHUB_OUTPUT
-          else
-            echo "update=false" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Stop if update not patch/minor/major/digest
-        if: steps.detect-update.outputs.update != 'true'
-        run: |
-          echo "::warning::This PR does not involve patch/minor/major/digest update. Skipping deployment."
-          exit 0
-
       - name: Save docker-compose.yml before merge (old)
         run: |
           git fetch origin main
@@ -93,21 +69,11 @@ jobs:
           mod_svcs=$(sort -u service_changes.txt | xargs echo -n)
           echo "docker_svc_list=$mod_svcs" >> "$GITHUB_OUTPUT"
 
-      - name: List of Services for (Re)Deployment
+      - name: Stop if no image changes
+        if: steps.detect_services.outputs.docker_svc_list == ''
         run: |
-          echo -e "${{ steps.services.outputs.docker_svc_list }}"
-
-      - name: Generate .env file for Docker Compose
-        run: |
-          vault kv get -format=json rikku-docker/env | jq -r '.data.data' | jq -r 'keys[] as $k | "\($k)='\''\(.[$k])'\''"' > .env
-
-      - name: Gotify Notification
-        uses: eikendev/gotify-action@master
-        with:
-          gotify_api_base: "${{ secrets.RUNNER_GOTIFY_URL }}"
-          gotify_app_token: "${{ secrets.RUNNER_GOTIFY_TOKEN }}"
-          notification_title: "GITEA: [RENOVATE] Docker Compose Deployment @ Rikku"
-          notification_message: "Starting Docker Compose run..."
+          echo "No image tag/digest changes detected. Exiting."
+          exit 1
 
       - name: Login to Docker Hub
         uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
@@ -128,6 +94,23 @@ jobs:
           registry: git.trez.wtf
           username: ${{ secrets.BOT_GITEA_USER }}
           password: ${{ secrets.BOT_GITEA_PASSWORD }}
+
+      - name: Gotify Notification
+        uses: eikendev/gotify-action@master
+        with:
+          gotify_api_base: "${{ secrets.RUNNER_GOTIFY_URL }}"
+          gotify_app_token: "${{ secrets.RUNNER_GOTIFY_TOKEN }}"
+          notification_title: "GITEA: [RENOVATE] Docker Compose Deployment @ Rikku"
+          notification_message: "Starting Docker Compose run..."
+
+      - name: Generate .env from Hashicorp Vault
+        uses: https://git.trez.wtf/Trez/hc-vault-env@main
+        with:
+          HC_VAULT_VERSION: ${{ env.HC_VAULT_VERSION }}
+          HC_VAULT_ADDR: ${{ secrets.TREZ_VAULT_ADDR }}
+          HC_VAULT_USERNAME: ${{ secrets.VAULT_GITEA_USER }}
+          HC_VAULT_PASSWORD: ${{ secrets.VAULT_GITEA_PASSWORD }}
+          HC_VAULT_SECRETS_PATH: rikku-docker/env
 
       - name: Docker Compose Deployment
         uses: cssnr/stack-deploy-action@d58b92bcd776afc57ef12f55bafff71200fd218e # v1.4.0
