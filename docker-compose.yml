@@ -13,15 +13,6 @@ services:
     image: adguard/adguardhome:v0.107.67@sha256:927dc14b3e3cbd359e84658914590270a77d54446a6565e9498bef3444c286a4
     network_mode: host
     privileged: true
-    # ports:
-    #   - "192.168.1.254:53:53/udp"
-    #   - "192.168.1.254:53:53/tcp"
-    #   - 3001:3000
-    #   - "192.168.1.254:446:443/tcp"
-    #   - 8008:80
-    #   - "192.168.1.254:853:853/tcp"
-    #   - 67:67
-    #   - 688:68
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
@@ -48,8 +39,6 @@ services:
     container_name: castsponsorskip
     image: ghcr.io/gabe565/castsponsorskip:0.8.2@sha256:fe3a1b45987168b9cbccc394496e42bed5d396cd4869aa70ea402c686e679403
     environment:
-      # Set the container timezone
-      # See identifier list at https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
       TZ: ${TZ}
       # CSS_PAUSED_INTERVAL:
       # CSS_PLAYING_INTERVAL:
@@ -154,8 +143,6 @@ services:
       TZ: ${TZ}
       HASS_URL: http://192.168.1.252:8123
     image: ghcr.io/matt8707/ha-fusion:2024.10.1@sha256:5eea4634ab2b1e7c7523943996d13318d109b293abe8e9e86c38daf5c41830cb
-    labels:
-      com.centurylinklabs.watchtower.monitor-only: true
     ports:
       - 5050:5050
     restart: unless-stopped
@@ -244,7 +231,7 @@ services:
     container_name: renovate-valkey
     healthcheck:
       test: redis-cli ping || exit 1
-    image: docker.io/bitnami/valkey:latest
+    image: docker.io/valkey/valkey:8-alpine
     environment:
       ALLOW_EMPTY_PASSWORD: yes
       VALKEY_DATA_DIR: /data/valkey
