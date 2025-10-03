@@ -182,11 +182,6 @@ jobs:
           HC_VAULT_PASSWORD: ${{ secrets.VAULT_GITEA_PASSWORD }}
           HC_VAULT_SECRETS_PATH: rikku-docker/env
 
-      - name: Pre-pull/build service images in parallel
-        uses: https://git.trez.wtf/Trez/docker-select-image-pull@main
-        with:
-          services: ${{ env.DOCKER_SVC_LIST }}
-
       - name: Docker Compose Dry Run
         uses: cssnr/stack-deploy-action@d58b92bcd776afc57ef12f55bafff71200fd218e # v1.4.0
         with:
