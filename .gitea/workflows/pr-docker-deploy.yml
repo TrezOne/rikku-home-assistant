@@ -193,9 +193,6 @@ jobs:
           ssh_key: ${{ secrets.RUNNER_SSH_PRIVATE_KEY }}
           args: --remove-orphans -d --dry-run ${{ needs.generate-service-list.outputs.svc_deploy_list }}
           env_file: ".env"
-          registry_host: "ghcr.io"
-          registry_user: TrezOne
-          registry_pass: ${{ secrets.GHCR_LOGIN_TOKEN }}
           summary: true
 
       - name: Gotify Notification
