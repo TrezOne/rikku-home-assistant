@@ -143,8 +143,6 @@ services:
       TZ: ${TZ}
       HASS_URL: http://192.168.1.252:8123
     image: ghcr.io/matt8707/ha-fusion:2024.10.1@sha256:5eea4634ab2b1e7c7523943996d13318d109b293abe8e9e86c38daf5c41830cb
-    labels:
-      com.centurylinklabs.watchtower.monitor-only: true
     ports:
       - 5050:5050
     restart: unless-stopped
