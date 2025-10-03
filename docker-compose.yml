@@ -48,7 +48,6 @@ services:
     container_name: castsponsorskip
     image: ghcr.io/gabe565/castsponsorskip:0.8.2@sha256:fe3a1b45987168b9cbccc394496e42bed5d396cd4869aa70ea402c686e679403
     environment:
-      # See identifier list at https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
       TZ: ${TZ}
       # CSS_PAUSED_INTERVAL:
       # CSS_PLAYING_INTERVAL:
