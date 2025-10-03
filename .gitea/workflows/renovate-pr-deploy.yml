@@ -77,12 +77,16 @@ jobs:
 
       - name: Login to Docker Hub
         uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
+        env:
+          DOCKER_HOST: tcp://192.168.1.252:2375
         with:
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
+        env:
+          DOCKER_HOST: tcp://192.168.1.252:2375
         with:
           registry: ghcr.io
           username: ${{ secrets.GHCR_USER }}
@@ -90,6 +94,8 @@ jobs:
 
       - name: Login to Private Gitea Registry
         uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
+        env:
+          DOCKER_HOST: tcp://192.168.1.252:2375
         with:
           registry: git.trez.wtf
           username: ${{ secrets.BOT_GITEA_USER }}
@@ -123,9 +129,6 @@ jobs:
           ssh_key: ${{ secrets.RUNNER_SSH_PRIVATE_KEY }}
           args: --remove-orphans -d ${{ needs.generate-service-list.outputs.svc_deploy_list }}
           env_file: ".env"
-          registry_host: "ghcr.io"
-          registry_user: TrezOne
-          registry_pass: ${{ secrets.GHCR_LOGIN_TOKEN }}
           summary: true
 
       - name: Docker Compose Healthcheck
