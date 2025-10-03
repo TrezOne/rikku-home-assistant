@@ -147,12 +147,16 @@ jobs:
 
       - name: Login to Docker Hub
         uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
+        env:
+          DOCKER_HOST: tcp://192.168.1.252:2375
         with:
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
+        env:
+          DOCKER_HOST: tcp://192.168.1.252:2375
         with:
           registry: ghcr.io
           username: ${{ secrets.GHCR_USER }}
@@ -160,6 +164,8 @@ jobs:
 
       - name: Login to Private Gitea Registry
         uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
+        env:
+          DOCKER_HOST: tcp://192.168.1.252:2375
         with:
           registry: git.trez.wtf
           username: ${{ secrets.BOT_GITEA_USER }}
@@ -181,6 +187,13 @@ jobs:
           HC_VAULT_USERNAME: ${{ secrets.VAULT_GITEA_USER }}
           HC_VAULT_PASSWORD: ${{ secrets.VAULT_GITEA_PASSWORD }}
           HC_VAULT_SECRETS_PATH: rikku-docker/env
+
+      - name: Pre-pull/build service images in parallel
+        uses: https://git.trez.wtf/Trez/docker-select-image-pull@main
+        env:
+          DOCKER_HOST: tcp://192.168.1.252:2375
+        with:
+          services: ${{ env.DOCKER_SVC_LIST }}
 
       - name: Docker Compose Dry Run
         uses: cssnr/stack-deploy-action@d58b92bcd776afc57ef12f55bafff71200fd218e # v1.4.0
@@ -315,12 +328,16 @@ jobs:
 
       - name: Login to Docker Hub
         uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
+        env:
+          DOCKER_HOST: tcp://192.168.1.252:2375
         with:
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
+        env:
+          DOCKER_HOST: tcp://192.168.1.252:2375
         with:
           registry: ghcr.io
           username: ${{ secrets.GHCR_USER }}
@@ -328,6 +345,8 @@ jobs:
 
       - name: Login to Private Gitea Registry
         uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
+        env:
+          DOCKER_HOST: tcp://192.168.1.252:2375
         with:
           registry: git.trez.wtf
           username: ${{ secrets.BOT_GITEA_USER }}
