@@ -28,7 +28,7 @@ services:
       HUB_URL: http://192.168.1.254:22220
     expose:
       - 45876
-    image: henrygd/beszel-agent:0.12.12@sha256:0830d9eb7866d3dfe810d8a8ed4fc3dad2c51b3bc855e3558a9aa4e8886c99be
+    image: henrygd/beszel-agent:0.13.0@sha256:ad1fe17fb4cc1dfca9ace15505ab7dddebb8d17ca8f8b95bdd84593a8415b6d1
     network_mode: host
     restart: unless-stopped
     volumes:
@@ -155,7 +155,7 @@ services:
       - /dev/ttyS0:/dev/ttyS0
     environment:
       DISABLE_JEMALLOC: true
-    image: ghcr.io/home-assistant/home-assistant:stable@sha256:ae0e2a2f03822c49a0c506bc40e367b4abc8b3207d67a6e0312b42d60867c5e5
+    image: ghcr.io/home-assistant/home-assistant:stable@sha256:9255033272ab8f7bede246109ea9e7302527faf3accbf2ba7ef619e2206107ad
     labels:
       com.centurylinklabs.watchtower.monitor-only: true
     network_mode: host
@@ -223,7 +223,7 @@ services:
       GHCR_USER: ${RENOVATE__GHCR_USER}
       GITEA_BOT_PASS: ${RENOVATE__GITEA_BOT_PASS}
       GITEA_BOT_USER: ${RENOVATE__GITEA_BOT_USER}
-    image: renovate/renovate:41.131.12-full@sha256:d7f82f222b7ef6bd9a4166d7428aa82b42e0a5421d6797a417e2fef58bcf68e3
+    image: renovate/renovate:41.132.5-full@sha256:b42331254149bfde968caaceb6328b3f5bc0f5bb9caf4bdbf1e9c439473778fa
     restart: unless-stopped
     volumes:
       - ${RIKKU_DOCKER_DIR}/renovate/config.js:/etc/renovate/config.js
@@ -231,7 +231,7 @@ services:
     container_name: renovate-valkey
     healthcheck:
       test: redis-cli ping || exit 1
-    image: docker.io/valkey/valkey:8-alpine
+    image: docker.io/valkey/valkey:8-alpine@sha256:e706d1213aaba6896c162bb6a3a9e1894e1a435f28f8f856d14fab2e10aa098b
     environment:
       ALLOW_EMPTY_PASSWORD: yes
       VALKEY_DATA_DIR: /data/valkey
