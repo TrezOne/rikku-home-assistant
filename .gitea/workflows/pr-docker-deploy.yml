@@ -194,56 +194,6 @@ jobs:
           notification_title: "GITEA: Docker Compose Dry Run @ Rikku"
           notification_message: "Docker Compose dry run completed successfully."
 
-  regenerate-readme-modified-services:
-    name: Update README & Generate List of Modified Services
-    runs-on: ubuntu-latest
-    needs: [docker-compose-dry-run]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4.3.0
-
-      - name: Install yq
-        uses: dcarbone/install-yq-action@4075b4dca348d74bd83f2bf82d30f25d7c54539b # v1.3.1
-
-      - name: Gotify Notification
-        uses: eikendev/gotify-action@master
-        with:
-          gotify_api_base: "${{ secrets.RUNNER_GOTIFY_URL }}"
-          gotify_app_token: "${{ secrets.RUNNER_GOTIFY_TOKEN }}"
-          notification_title: "GITEA: README Update"
-          notification_message: "Updating README..."
-
-      - name: Generate service list
-        run: |
-          yq '.services | to_entries | map({"service": .key, "image": .value.image})' docker-compose.yml > services.yml
-
-      - name: Generate Markdown Table
-        uses: gazab/create-markdown-table@6686233d7008e8d8b9d4bbdbfd1fb1ae510019f0 # v1.0.7
-        id: service-table
-        with:
-          file: ./services.yml
-
-      - name: Regenerate README
-        run: |
-          echo "# List of Services" > README.md
-          echo -e "\n\n" >> README.md
-          echo "${{ steps.service-table.outputs.table }}" >> README.md
-
-      - name: Add/Commit README.md
-        id: commit-readme
-        uses: EndBug/add-and-commit@a94899bca583c204427a224a7af87c02f9b325d5 # v9.1.4
-        with:
-          message: "chore: Update README"
-          add: "README.md"
-
-      - name: Gotify Notification
-        uses: eikendev/gotify-action@master
-        with:
-          gotify_api_base: "${{ secrets.RUNNER_GOTIFY_URL }}"
-          gotify_app_token: "${{ secrets.RUNNER_GOTIFY_TOKEN }}"
-          notification_title: "GITEA: README Update"
-          notification_message: "README updated"
-
   pr-merge:
     name: PR Merge
     needs:
