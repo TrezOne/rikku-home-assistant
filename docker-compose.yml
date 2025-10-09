@@ -278,7 +278,7 @@ services:
       - ${RIKKU_DOCKER_DIR}/upsnap:/app/pb_data
   webhook:
     command: "-verbose -hooks=/etc/webhook/hooks.json -hotreload"
-    image: thecatlady/webhook:2.8.1@sha256:2c20d15f8f1b87ea1fa242787af6f288175bbb3402a04f1744a7f7a6a529d711
+    image: thecatlady/webhook:2.8.2@sha256:0507d6c27d87837bcdee5078d63f54e50d9073ae879618233858e3da68d4b0cc
     container_name: webhook
     ports:
       - 9000:9000
