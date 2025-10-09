@@ -5,7 +5,7 @@
 | Service | Image | Description |
 | --- | --- | --- |
 | adguard | adguard/adguardhome:v0.107.67@sha256:927dc14b3e3cbd359e84658914590270a77d54446a6565e9498bef3444c286a4 |  |
-| beszel-agent | henrygd/beszel-agent:0.13.1@sha256:17fe8c1bf093bc65fba8808093de6b3a3a8ed915bc59eef9815ea42c889aab6a |  |
+| beszel-agent | henrygd/beszel-agent:0.13.2@sha256:da76c4091dc5a1504d53df6e9b880ce3f5fe3adf369656fcf4f300970a4452e8 |  |
 | castsponsorskip | ghcr.io/gabe565/castsponsorskip:0.8.2@sha256:fe3a1b45987168b9cbccc394496e42bed5d396cd4869aa70ea402c686e679403 |  |
 | docker-socket-proxy | ghcr.io/tecnativa/docker-socket-proxy:latest@sha256:3400c429c5f9e1b21d62130fb93b16e2e772d4fb7695bd52fc2b743800b9fe9e |  |
 | dockflare | alplat/dockflare:stable@sha256:f37b8b0080a7ee9a448b5c34ce2043ec71e9378ae92736487ec8e6b6ce69bdba |  |
@@ -17,5 +17,5 @@
 | renovate-valkey | docker.io/valkey/valkey:8-alpine@sha256:e706d1213aaba6896c162bb6a3a9e1894e1a435f28f8f856d14fab2e10aa098b |  |
 | signoz-logspout | pavanputhra/logspout-signoz:2025.07.19-887dfeb@sha256:6da8ce12279a5262de8b2d5c083ce82d4c878c4eab702b4d328afe147ed7553b |  |
 | upsnap | ghcr.io/seriousm4x/upsnap:5@sha256:1d84315eb2811e849ffcab86ac5b5ecb73c0299db0b12766c8179864bdad7641 |  |
-| webhook | thecatlady/webhook:2.8.1@sha256:2c20d15f8f1b87ea1fa242787af6f288175bbb3402a04f1744a7f7a6a529d711 |  |
+| webhook | thecatlady/webhook:2.8.2@sha256:0507d6c27d87837bcdee5078d63f54e50d9073ae879618233858e3da68d4b0cc |  |
 
