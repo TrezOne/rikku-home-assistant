@@ -10,8 +10,8 @@
 | docker-socket-proxy | ghcr.io/tecnativa/docker-socket-proxy:latest@sha256:3400c429c5f9e1b21d62130fb93b16e2e772d4fb7695bd52fc2b743800b9fe9e |  |
 | dockflare | alplat/dockflare:stable@sha256:f37b8b0080a7ee9a448b5c34ce2043ec71e9378ae92736487ec8e6b6ce69bdba |  |
 | ha-fusion | ghcr.io/matt8707/ha-fusion:2024.10.1@sha256:5eea4634ab2b1e7c7523943996d13318d109b293abe8e9e86c38daf5c41830cb |  |
-| homeassistant | ghcr.io/home-assistant/home-assistant:stable@sha256:9255033272ab8f7bede246109ea9e7302527faf3accbf2ba7ef619e2206107ad |  |
-| ollama | ollama/ollama:0.12.4@sha256:e2f0af4a865c61b580cc17a7e2bda3c82083046b74c5a5402ce32a0d84454f9b |  |
+| homeassistant | ghcr.io/home-assistant/home-assistant:stable@sha256:5ae78cf2e6d8b53439cac50ed184ff1336cfbbb878fce16f75589e048fcdcdd9 |  |
+| ollama | ollama/ollama:0.12.5@sha256:e43c26d2d1ebc726bc932166d2979086310b2f9c5ccd64fb06b55d1ea2c4f2cc |  |
 | portainer-agent | portainer/agent:latest@sha256:a454c023f4b79ae308e372e5a4ab0d37961d6d8ad88fe5945544435203ded198 |  |
 | renovate | renovate/renovate:41.138.5-full@sha256:fe36510574ad36c357e5336aa5a129e654b8bfbb83ca8df9b97d7297e75a7a85 |  |
 | renovate-valkey | docker.io/valkey/valkey:8-alpine@sha256:e706d1213aaba6896c162bb6a3a9e1894e1a435f28f8f856d14fab2e10aa098b |  |
