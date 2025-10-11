@@ -18,6 +18,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${RIKKU_DOCKER_DIR}/adguard/work:/opt/adguardhome/work
       - ${RIKKU_DOCKER_DIR}/adguard/conf:/opt/adguardhome/conf
+      - /mnt/swag-certs:/opt/adguardhome/certs
   beszel-agent:
     container_name: beszel-agent
     environment:
