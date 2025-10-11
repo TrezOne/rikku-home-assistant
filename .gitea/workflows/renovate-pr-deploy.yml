@@ -131,7 +131,7 @@ jobs:
           host: 192.168.1.252
           user: pi
           ssh_key: ${{ secrets.RUNNER_SSH_PRIVATE_KEY }}
-          args: --remove-orphans -d ${{ needs.generate-service-list.outputs.svc_deploy_list }}
+          args: --remove-orphans -d ${{ steps.detect_services.outputs.docker_svc_list }}
           env_file: ".env"
           summary: true
 
