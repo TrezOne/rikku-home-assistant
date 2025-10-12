@@ -150,6 +150,9 @@ services:
     volumes:
       - ${RIKKU_DOCKER_DIR}/ha-fusion:/app/data
   homeassistant:
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
     container_name: homeassistant
     devices:
       - /dev/ttyAMA0:/dev/ttyAMA0
