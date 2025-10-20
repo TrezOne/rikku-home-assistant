@@ -16,6 +16,6 @@
 | renovate | renovate/renovate:41.146.8-full@sha256:31d821791cc6ccb42666aa23d50e3a200762e4fe3fe23005da7ced0387672a39 |  |
 | renovate-valkey | docker.io/valkey/valkey:8-alpine@sha256:e706d1213aaba6896c162bb6a3a9e1894e1a435f28f8f856d14fab2e10aa098b |  |
 | signoz-logspout | pavanputhra/logspout-signoz:2025.07.19-887dfeb@sha256:6da8ce12279a5262de8b2d5c083ce82d4c878c4eab702b4d328afe147ed7553b |  |
-| upsnap | ghcr.io/seriousm4x/upsnap:5@sha256:1d84315eb2811e849ffcab86ac5b5ecb73c0299db0b12766c8179864bdad7641 |  |
+| upsnap | ghcr.io/seriousm4x/upsnap:5@sha256:05c5d4a7eb0ed4693caaaef22ce9b345cf37ecfa728d79bb43f89e6c9e85a1a3 |  |
 | webhook | thecatlady/webhook:2.8.2@sha256:0507d6c27d87837bcdee5078d63f54e50d9073ae879618233858e3da68d4b0cc |  |
 
