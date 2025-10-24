@@ -10,7 +10,7 @@
 | docker-socket-proxy | ghcr.io/tecnativa/docker-socket-proxy:latest@sha256:3400c429c5f9e1b21d62130fb93b16e2e772d4fb7695bd52fc2b743800b9fe9e |  |
 | dockflare | alplat/dockflare:stable@sha256:d5d77c1caeb3a82467499371dd5e7c9ab7c2c03c527d4f1465062b755aa7c8ca |  |
 | ha-fusion | ghcr.io/matt8707/ha-fusion:2024.10.1@sha256:5eea4634ab2b1e7c7523943996d13318d109b293abe8e9e86c38daf5c41830cb |  |
-| homeassistant | ghcr.io/home-assistant/home-assistant:stable@sha256:22376034bddcb952cfd3f3b4101b932b5a561f050acccd16ef879e88c7ff8233 |  |
+| homeassistant | ghcr.io/home-assistant/home-assistant:stable@sha256:449140e073d8d7814098cd62dfdbb326ad043f51a3c4d4721889369f46751d52 |  |
 | ollama | ollama/ollama:0.12.6@sha256:a61a8fd395dbb931cc8cb1b5da7a2510746575c87113fdc45b647ee59ef7f808 |  |
 | portainer-agent | portainer/agent:latest@sha256:a454c023f4b79ae308e372e5a4ab0d37961d6d8ad88fe5945544435203ded198 |  |
 | renovate | renovate/renovate:41.158.3-full@sha256:33aef86eebf1b32f206bd48cd5957deb3f3526a860e14c04ac52ed3af2c6f1c1 |  |
