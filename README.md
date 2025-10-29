@@ -11,9 +11,9 @@
 | dockflare | alplat/dockflare:stable@sha256:d5d77c1caeb3a82467499371dd5e7c9ab7c2c03c527d4f1465062b755aa7c8ca |  |
 | ha-fusion | ghcr.io/matt8707/ha-fusion:2024.10.1@sha256:5eea4634ab2b1e7c7523943996d13318d109b293abe8e9e86c38daf5c41830cb |  |
 | homeassistant | ghcr.io/home-assistant/home-assistant:stable@sha256:449140e073d8d7814098cd62dfdbb326ad043f51a3c4d4721889369f46751d52 |  |
-| ollama | ollama/ollama:0.12.6@sha256:a61a8fd395dbb931cc8cb1b5da7a2510746575c87113fdc45b647ee59ef7f808 |  |
+| ollama | ollama/ollama:0.12.7@sha256:de29cf776a66aae03ace78d7b09660eebc4b0b4d547a67a04740353a171722f0 |  |
 | portainer-agent | portainer/agent:latest@sha256:a454c023f4b79ae308e372e5a4ab0d37961d6d8ad88fe5945544435203ded198 |  |
-| renovate | renovate/renovate:41.165.2-full@sha256:d74965b4260fc8fd514542826d4a23c21a47f14093d050a49326528153950254 |  |
+| renovate | renovate/renovate:41.165.3-full@sha256:532a21b6cdb65271de4bd7f88d5d297aef88a3b11a5f6aa82cb838f93f19129d |  |
 | renovate-valkey | docker.io/valkey/valkey:8-alpine@sha256:e706d1213aaba6896c162bb6a3a9e1894e1a435f28f8f856d14fab2e10aa098b |  |
 | signoz-logspout | pavanputhra/logspout-signoz:2025.07.19-887dfeb@sha256:6da8ce12279a5262de8b2d5c083ce82d4c878c4eab702b4d328afe147ed7553b |  |
 | upsnap | ghcr.io/seriousm4x/upsnap:5@sha256:05c5d4a7eb0ed4693caaaef22ce9b345cf37ecfa728d79bb43f89e6c9e85a1a3 |  |
