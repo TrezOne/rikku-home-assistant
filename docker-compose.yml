@@ -179,7 +179,7 @@ services:
       - ollama:/root/.ollama
   portainer-agent:
     container_name: portainer_agent
-    image: portainer/agent:latest@sha256:a454c023f4b79ae308e372e5a4ab0d37961d6d8ad88fe5945544435203ded198
+    image: portainer/agent:latest@sha256:9c6d09469bf8bc527d53f88f063200de00f1d2416ac269938d868a4df6088d7a
     volumes:
       - /:/host
       - /var/lib/docker/volumes:/var/lib/docker/volumes
