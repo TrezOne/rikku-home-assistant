@@ -5,7 +5,7 @@
 | Service | Image | Description |
 | --- | --- | --- |
 | adguard | adguard/adguardhome:v0.107.68@sha256:09a24f05e110e53e213a340b22e5d3c8cdab12ff9be6775388c71b140255c54c |  |
-| beszel-agent | henrygd/beszel-agent:0.14.1@sha256:b77124f969972f8dfbe24f521cabdf463c21e53fe2fdc857bf1274525ed01ab5 |  |
+| beszel-agent | henrygd/beszel-agent:0.15.2@sha256:b47f2efab5dc612f9f6d9bfad4e3cc3a4d95022c0546744927fe4702ba5b36b9 |  |
 | castsponsorskip | ghcr.io/gabe565/castsponsorskip:0.8.2@sha256:fe3a1b45987168b9cbccc394496e42bed5d396cd4869aa70ea402c686e679403 |  |
 | docker-socket-proxy | ghcr.io/tecnativa/docker-socket-proxy:latest@sha256:3400c429c5f9e1b21d62130fb93b16e2e772d4fb7695bd52fc2b743800b9fe9e |  |
 | dockflare | alplat/dockflare:stable@sha256:d5d77c1caeb3a82467499371dd5e7c9ab7c2c03c527d4f1465062b755aa7c8ca |  |
