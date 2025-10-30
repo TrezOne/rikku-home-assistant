@@ -4,7 +4,7 @@
 
 | Service | Image | Description |
 | --- | --- | --- |
-| adguard | adguard/adguardhome:v0.107.68@sha256:09a24f05e110e53e213a340b22e5d3c8cdab12ff9be6775388c71b140255c54c |  |
+| adguard | adguard/adguardhome:v0.107.69@sha256:8a4107ec812023842ccab9e04600c5d39d3be6b15e907c34a36339c184c8fccf |  |
 | beszel-agent | henrygd/beszel-agent:0.15.2@sha256:b47f2efab5dc612f9f6d9bfad4e3cc3a4d95022c0546744927fe4702ba5b36b9 |  |
 | castsponsorskip | ghcr.io/gabe565/castsponsorskip:0.8.2@sha256:fe3a1b45987168b9cbccc394496e42bed5d396cd4869aa70ea402c686e679403 |  |
 | docker-socket-proxy | ghcr.io/tecnativa/docker-socket-proxy:latest@sha256:3400c429c5f9e1b21d62130fb93b16e2e772d4fb7695bd52fc2b743800b9fe9e |  |
@@ -13,7 +13,7 @@
 | homeassistant | ghcr.io/home-assistant/home-assistant:stable@sha256:449140e073d8d7814098cd62dfdbb326ad043f51a3c4d4721889369f46751d52 |  |
 | ollama | ollama/ollama:0.12.7@sha256:de29cf776a66aae03ace78d7b09660eebc4b0b4d547a67a04740353a171722f0 |  |
 | portainer-agent | portainer/agent:latest@sha256:9c6d09469bf8bc527d53f88f063200de00f1d2416ac269938d868a4df6088d7a |  |
-| renovate | renovate/renovate:41.165.4-full@sha256:2adf0cf63e3e4ae6032decc96974ddc28ab1705e165189166c33e94db9c3df37 |  |
+| renovate | renovate/renovate:41.165.6-full@sha256:cee705958ff47eb3c579e2c7f4896eccc295099a1bc93a3f7ac0655710200fdf |  |
 | renovate-valkey | docker.io/valkey/valkey:8-alpine@sha256:e706d1213aaba6896c162bb6a3a9e1894e1a435f28f8f856d14fab2e10aa098b |  |
 | signoz-logspout | pavanputhra/logspout-signoz:2025.07.19-887dfeb@sha256:6da8ce12279a5262de8b2d5c083ce82d4c878c4eab702b4d328afe147ed7553b |  |
 | upsnap | ghcr.io/seriousm4x/upsnap:5@sha256:05c5d4a7eb0ed4693caaaef22ce9b345cf37ecfa728d79bb43f89e6c9e85a1a3 |  |
