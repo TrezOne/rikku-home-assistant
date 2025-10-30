@@ -227,7 +227,7 @@ services:
       GHCR_USER: ${RENOVATE__GHCR_USER}
       GITEA_BOT_PASS: ${RENOVATE__GITEA_BOT_PASS}
       GITEA_BOT_USER: ${RENOVATE__GITEA_BOT_USER}
-    image: renovate/renovate:41.165.6-full@sha256:cee705958ff47eb3c579e2c7f4896eccc295099a1bc93a3f7ac0655710200fdf
+    image: renovate/renovate:41.165.7-full@sha256:ecd0a6f0078ff32bd4c569e7ca4462af0c8a145da2dc840ddbce6469dc2497ee
     restart: unless-stopped
     volumes:
       - ${RIKKU_DOCKER_DIR}/renovate/config.js:/etc/renovate/config.js
