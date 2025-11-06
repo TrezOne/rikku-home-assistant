@@ -11,7 +11,7 @@
 | dockflare | alplat/dockflare:stable@sha256:d5d77c1caeb3a82467499371dd5e7c9ab7c2c03c527d4f1465062b755aa7c8ca |  |
 | ha-fusion | ghcr.io/matt8707/ha-fusion:2024.10.1@sha256:5eea4634ab2b1e7c7523943996d13318d109b293abe8e9e86c38daf5c41830cb |  |
 | homeassistant | ghcr.io/home-assistant/home-assistant:stable@sha256:8949aa75a417c0a71208255c999bfb3eea3e909ff2eab4ac4ca26a2cbd886f05 |  |
-| ollama | ollama/ollama:0.12.9@sha256:889ae74bdb4aa541044574d3e5e5dedde3c682c8b7918b6792aa031e7dfc8f06 |  |
+| ollama | ollama/ollama:0.12.10@sha256:e8c3d1f6ad16323bc40dc63eff0701d4fc32113f75a86b54b3e836eef8290de6 |  |
 | portainer-agent | portainer/agent:latest@sha256:9c6d09469bf8bc527d53f88f063200de00f1d2416ac269938d868a4df6088d7a |  |
 | renovate | renovate/renovate:41.168.6-full@sha256:d0acf53e0570978a0862cd879c46f1096ca8f25b5ed8516267ee25a1a287d743 |  |
 | renovate-valkey | docker.io/valkey/valkey:8-alpine@sha256:e706d1213aaba6896c162bb6a3a9e1894e1a435f28f8f856d14fab2e10aa098b |  |
