@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 env:
-  RENOVATE_VERSION: "41.168.6"
+  RENOVATE_VERSION: "41.173.1"
 
 jobs:
   renovate:
