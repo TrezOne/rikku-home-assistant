@@ -13,7 +13,7 @@
 | homeassistant | ghcr.io/home-assistant/home-assistant:stable@sha256:8949aa75a417c0a71208255c999bfb3eea3e909ff2eab4ac4ca26a2cbd886f05 |  |
 | ollama | ollama/ollama:0.12.10@sha256:e8c3d1f6ad16323bc40dc63eff0701d4fc32113f75a86b54b3e836eef8290de6 |  |
 | portainer-agent | portainer/agent:latest@sha256:9c6d09469bf8bc527d53f88f063200de00f1d2416ac269938d868a4df6088d7a |  |
-| renovate | renovate/renovate:41.168.6-full@sha256:d0acf53e0570978a0862cd879c46f1096ca8f25b5ed8516267ee25a1a287d743 |  |
+| renovate | renovate/renovate:41.173.1-full@sha256:966f0f3dfee5ad9da385299d1d0ae0ef376ee5a4d9c0d87be6134b1f825a2c90 |  |
 | renovate-valkey | docker.io/valkey/valkey:9-alpine@sha256:b4ee67d73e00393e712accc72cfd7003b87d0fcd63f0eba798b23251bfc9c394 |  |
 | signoz-logspout | pavanputhra/logspout-signoz:2025.07.19-887dfeb@sha256:6da8ce12279a5262de8b2d5c083ce82d4c878c4eab702b4d328afe147ed7553b |  |
 | upsnap | ghcr.io/seriousm4x/upsnap:5@sha256:05c5d4a7eb0ed4693caaaef22ce9b345cf37ecfa728d79bb43f89e6c9e85a1a3 |  |
