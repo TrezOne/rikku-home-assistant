@@ -106,7 +106,7 @@ jobs:
           password: ${{ secrets.BOT_GITEA_PASSWORD }}
 
       - name: Gotify Notification
-        uses: eikendev/gotify-action@master
+        uses: eikendev/gotify-action@0.0.3
         with:
           gotify_api_base: "${{ secrets.RUNNER_GOTIFY_URL }}"
           gotify_app_token: "${{ secrets.RUNNER_GOTIFY_TOKEN }}"
@@ -147,7 +147,7 @@ jobs:
           skip-no-healthcheck: "true"
 
       - name: Gotify Notification
-        uses: eikendev/gotify-action@master
+        uses: eikendev/gotify-action@0.0.3
         with:
           gotify_api_base: "${{ secrets.RUNNER_GOTIFY_URL }}"
           gotify_app_token: "${{ secrets.RUNNER_GOTIFY_TOKEN }}"
