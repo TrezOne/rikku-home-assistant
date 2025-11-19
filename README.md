@@ -5,7 +5,7 @@
 | Service | Image | Description |
 | --- | --- | --- |
 | adguard | adguard/adguardhome:v0.107.69 |  |
-| beszel-agent | henrygd/beszel-agent:0.15.4 |  |
+| beszel-agent | henrygd/beszel-agent:0.16.1 |  |
 | castsponsorskip | ghcr.io/gabe565/castsponsorskip:0.8.2 |  |
 | docker-socket-proxy | ghcr.io/tecnativa/docker-socket-proxy:latest |  |
 | dockflare | alplat/dockflare:stable |  |
@@ -13,7 +13,7 @@
 | homeassistant | ghcr.io/home-assistant/home-assistant:stable |  |
 | ollama | ollama/ollama:0.12.11 |  |
 | portainer-agent | portainer/agent:latest |  |
-| renovate | renovate/renovate:42.1.3-full |  |
+| renovate | renovate/renovate:42.11.0-full |  |
 | renovate-valkey | docker.io/valkey/valkey:9-alpine |  |
 | signoz-logspout | pavanputhra/logspout-signoz:2025.07.19-887dfeb |  |
 | upsnap | ghcr.io/seriousm4x/upsnap:5 |  |
