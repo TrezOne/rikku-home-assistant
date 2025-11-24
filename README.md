@@ -13,7 +13,7 @@
 | homeassistant | ghcr.io/home-assistant/home-assistant:stable |  |
 | ollama | ollama/ollama:0.13.0 |  |
 | portainer-agent | portainer/agent:latest |  |
-| renovate | renovate/renovate:42.19.3-full |  |
+| renovate | renovate/renovate:42.19.7-full |  |
 | renovate-valkey | docker.io/valkey/valkey:9-alpine |  |
 | signoz-logspout | pavanputhra/logspout-signoz:2025.07.19-887dfeb |  |
 | upsnap | ghcr.io/seriousm4x/upsnap:5 |  |
