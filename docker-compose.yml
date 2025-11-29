@@ -169,14 +169,6 @@ services:
       - ${RIKKU_DOCKER_DIR}/homeassistant:/config
       - /etc/localtime:/etc/localtime:ro
       - /run/dbus:/run/dbus:ro
-  ollama:
-    container_name: ollama
-    image: ollama/ollama:0.13.0@sha256:d4188c1dfa870386a14e299976aed96daeb83876b69e1a852c9d09ea76463b9f
-    ports:
-      - 11434:11434
-    restart: unless-stopped
-    volumes:
-      - ollama:/root/.ollama
   portainer-agent:
     container_name: portainer_agent
     image: portainer/agent:latest@sha256:d2e5f753e8c668f7a7916621e64d6535f212b0f6ade5389a6fcc1f6830405ccf
@@ -293,7 +285,5 @@ services:
 volumes:
   dockflare_data:
     name: dockflare_data
-  ollama:
-    name: ollama
   renovate-valkey-data:
     name: renovate-valkey-data
