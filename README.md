@@ -4,7 +4,7 @@
 
 | Service | Image | Description |
 | --- | --- | --- |
-| adguard | adguard/adguardhome:v0.107.69 |  |
+| adguard | adguard/adguardhome:v0.107.70 |  |
 | beszel-agent | henrygd/beszel-agent:0.16.1 |  |
 | castsponsorskip | ghcr.io/gabe565/castsponsorskip:0.8.2 |  |
 | docker-socket-proxy | ghcr.io/tecnativa/docker-socket-proxy:latest |  |
