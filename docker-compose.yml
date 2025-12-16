@@ -72,7 +72,7 @@ services:
       TASKS: 1
       VOLUMES: 1
       LOG_LEVEL: debug
-    image: ghcr.io/tecnativa/docker-socket-proxy:latest@sha256:3400c429c5f9e1b21d62130fb93b16e2e772d4fb7695bd52fc2b743800b9fe9e
+    image: ghcr.io/tecnativa/docker-socket-proxy:latest@sha256:1f3a6f303320723d199d2316a3e82b2e2685d86c275d5e3deeaf182573b47476
     ports:
       - 2375:2375
     privileged: true
