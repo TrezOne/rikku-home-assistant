@@ -266,7 +266,7 @@ services:
     healthcheck:
       test: curl -fs "http://localhost:5000/api/health" || exit 1
       interval: 10s
-    image: ghcr.io/seriousm4x/upsnap:5@sha256:cbeafcff280d9db36aba467abc2b6110cd8de1e83e7a9d2d6a8e864511ba36e1 # images are also available on docker hub: seriousm4x/upsnap:5
+    image: ghcr.io/seriousm4x/upsnap:5@sha256:ca271a7c9260967cb85ffc5a02ce8e28a267476c6610a25f21dc4929d404e682 # images are also available on docker hub: seriousm4x/upsnap:5
     network_mode: host
     privileged: true
     restart: unless-stopped
