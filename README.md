@@ -12,7 +12,7 @@
 | ha-fusion | ghcr.io/matt8707/ha-fusion:2024.10.1 |  |
 | homeassistant | ghcr.io/home-assistant/home-assistant:stable |  |
 | portainer-agent | portainer/agent:latest |  |
-| renovate | renovate/renovate:42.63.0-full |  |
+| renovate | renovate/renovate:42.84.2-full |  |
 | renovate-valkey | docker.io/valkey/valkey:9-alpine |  |
 | signoz-logspout | pavanputhra/logspout-signoz:2025.07.19-887dfeb |  |
 | upsnap | ghcr.io/seriousm4x/upsnap:5 |  |
