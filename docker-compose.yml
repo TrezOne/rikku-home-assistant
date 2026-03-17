@@ -38,7 +38,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
   castsponsorskip:
     container_name: castsponsorskip
-    image: ghcr.io/gabe565/castsponsorskip:0.8.2@sha256:fe3a1b45987168b9cbccc394496e42bed5d396cd4869aa70ea402c686e679403
+    image: ghcr.io/gabe565/castsponsorskip:0.8.3@sha256:f556d274aab94c3140058e9f192396bc75e04d8e075769223c1edfc8c4f4daa4
     environment:
       TZ: ${TZ}
       # CSS_PAUSED_INTERVAL:
