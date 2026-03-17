@@ -6,7 +6,7 @@
 | --- | --- | --- |
 | adguard | adguard/adguardhome:v0.107.73 |  |
 | beszel-agent | henrygd/beszel-agent:0.18.4 |  |
-| castsponsorskip | ghcr.io/gabe565/castsponsorskip:0.8.2 |  |
+| castsponsorskip | ghcr.io/gabe565/castsponsorskip:0.8.3 |  |
 | docker-socket-proxy | ghcr.io/tecnativa/docker-socket-proxy:latest |  |
 | dockflare | alplat/dockflare:stable |  |
 | ha-fusion | ghcr.io/matt8707/ha-fusion:2024.10.1 |  |
