@@ -110,7 +110,7 @@ services:
       timeout: 30s
       retries: 5
       start_period: 30s
-    image: alplat/dockflare:stable@sha256:10bf468bddcd312a793a5b4095b442b5c3008bb16dad0c3caffacae1c4ecc4fd # Or :unstable for the latest features
+    image: alplat/dockflare:stable@sha256:ae959282bf2086091b6b06112322341c1d7c92163ca7a05b48f9dd735deb3e80 # Or :unstable for the latest features
     # labels:
     #   ## EXAMPLE CF TUNNEL LABELS ###
     #   Enable DockFlare management for this container
