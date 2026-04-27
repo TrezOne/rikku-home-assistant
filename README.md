@@ -15,6 +15,7 @@
 | renovate | renovate/renovate:42.84.2-full |  |
 | renovate-valkey | docker.io/valkey/valkey:9-alpine |  |
 | signoz-logspout | pavanputhra/logspout-signoz:2025.07.19-887dfeb |  |
+| snapcast-server | docker.io/sweisgerber/snapcast:latest |  |
 | upsnap | ghcr.io/seriousm4x/upsnap:5 |  |
 | webhook | thecatlady/webhook:2.8.2 |  |
 
