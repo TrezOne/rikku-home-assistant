@@ -104,7 +104,9 @@ services:
       test:
         [
           "CMD-SHELL",
-          "wget -qO- --server-response http://localhost:5000/ping 2>&1 | awk '/^  HTTP/{code=$2} /^[^{]/{next} {print; fflush()} END{exit (code>=400 || code==0)}' >/dev/null",
+          "wget -qO- --server-response http://localhost:5000/ping 2>&1 | awk
+            '/^  HTTP/{code=$2} /^[^{]/{next} {print; fflush()} END{exit
+            (code>=400 || code==0)}' >/dev/null",
         ]
       interval: 1m30s
       timeout: 30s
@@ -207,7 +209,7 @@ services:
 
       # --- Scheduling ---
       # Renovate will only process PRs/updates in this time window
-      RENOVATE_SCHEDULE: '["after 2am and before 6am"]'
+      RENOVATE_SCHEDULE: "[\"after 2am and before 6am\"]"
       OTEL_EXPORTER_OTLP_ENDPOINT: http://192.168.1.254:4318
       OTEL_SERVICE_NAME: renovate
       OTEL_SERVICE_NAMESPACE: renovate.${MY_TLD}
@@ -247,6 +249,26 @@ services:
     restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+  snapcast-server:
+    image: docker.io/sweisgerber/snapcast:latest
+    hostname: snapcast-server
+    container_name: snapcast-server
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID} # set to audio group ID
+      TZ: ${TZ}
+    restart: "unless-stopped"
+    ports:
+      - 1704:1704
+      - 1705:1705
+      - 1780:1780
+      # devices:
+      # - /dev/snd:/dev/snd # optional, only if you want to use snapclient
+    volumes:
+      - ${RIKKU_DOCKER_DIR}/snapcast/config/:/config/
+      - ${RIKKU_DOCKER_DIR}/snapcast/data/:/data/
+      # /audio should get used to place FIFOs for audio playback from mpd/mopidy/host/etc
+      - ${RIKKU_DOCKER_DIR}/snapcast/audio/:/audio/
   upsnap:
     container_name: upsnap
     dns:
