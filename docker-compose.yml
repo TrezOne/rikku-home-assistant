@@ -173,7 +173,7 @@ services:
       - /run/dbus:/run/dbus:ro
   portainer-agent:
     container_name: portainer_agent
-    image: portainer/agent:latest@sha256:7af856876dcb2778108bf6846f3da31b176443db90e3de31fcfdf17e5ab7857e
+    image: portainer/agent:latest@sha256:dc0e8285f8b4c105c3237f1cc0022f92dd265c53ced5f53b9ce7c9741144e879
     volumes:
       - /:/host
       - /var/lib/docker/volumes:/var/lib/docker/volumes
