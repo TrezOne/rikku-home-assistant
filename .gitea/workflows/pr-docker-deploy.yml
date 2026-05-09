@@ -11,7 +11,7 @@ on:
 
 env:
   HC_VAULT_VERSION: "1.21.4"
-  TEA_VERSION: "0.10.1"
+  TEA_VERSION: "0.14.0"
 
 jobs:
   check-and-create-pr:
