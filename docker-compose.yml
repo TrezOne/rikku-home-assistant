@@ -253,8 +253,6 @@ services:
     hostname: snapcast-server
     container_name: snapcast-server
     environment:
-      PUID: ${PUID}
-      PGID: ${PGID} # set to audio group ID
       TZ: ${TZ}
     restart: "unless-stopped"
     ports:
