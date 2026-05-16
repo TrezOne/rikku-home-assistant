@@ -10,7 +10,7 @@ on:
       - "**/docker-compose.yml"
 
 env:
-  HC_VAULT_VERSION: "1.21.4"
+  HC_VAULT_VERSION: "2.0.0"
   TEA_VERSION: "0.14.0"
 
 jobs:
