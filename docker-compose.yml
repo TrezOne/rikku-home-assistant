@@ -210,7 +210,7 @@ services:
     volumes:
       - patchmon-pg-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      test: ["CMD-SHELL", "pg_isready -U patchmon -d patchmon"]
       interval: 3s
       timeout: 5s
       retries: 7
@@ -224,7 +224,7 @@ services:
       REDIS_DB: 0
     expose:
       - 6379
-    command: redis-server --requirepass ${REDIS_PASSWORD}
+    command: redis-server --requirepass ${PATCHMON_REDIS_PASSWORD}
     volumes:
       - patchmon-redis-data:/data
     healthcheck:
