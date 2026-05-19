@@ -11,6 +11,10 @@
 | dockflare | alplat/dockflare:stable |  |
 | ha-fusion | ghcr.io/matt8707/ha-fusion:2024.10.1 |  |
 | homeassistant | ghcr.io/home-assistant/home-assistant:stable |  |
+| patchmon-server | ghcr.io/patchmon/patchmon-server:latest |  |
+| patchmon-pg-db | postgres:17-alpine |  |
+| patchmon-redis | redis:7-alpine |  |
+| patchmon-guacd | guacamole/guacd:latest |  |
 | portainer-agent | portainer/agent:latest |  |
 | renovate | renovate/renovate:43.170.22-full |  |
 | renovate-valkey | docker.io/valkey/valkey:9-alpine |  |
