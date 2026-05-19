@@ -199,6 +199,7 @@ services:
       - 3000:3000
     restart: unless-stopped
   patchmon-pg-db:
+    container_name: patchmon-pg-db
     image: postgres:17-alpine
     restart: unless-stopped
     environment:
@@ -215,6 +216,7 @@ services:
       timeout: 5s
       retries: 7
   patchmon-redis:
+    container_name: patchmon-redis
     image: redis:7-alpine
     restart: unless-stopped
     environment:
