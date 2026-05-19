@@ -186,7 +186,7 @@ services:
       DATABASE_URL: postgresql://patchmon:${PATCHMON_PG_PASSWORD}@patchmon-pg-db:5432/patchmon
       ENABLE_LOGGING: true
       GUACD_ADDRESS: patchmon-guacd:4822
-      LOG_LEVEL: debug
+      LOG_LEVEL: info
       REDIS_HOST: patchmon-redis
       SESSION_SECRET: ${PATCHMON_SESSION_SECRET}
       AI_ENCRYPTION_KEY: ${PATCHMON_AI_ENCRYPTION_KEY}
