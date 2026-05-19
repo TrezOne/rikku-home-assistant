@@ -182,7 +182,7 @@ services:
     environment:
       CORS_ORIGIN: "*"
       POSTGRES_HOST: patchmon-pg-db
-      DATABASE_URL: postgresql://patchmon:${PATCHMON_PG_PASSWORD}@patchmon-pg-db:5432/${POSTGRES_DB}
+      DATABASE_URL: postgresql://patchmon:${PATCHMON_PG_PASSWORD}@patchmon-pg-db:5432/patchmon
       ENABLE_LOGGING: true
       GUACD_ADDRESS: patchmon-guacd:4822
       LOG_LEVEL: debug
@@ -234,7 +234,7 @@ services:
           "redis-cli",
           "--no-auth-warning",
           "-a",
-          "${REDIS_PASSWORD}",
+          "${PATCHMON_REDIS_PASSWORD}",
           "ping",
         ]
       interval: 3s
