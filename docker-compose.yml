@@ -181,6 +181,7 @@ services:
         condition: service_healthy
     environment:
       CORS_ORIGIN: "*"
+      JWT_SECRET: ${PATCHMON_JWT_SECRET}
       POSTGRES_HOST: patchmon-pg-db
       DATABASE_URL: postgresql://patchmon:${PATCHMON_PG_PASSWORD}@patchmon-pg-db:5432/patchmon
       ENABLE_LOGGING: true
