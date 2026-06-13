@@ -195,13 +195,13 @@ services:
       REDIS_DB: 0
       TRUST_PROXY: true
       TZ: ${TZ}
-    image: ghcr.io/patchmon/patchmon-server:latest
+    image: ghcr.io/patchmon/patchmon-server:latest@sha256:eaa1bcce290c7003cff01a96cfc893a64cb144e582e9b797875e6381f56b297a
     ports:
       - 3000:3000
     restart: unless-stopped
   patchmon-pg-db:
     container_name: patchmon-pg-db
-    image: postgres:17-alpine
+    image: postgres:17-alpine@sha256:979c4379dd698aba0b890599a6104e082035f98ef31d9b9291ec22f2b13059ca
     restart: unless-stopped
     environment:
       POSTGRES_PASSWORD: ${PATCHMON_PG_PASSWORD}
@@ -218,7 +218,7 @@ services:
       retries: 7
   patchmon-redis:
     container_name: patchmon-redis
-    image: redis:7-alpine
+    image: redis:7-alpine@sha256:6ab0b6e7381779332f97b8ca76193e45b0756f38d4c0dcda72dbb3c32061ab99
     restart: unless-stopped
     environment:
       TZ: ${TZ}
@@ -245,7 +245,7 @@ services:
       retries: 7
   patchmon-guacd:
     container_name: patchmon-guacd
-    image: guacamole/guacd:1.6.0
+    image: guacamole/guacd:1.6.0@sha256:8974eaa9ba32f713daf311e7cc8cd7e4cdfba1edea39eed75524e78ef4b08f4f
     expose:
       - 4822
     restart: unless-stopped
