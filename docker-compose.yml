@@ -343,7 +343,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
   snapcast-server:
-    image: docker.io/sweisgerber/snapcast:latest@sha256:8859aaf7949781d47787fa048a3c85c7b3ea97aad4270d6f4ae2ff8b341db22c
+    image: docker.io/sweisgerber/snapcast:latest@sha256:0e02c091bd7f9d3527081f99ab831a0bf3e16c5390356b49c72eb986bb0466e6
     hostname: snapcast-server
     container_name: snapcast-server
     environment:
