@@ -201,7 +201,7 @@ services:
     restart: unless-stopped
   patchmon-pg-db:
     container_name: patchmon-pg-db
-    image: postgres:17-alpine@sha256:6a3e8680cc46290e8b1b7d2f9bbbe25f058dd2e0fdc4f819bb929d8b11f2480d
+    image: postgres:17-alpine@sha256:67f624a4ad70edba8d65c82341124fab7054b277b4f7dea4b04be6f939ce2314
     restart: unless-stopped
     environment:
       POSTGRES_PASSWORD: ${PATCHMON_PG_PASSWORD}
