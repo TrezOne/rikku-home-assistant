@@ -118,8 +118,9 @@ jobs:
         with:
           HC_VAULT_VERSION: ${{ env.HC_VAULT_VERSION }}
           HC_VAULT_ADDR: ${{ secrets.TREZ_VAULT_ADDR }}
-          HC_VAULT_AUTH: token
-          HC_VAULT_TOKEN: ${{ secrets.VAULT_GITEA_TOKEN }}
+          HC_VAULT_AUTH: approle
+          HC_VAULT_ROLE_ID: ${{ secrets.VAULT_ROLE_ID }}
+          HC_VAULT_SECRET_ID: ${{ secrets.VAULT_SECRET_ID }}
           HC_VAULT_SECRETS_PATH: rikku-docker/env
 
       - name: Docker Compose Deployment
