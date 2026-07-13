@@ -16,7 +16,7 @@
 | patchmon-redis | redis:7-alpine |  |
 | patchmon-guacd | guacamole/guacd:1.6.0 |  |
 | portainer-agent | portainer/agent:latest |  |
-| renovate | renovate/renovate:43.170.22-full |  |
+| renovate | renovate/renovate:43.260.3-full |  |
 | renovate-valkey | docker.io/valkey/valkey:9-alpine |  |
 | signoz-logspout | pavanputhra/logspout-signoz:2025.07.19-887dfeb |  |
 | snapcast-server | docker.io/sweisgerber/snapcast:latest |  |
