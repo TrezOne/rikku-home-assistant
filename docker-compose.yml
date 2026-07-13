@@ -40,7 +40,7 @@ services:
     container_name: castsponsorskip
     image: ghcr.io/gabe565/castsponsorskip:0.8.3@sha256:f556d274aab94c3140058e9f192396bc75e04d8e075769223c1edfc8c4f4daa4
     environment:
-      TZ: ${TZ}
+      TZ: America/New_York
       # CSS_PAUSED_INTERVAL:
       # CSS_PLAYING_INTERVAL:
       # CSS_CATEGORIES:
