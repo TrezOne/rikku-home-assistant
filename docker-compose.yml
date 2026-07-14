@@ -266,7 +266,7 @@ services:
       start_period: 10s
   portainer-agent:
     container_name: portainer_agent
-    image: portainer/agent:latest@sha256:e95f767f2caa2bcccaaa130ea73a43b16b880c6c8a841b20a58abf56a8eac63c
+    image: portainer/agent:latest@sha256:43c8bc9bafde891ddd0fc3dcc61ac6e1887e7e2027baa76ce402bc014037fba6
     volumes:
       - /:/host
       - /var/lib/docker/volumes:/var/lib/docker/volumes
