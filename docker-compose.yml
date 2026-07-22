@@ -322,7 +322,7 @@ services:
     container_name: renovate-valkey
     healthcheck:
       test: redis-cli ping || exit 1
-    image: docker.io/valkey/valkey:9-alpine@sha256:c9b77919daeba2c02ad954d0c844cc4e7142069d177b89c5fd771f405daf9e02
+    image: docker.io/valkey/valkey:9-alpine@sha256:ee91f7a174ac4d6a6b0685b3a60e321f0a9dbbb691f9b0e285be2ba1d1be8328
     environment:
       ALLOW_EMPTY_PASSWORD: yes
       VALKEY_DATA_DIR: /data/valkey
