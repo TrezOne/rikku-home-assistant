@@ -160,7 +160,7 @@ services:
       - /dev/ttyS0:/dev/ttyS0
     environment:
       DISABLE_JEMALLOC: true
-    image: ghcr.io/home-assistant/home-assistant:stable@sha256:6937c6c51d2f5d6aa66d97e4a68f845bcccd5f9b62cd91992bd6d79b20fe2b3c
+    image: ghcr.io/home-assistant/home-assistant:stable@sha256:a21689ef0510df9760ee11bab4d6b2fef3ed5c1a29ed9c3224271597a23729eb
     labels:
       com.centurylinklabs.watchtower.monitor-only: true
     network_mode: host
