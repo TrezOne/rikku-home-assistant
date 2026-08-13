@@ -4,7 +4,7 @@
   "packageRules": [
     {
       "description": "Update Renovate version only on major versions",
-      "matchPackageNames": ["renovatebot/renovate"],
+      "matchPackageNames": ["renovat/renovate"],
       "matchUpdateTypes": ["major"]
     }
   ]
