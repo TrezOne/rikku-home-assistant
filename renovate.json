@@ -1,4 +1,11 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["local>trez/renovate-config"]
+  "extends": ["local>trez/renovate-config"],
+  "packageRules": [
+    {
+      "description": "Update Renovate version only on major versions",
+      "matchPackageNames": ["renovatebot/renovate"],
+      "matchUpdateTypes": ["major"]
+    }
+  ]
 }
