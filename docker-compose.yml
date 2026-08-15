@@ -195,7 +195,7 @@ services:
       REDIS_DB: 0
       TRUST_PROXY: true
       TZ: ${TZ}
-    image: ghcr.io/patchmon/patchmon-server:latest@sha256:9434f2f9901e0a0611658b812fbade09d3d5416593d070f3e888c28ff4df15f8
+    image: ghcr.io/patchmon/patchmon-server:latest@sha256:9eba4008c8e25f72929752bba7499b5deda26cf5de3e4678dbf760d16822b2f2
     ports:
       - 3000:3000
     restart: unless-stopped
